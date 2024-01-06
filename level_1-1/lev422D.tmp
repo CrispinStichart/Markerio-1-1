@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://bikea1ccjcfty"]
+
+[ext_resource type="PackedScene" uid="uid://bi0crbkouowi0" path="res://blocks/question/question_block.tscn" id="1_sjikr"]
+[ext_resource type="PackedScene" uid="uid://bx8k6cunnpgos" path="res://blocks/breakable/brick.tscn" id="2_b3ne7"]
+[ext_resource type="PackedScene" uid="uid://b1kdshi8tk8uv" path="res://enemies/goomba/goomba.tscn" id="3_qkdst"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a51p0"]
+size = Vector2(2752, 192)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkgk4"]
+size = Vector2(1984, 192)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eqewn"]
+size = Vector2(1984, 192)
+
+[node name="level_1-1" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="ground" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ground"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground/StaticBody2D"]
+position = Vector2(1376, -96)
+shape = SubResource("RectangleShape2D_a51p0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ground/StaticBody2D"]
+position = Vector2(4000, -96)
+shape = SubResource("RectangleShape2D_dkgk4")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ground/StaticBody2D"]
+position = Vector2(6304, -96)
+shape = SubResource("RectangleShape2D_eqewn")
+
+[node name="blocks" type="Node2D" parent="."]
+
+[node name="QuestionBlock" parent="blocks" instance=ExtResource("1_sjikr")]
+position = Vector2(416, -416)
+
+[node name="Brick" parent="blocks" instance=ExtResource("2_b3ne7")]
+position = Vector2(352, -416)
+
+[node name="Brick2" parent="blocks" instance=ExtResource("2_b3ne7")]
+position = Vector2(480, -416)
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="Goomba" parent="enemies" instance=ExtResource("3_qkdst")]
+position = Vector2(416, -328)

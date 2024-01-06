@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1kdshi8tk8uv"]
+
+[ext_resource type="Script" path="res://enemies/goomba/goomba.gd" id="1_y7gtp"]
+[ext_resource type="Texture2D" uid="uid://785gc3tgk82f" path="res://enemies/goomba/sprites/goomba_1.png" id="2_2vjlm"]
+[ext_resource type="Texture2D" uid="uid://dkijpg7mihvnp" path="res://enemies/goomba/sprites/goomba_2.png" id="3_torqk"]
+[ext_resource type="Script" path="res://enemies/goomba/editor_script.gd" id="4_kg1lr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_st6st"]
+size = Vector2(512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8fw1k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_torqk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_2vjlm")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7p4v"]
+size = Vector2(512, 512)
+
+[node name="Goomba" type="CharacterBody2D"]
+modulate = Color(0.811765, 0.811765, 0.811765, 1)
+collision_layer = 8
+collision_mask = 10
+script = ExtResource("1_y7gtp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_st6st")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.09708, 0)
+scale = Vector2(0.862866, 0.862866)
+sprite_frames = SubResource("SpriteFrames_8fw1k")
+animation = &"walk"
+frame = 1
+frame_progress = 0.953829
+offset = Vector2(8, 0)
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("4_kg1lr")
+
+[node name="kill_hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="kill_hitbox"]
+shape = SubResource("RectangleShape2D_p7p4v")
+
+[connection signal="body_entered" from="kill_hitbox" to="." method="_on_kill_hitbox_body_entered"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://idx6j6w31jhp"]
+
+[ext_resource type="Texture2D" uid="uid://k3vvubj4noi7" path="res://metagame/background.jpg" id="1_m5fe3"]
+[ext_resource type="PackedScene" uid="uid://yp684bod5c2d" path="res://game.tscn" id="2_ca1s8"]
+
+[node name="MetaGame" type="Node2D"]
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(640, 512)
+scale = Vector2(0.599354, 0.599354)
+texture = ExtResource("1_m5fe3")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 224.0
+offset_top = 224.0
+offset_right = 264.0
+offset_bottom = 264.0
+scale = Vector2(0.661541, 0.661541)
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1080, 1080)
+render_target_update_mode = 4
+
+[node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_ca1s8")]
+position = Vector2(232, 232)
+scale = Vector2(0.655, 0.655)

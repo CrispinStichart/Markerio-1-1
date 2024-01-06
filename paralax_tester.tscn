@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://bfptecdbvw23r"]
+
+[ext_resource type="Texture2D" uid="uid://co2oexrf235fk" path="res://collectible/shroom/shroom.png" id="1_0vv28"]
+[ext_resource type="Script" path="res://paralax_tester.gd" id="1_locin"]
+[ext_resource type="TileSet" uid="uid://c0ac15la4y45y" path="res://level_1-1/level_1_1.tres" id="1_sy80g"]
+[ext_resource type="PackedScene" uid="uid://x3f1qkrtcjn2" path="res://markerio/markario.tscn" id="2_o0bue"]
+[ext_resource type="Script" path="res://markerio/camera_follow_horizontal_only.gd" id="4_gj7se"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_locin")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0)
+
+[node name="Shroom" type="Sprite2D" parent="ParallaxBackground/sky"]
+position = Vector2(2296, -1992)
+scale = Vector2(2.72889, 2.07989)
+texture = ExtResource("1_0vv28")
+
+[node name="near_background" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.9, 0)
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(32, -528)
+tile_set = ExtResource("1_sy80g")
+format = 2
+layer_0/tile_data = PackedInt32Array(-65536, 196608, 0, -65535, 196608, 0, -65534, 196608, 0, -65533, 196608, 0, -65532, 196608, 0, -65531, 196608, 0, -65530, 196608, 0, -65529, 196608, 0, -65528, 196608, 0)
+
+[node name="Markerio" parent="." instance=ExtResource("2_o0bue")]
+position = Vector2(880, -1448)
+
+[node name="Camera" type="Node2D" parent="Markerio"]
+position = Vector2(-880, 1448)
+script = ExtResource("4_gj7se")

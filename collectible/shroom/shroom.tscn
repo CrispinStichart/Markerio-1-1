@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bak6e08gng8he"]
+
+[ext_resource type="Script" path="res://collectible/shroom/shroom.gd" id="1_7umtp"]
+[ext_resource type="Texture2D" uid="uid://co2oexrf235fk" path="res://collectible/shroom/shroom.png" id="2_isiu2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lf2tk"]
+size = Vector2(512, 512)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7rk53"]
+size = Vector2(512, 512)
+
+[node name="Shroom" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_7umtp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lf2tk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.839256, 0.839256)
+texture = ExtResource("2_isiu2")
+
+[node name="pickup_area" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pickup_area"]
+shape = SubResource("RectangleShape2D_7rk53")
+
+[connection signal="body_entered" from="pickup_area" to="." method="_on_pickup_area_body_entered"]

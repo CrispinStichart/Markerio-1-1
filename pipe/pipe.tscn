@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7f6g8y5baghx"]
+
+[ext_resource type="Script" path="res://pipe/pipe.gd" id="1_ycpx7"]
+[ext_resource type="Texture2D" uid="uid://dc13bkonm0do6" path="res://pipe/pipe.png" id="2_upani"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vgpeu"]
+size = Vector2(1024, 2360)
+
+[node name="Pipe" type="StaticBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_ycpx7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+texture = ExtResource("2_upani")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_vgpeu")

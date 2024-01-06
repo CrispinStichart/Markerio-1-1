@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://cyy5ph3aav557"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_luu8e"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -100, 0)
+emission_shape = 3
+emission_box_extents = Vector3(256, 100, 1)
+angle_min = -39.5
+angle_max = 48.5
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 2000.0
+initial_velocity_max = 2000.0
+gravity = Vector3(0, 5000, 0)
+
+[sub_resource type="Gradient" id="Gradient_bv3oq"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.372298, 0.184916, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4sj4a"]
+gradient = SubResource("Gradient_bv3oq")
+width = 256
+height = 256
+
+[node name="Explosion" type="GPUParticles2D"]
+emitting = false
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_luu8e")
+texture = SubResource("GradientTexture2D_4sj4a")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2(-512, -512, 1024, 1024)
+
+[node name="used_to_see_size" type="ColorRect" parent="."]
+visible = false
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+color = Color(1, 1, 1, 0.0980392)
