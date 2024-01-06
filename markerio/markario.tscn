@@ -61,9 +61,9 @@ animation = &"idle"
 frame_progress = 0.209618
 
 [node name="block_detector" type="Area2D" parent="."]
+position = Vector2(0, -328)
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="block_detector"]
-position = Vector2(0, -312)
 shape = SubResource("RectangleShape2D_qaia6")

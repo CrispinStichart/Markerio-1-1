@@ -10,3 +10,5 @@ func activate():
 		activated = true
 		modulate = Color(0.812, 0.812, 0.812)
 
+func _to_string():
+	return "BreakableBrick at " + str(position)

@@ -38,8 +38,8 @@ func _physics_process(_delta):
 		var collider = collision.get_collider()
 		if collider is Block and snappedf(collision.get_angle(), .01) == 3.14:
 			for node in $block_detector.get_overlapping_bodies():
-				print("yol")
-				blocks.append(collider)
+				if node is Block:
+					blocks.append(node)
 			velocity.y = 0
 			remaining_jump_height = 0
 			break
@@ -49,7 +49,8 @@ func _physics_process(_delta):
 		print(len(blocks))
 		var closest:Block = blocks[0]
 
-		for block in blocks:
+		for i in range(1, len(blocks)):
+			var block: Block = blocks[i]
 			print("Closest: ", closest, " Comparing against: ", block)
 			print("   ", closest.position.x, ", ", block.position.x, ", ", position.x)
 			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
@@ -58,6 +59,7 @@ func _physics_process(_delta):
 		if closest is BreakableBrick and power_level == States.SMALL:
 			closest.bump()
 		else:
+			print("Activating ", closest)
 			closest.activate()
 
 func eat_mushroom():
@@ -65,7 +67,7 @@ func eat_mushroom():
 		power_level = States.BIG
 		$sprite_scaler.scale *= 2
 		$CollisionShape2D.shape.size *= 2
-		$block_detector.position.y -= Game.BLOCK_SIZE
+		$block_detector.position.y -= Game.BLOCK_SIZE / 2
 		#$sprite_scaler.position.y -= sprite.sprite_frames.get_frame_texture("run", 0).get_height() / 2
 	else:
 		pass

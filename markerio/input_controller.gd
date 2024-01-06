@@ -19,6 +19,7 @@ func _physics_process(delta):
 		p.remaining_jump_height = 0
 	elif not p.is_on_floor() and p.remaining_jump_height <= 0:
 		p.velocity.y += Game.GRAVITY
+		p.velocity.y = min(p.velocity.y, p.jump_speed)
 
 	if p.is_on_floor() and p.can_jump and not p.jumping:
 		if Input.is_action_just_pressed("jump"):

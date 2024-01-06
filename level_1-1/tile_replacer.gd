@@ -19,4 +19,4 @@ func _ready():
 			continue
 		erase_cell(0, pos)
 		add_child(block)
-		block.position = Vector2(pos) * 512 + Vector2.ONE * 256
+		block.position = Vector2(pos) * Game.BLOCK_SIZE + Vector2.ONE * Game.BLOCK_SIZE / 2
