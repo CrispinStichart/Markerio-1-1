@@ -1,18 +1,19 @@
 things to draw:
-	big mario
-		1024 tall
-		variation of big mario with mostly white outfit and red gloves and shoes.
-			can draw the outline once, color the hands and feet, then erase and do other colors
-	koopa trooper
-		head sticks out above hitbox area
-	koopa shell
-	star
-	fireball
-	1-up mushroom
-		green with white circle
-	flagpole
-	flag (checkered, black and white)
+	All done! 1/7
+		big mario
+			1024 tall
+			variation of big mario with mostly white outfit and red gloves and shoes.
+				can draw the outline once, color the hands and feet, then erase and do other colors
+		koopa trooper
+			head sticks out above hitbox area
+		koopa shell
+		star
+		fireball
+			green with white circle
+		flagpole
+		flag (checkered, black and white)
 
+	1-up mushroom
 
 Add koopa
 	koopa shell
@@ -38,6 +39,8 @@ add invincibility mechanic
 take damage from enimies
 	losing powerup
 	then death
+
+turn invincible after taking damage for 1 second
 
 reset level on death
 

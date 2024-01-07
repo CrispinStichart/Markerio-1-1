@@ -14,6 +14,9 @@ var can_jump := true
 var jumping := false
 var remaining_jump_height: float = 0
 
+var move_animation = "run_small"
+var idle_animation = "idle_small"
+
 
 var feet_position: Vector2:
 	get:
@@ -21,7 +24,8 @@ var feet_position: Vector2:
 		var y = position.y + $small_collider.shape.size.y/2 # FIXME
 		return Vector2(x, y)
 
-@onready var sprite:AnimatedSprite2D = $sprite_scaler/AnimatedSprite2D
+@onready var sprite:AnimatedSprite2D = $AnimatedSprite2D
+
 
 
 func _process(_delta):
@@ -32,9 +36,9 @@ func _process(_delta):
 
 	# TODO: make mario freeze in run animation, index 3
 	if velocity.x == 0 and velocity.y == 0:
-		sprite.play("idle_small")
-	elif sprite.animation != "run_small":
-		sprite.play("run_small")
+		sprite.play(idle_animation)
+	elif sprite.animation != move_animation:
+		sprite.play(move_animation)
 
 
 func _physics_process(delta):
@@ -91,22 +95,13 @@ func handle_block_collision():
 			closest.activate()
 
 func eat_mushroom():
-	if power_level == States.SMALL:
-		power_level = States.BIG
-		$sprite_scaler.scale *= 2
-		$small_collider.shape.size *= 2 # FIXME
-		$block_detector.position.y -= Game.BLOCK_SIZE / 2
-		#$sprite_scaler.position.y -= sprite.sprite_frames.get_frame_texture("run", 0).get_height() / 2
-	else:
-		pass
-		# Add to score
+	$size_state_machine.level_up()
 
 func eat_fire_flower():
-	print("Ate flower!")
-	pass
+	$size_state_machine.level_up()
 
 func take_damage():
-	pass
+	$size_state_machine.level_down()
 
 
 func die():

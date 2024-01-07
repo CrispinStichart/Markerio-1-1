@@ -1,26 +1,34 @@
-[gd_scene load_steps=16 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=21 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markario.gd" id="1_jbn2y"]
 [ext_resource type="Script" path="res://markerio/input_controller.gd" id="2_tswt8"]
+[ext_resource type="Texture2D" uid="uid://bb4vfwwwupnhk" path="res://markerio/sprite/big_markerio/big_idle.png" id="3_k6213"]
 [ext_resource type="Texture2D" uid="uid://ddqimiw0vt8y7" path="res://markerio/sprite/idle.png" id="4_hju34"]
-[ext_resource type="Texture2D" uid="uid://bx4i7vi401bgj" path="res://markerio/sprite/markerio_big_1.png" id="4_o2t8a"]
-[ext_resource type="Texture2D" uid="uid://dlbl38qycmlvs" path="res://markerio/sprite/markerio_big_2.png" id="5_clir6"]
+[ext_resource type="Texture2D" uid="uid://dasxp5forl171" path="res://markerio/sprite/big_markerio/big_run_1.png" id="5_3ho01"]
 [ext_resource type="Texture2D" uid="uid://1cdbem8uvhud" path="res://markerio/sprite/run_3.png" id="6_2i38b"]
 [ext_resource type="Texture2D" uid="uid://dpol5qgd6sx4f" path="res://markerio/sprite/run_1.png" id="6_2l121"]
+[ext_resource type="Texture2D" uid="uid://cghnsmvobj0i7" path="res://markerio/sprite/big_markerio/big_run_2.png" id="6_6xek8"]
 [ext_resource type="Texture2D" uid="uid://cwrdy13sgllry" path="res://markerio/sprite/run_2.png" id="6_ds38q"]
-[ext_resource type="Texture2D" uid="uid://18jtvlaclie6" path="res://markerio/sprite/markerio_big_3.png" id="6_fpc52"]
-[ext_resource type="Texture2D" uid="uid://dt3ys22joeyka" path="res://markerio/sprite/markerio_big_4.png" id="7_jvu03"]
+[ext_resource type="Texture2D" uid="uid://ddqm7jqie8hm3" path="res://markerio/sprite/big_markerio/big_run_3.png" id="7_qsj6q"]
 [ext_resource type="Texture2D" uid="uid://btmskd66f6xxe" path="res://markerio/sprite/run_4.png" id="8_i7tvl"]
+[ext_resource type="Texture2D" uid="uid://ct7ek4psghx3t" path="res://markerio/sprite/big_markerio/big_run_4.png" id="8_xgjme"]
+[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/powerup_state_machine.gd" id="13_vxhtx"]
+[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/fireflower.gd" id="14_upk38"]
+[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/small.gd" id="15_ns2lt"]
+[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/big.gd" id="16_ll857"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hp0g"]
 size = Vector2(416, 512)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8541e"]
-size = Vector2(416, 1080)
+size = Vector2(416, 976)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v5x0l"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_k6213")
+}],
 "loop": true,
 "name": &"idle_big",
 "speed": 5.0
@@ -35,16 +43,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_o2t8a")
+"texture": ExtResource("5_3ho01")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_clir6")
+"texture": ExtResource("6_6xek8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_fpc52")
+"texture": ExtResource("7_qsj6q")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_jvu03")
+"texture": ExtResource("8_xgjme")
 }],
 "loop": true,
 "name": &"run_big",
@@ -79,23 +87,36 @@ script = ExtResource("1_jbn2y")
 shape = SubResource("RectangleShape2D_2hp0g")
 
 [node name="big_collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4)
+position = Vector2(0, -56)
 shape = SubResource("RectangleShape2D_8541e")
 
 [node name="input_controller" type="Node" parent="."]
 script = ExtResource("2_tswt8")
 
-[node name="sprite_scaler" type="Node2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="sprite_scaler"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.758964, 0.758964)
 sprite_frames = SubResource("SpriteFrames_v5x0l")
-animation = &"idle_small"
+animation = &"run_big"
+frame_progress = 0.191854
 
 [node name="block_detector" type="Area2D" parent="."]
-position = Vector2(0, -328)
+position = Vector2(0, -640)
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="block_detector"]
 shape = SubResource("RectangleShape2D_qaia6")
+
+[node name="size_state_machine" type="Node" parent="." node_paths=PackedStringArray("markerio", "state")]
+script = ExtResource("13_vxhtx")
+markerio = NodePath("..")
+state = NodePath("small")
+
+[node name="fireflower" type="Node" parent="size_state_machine"]
+script = ExtResource("14_upk38")
+
+[node name="small" type="Node" parent="size_state_machine"]
+script = ExtResource("15_ns2lt")
+
+[node name="big" type="Node" parent="size_state_machine"]
+script = ExtResource("16_ll857")
