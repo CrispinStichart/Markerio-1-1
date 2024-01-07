@@ -50,8 +50,6 @@ func squish():
 
 func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:
-		print(body.feet_position, " ", position)
-		#if body.feet
 		if body.feet_position.y < position.y:
 			squish()
 		else:

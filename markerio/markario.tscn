@@ -1,24 +1,53 @@
-[gd_scene load_steps=11 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=16 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markario.gd" id="1_jbn2y"]
 [ext_resource type="Script" path="res://markerio/input_controller.gd" id="2_tswt8"]
 [ext_resource type="Texture2D" uid="uid://ddqimiw0vt8y7" path="res://markerio/sprite/idle.png" id="4_hju34"]
+[ext_resource type="Texture2D" uid="uid://bx4i7vi401bgj" path="res://markerio/sprite/markerio_big_1.png" id="4_o2t8a"]
+[ext_resource type="Texture2D" uid="uid://dlbl38qycmlvs" path="res://markerio/sprite/markerio_big_2.png" id="5_clir6"]
 [ext_resource type="Texture2D" uid="uid://1cdbem8uvhud" path="res://markerio/sprite/run_3.png" id="6_2i38b"]
 [ext_resource type="Texture2D" uid="uid://dpol5qgd6sx4f" path="res://markerio/sprite/run_1.png" id="6_2l121"]
 [ext_resource type="Texture2D" uid="uid://cwrdy13sgllry" path="res://markerio/sprite/run_2.png" id="6_ds38q"]
+[ext_resource type="Texture2D" uid="uid://18jtvlaclie6" path="res://markerio/sprite/markerio_big_3.png" id="6_fpc52"]
+[ext_resource type="Texture2D" uid="uid://dt3ys22joeyka" path="res://markerio/sprite/markerio_big_4.png" id="7_jvu03"]
 [ext_resource type="Texture2D" uid="uid://btmskd66f6xxe" path="res://markerio/sprite/run_4.png" id="8_i7tvl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hp0g"]
 size = Vector2(416, 512)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8541e"]
+size = Vector2(416, 1080)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_v5x0l"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle_big",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_hju34")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_small",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_o2t8a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_clir6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_fpc52")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_jvu03")
+}],
+"loop": true,
+"name": &"run_big",
 "speed": 5.0
 }, {
 "frames": [{
@@ -35,7 +64,7 @@ animations = [{
 "texture": ExtResource("8_i7tvl")
 }],
 "loop": true,
-"name": &"run",
+"name": &"run_small",
 "speed": 5.0
 }]
 
@@ -46,8 +75,12 @@ size = Vector2(416, 200)
 collision_mask = 2
 script = ExtResource("1_jbn2y")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="small_collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2hp0g")
+
+[node name="big_collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_8541e")
 
 [node name="input_controller" type="Node" parent="."]
 script = ExtResource("2_tswt8")
@@ -57,8 +90,7 @@ script = ExtResource("2_tswt8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="sprite_scaler"]
 scale = Vector2(0.758964, 0.758964)
 sprite_frames = SubResource("SpriteFrames_v5x0l")
-animation = &"idle"
-frame_progress = 0.209618
+animation = &"idle_small"
 
 [node name="block_detector" type="Area2D" parent="."]
 position = Vector2(0, -328)

@@ -7,11 +7,11 @@
 [node name="Game" type="Node2D"]
 script = ExtResource("1_w8x7v")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="GameLayer" type="CanvasLayer" parent="."]
 layer = -1
 follow_viewport_enabled = true
 
-[node name="level_1-1" parent="CanvasLayer" instance=ExtResource("1_ovnqy")]
+[node name="level_1-1" parent="GameLayer" instance=ExtResource("1_ovnqy")]
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 

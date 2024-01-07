@@ -23,8 +23,6 @@ func _ready():
 	# We "zoom out".
 	new_transform = new_transform.scaled(Vector2.ONE * scale_factor)
 	get_viewport().canvas_transform = new_transform
-	print(new_transform)
-	print(get_viewport_rect())
 
 
 func _process(_delta):

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://kx6wietxe61m"]
+
+[ext_resource type="Script" path="res://collectible/fire_flower/fire_flower.gd" id="1_rf6lv"]
+[ext_resource type="Texture2D" uid="uid://huhr8hmdqrsa" path="res://collectible/fire_flower/flower.png" id="2_bccje"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbspp"]
+size = Vector2(512, 512)
+
+[node name="FireFlower" type="Node2D"]
+script = ExtResource("1_rf6lv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bccje")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_lbspp")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

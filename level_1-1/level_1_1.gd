@@ -12,3 +12,10 @@ func _process(_delta):
 	#for layer:ParallaxLayer in [$ParallaxBackground/sky, $ParallaxBackground/near_background]:
 		#layer.motion_offset = ($markerio_spawn_point.position - camera.position) * layer.motion_scale
 
+
+
+func _on_killfloor_body_entered(body):
+	if body.has_method("die"):
+		body.die()
+	else:
+		body.queue_free()

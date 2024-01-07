@@ -1,0 +1,60 @@
+things to draw:
+	big mario
+		1024 tall
+		variation of big mario with mostly white outfit and red gloves and shoes.
+			can draw the outline once, color the hands and feet, then erase and do other colors
+	koopa trooper
+		head sticks out above hitbox area
+	koopa shell
+	star
+	fireball
+	1-up mushroom
+		green with white circle
+	flagpole
+	flag (checkered, black and white)
+
+
+Add koopa
+	koopa shell
+	koopa shell bounce
+	koopa come out of shell when stopped
+
+add fire flower effect
+	shoot fireballs
+	fireballs bounce on ground
+
+add flag
+	markerio slides down
+	no player control after touching flag
+
+add star
+	bounce like fireball
+		but slower
+
+add invincibility mechanic
+	stomp from any angle
+	run faster
+
+take damage from enimies
+	losing powerup
+	then death
+
+reset level on death
+
+enemies don't move until right before player sees them
+
+warp pipe mechanic
+
+secret level
+	selfie taped to center of board
+	floors drawn custom, not tileset
+
+all sound effects
+	can reuse sound manager from previous games
+	2D audio for the koopa shell bounce
+
+
+video of me entering room and setting down camera
+	first board is the instructions
+	when they pressa button I swap it out for a blank board
+	entering and leaving secret area, and restarting level, are all separate videos
