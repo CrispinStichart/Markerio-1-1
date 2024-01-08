@@ -14,6 +14,8 @@ var can_jump := true
 var jumping := false
 var remaining_jump_height: float = 0
 
+var invincible := false
+
 var move_animation = "run_small"
 var idle_animation = "idle_small"
 
@@ -94,15 +96,21 @@ func handle_block_collision():
 		else:
 			closest.activate()
 
+
 func eat_mushroom():
 	$size_state_machine.level_up()
+
 
 func eat_fire_flower():
 	$size_state_machine.level_up()
 
-func take_damage():
-	$size_state_machine.level_down()
 
+func take_damage():
+	if not invincible:
+		$size_state_machine.level_down()
+		invincible = true
+		get_tree().create_timer(1).timeout.connect(func(): invincible = false)
 
 func die():
+	$size_state_machine.set_size(0)
 	died.emit()

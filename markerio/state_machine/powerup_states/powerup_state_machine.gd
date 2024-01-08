@@ -20,3 +20,7 @@ func level_down():
 	else:
 		current_state -= 1
 		transition_to(states[current_state])
+
+func set_size(index: int) -> void:
+	current_state = index
+	transition_to(states[current_state])

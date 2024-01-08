@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl6qotx3gbyvf"]
+
+[ext_resource type="Texture2D" uid="uid://bspycixqilptp" path="res://flag/checkered_flag.png" id="1_f6brl"]
+[ext_resource type="Script" path="res://flag/flag.gd" id="1_m046f"]
+[ext_resource type="Texture2D" uid="uid://bxumjmlrb685c" path="res://flag/flagpole.png" id="2_do36v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_on12i"]
+size = Vector2(1768, 12584)
+
+[sub_resource type="Animation" id="Animation_pnqoe"]
+resource_name = "flag_drop"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("flag:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-632, -1600), Vector2(-632, 736)]
+}
+
+[sub_resource type="Animation" id="Animation_nptf8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("flag:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-632, -2032)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r21n8"]
+_data = {
+"RESET": SubResource("Animation_nptf8"),
+"flag_drop": SubResource("Animation_pnqoe")
+}
+
+[node name="Flag" type="Node2D"]
+z_index = -1
+script = ExtResource("1_m046f")
+
+[node name="flag" type="Sprite2D" parent="."]
+position = Vector2(-632, -2032)
+scale = Vector2(1.83619, 1.83619)
+texture = ExtResource("1_f6brl")
+
+[node name="pole" type="Sprite2D" parent="."]
+rotation = -0.0335429
+texture = ExtResource("2_do36v")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(780, -3652)
+shape = SubResource("RectangleShape2D_on12i")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_r21n8")
+}
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

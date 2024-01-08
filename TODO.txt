@@ -1,5 +1,5 @@
 things to draw:
-	All done! 1/7
+	Done! 1/7
 		big mario
 			1024 tall
 			variation of big mario with mostly white outfit and red gloves and shoes.
@@ -8,12 +8,13 @@ things to draw:
 			head sticks out above hitbox area
 		koopa shell
 		star
-		fireball
-			green with white circle
 		flagpole
 		flag (checkered, black and white)
 
+	fireball
+	fire flower
 	1-up mushroom
+		green with white circle
 
 Add koopa
 	koopa shell
@@ -36,9 +37,10 @@ add invincibility mechanic
 	stomp from any angle
 	run faster
 
-take damage from enimies
-	losing powerup
-	then death
+Done? 1/7
+	take damage from enimies
+		losing powerup
+		then death
 
 turn invincible after taking damage for 1 second
 
