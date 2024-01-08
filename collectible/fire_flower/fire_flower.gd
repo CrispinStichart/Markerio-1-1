@@ -1,3 +1,4 @@
+class_name FireFlower
 extends Node2D
 
 
