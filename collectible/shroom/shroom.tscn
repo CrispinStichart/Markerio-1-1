@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bak6e08gng8he"]
+[gd_scene load_steps=7 format=3 uid="uid://bak6e08gng8he"]
 
 [ext_resource type="Script" path="res://collectible/shroom/shroom.gd" id="1_7umtp"]
 [ext_resource type="Texture2D" uid="uid://co2oexrf235fk" path="res://collectible/shroom/shroom.png" id="2_isiu2"]
+[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="3_rp1q7"]
+[ext_resource type="Script" path="res://systems/move_and_bounce_off_walls.gd" id="4_6waeo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf2tk"]
 size = Vector2(512, 512)
@@ -27,5 +29,11 @@ collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="pickup_area"]
 shape = SubResource("RectangleShape2D_7rk53")
+
+[node name="gravity" type="Node" parent="."]
+script = ExtResource("3_rp1q7")
+
+[node name="move_and_bounce" type="Node" parent="."]
+script = ExtResource("4_6waeo")
 
 [connection signal="body_entered" from="pickup_area" to="." method="_on_pickup_area_body_entered"]

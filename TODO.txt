@@ -1,5 +1,5 @@
 things to draw:
-	Done! 1/7
+	Done! 1/6
 		big mario
 			1024 tall
 			variation of big mario with mostly white outfit and red gloves and shoes.
@@ -11,11 +11,14 @@ things to draw:
 		flagpole
 		flag (checkered, black and white)
 
+	Done 1/7
+		fire flower
+
 	fireball
-	fire flower
 	1-up mushroom
 		green with white circle
 
+Mostly done, sans stopped timer, 1/8
 Add koopa
 	koopa shell
 	koopa shell bounce
@@ -25,13 +28,18 @@ add fire flower effect
 	shoot fireballs
 	fireballs bounce on ground
 
+Adjust fire mario sprite height
+
+Started, partially implemented 1/7
 add flag
 	markerio slides down
 	no player control after touching flag
 
+Done, 1/8 (no visual effect yet)
 add star
 	bounce like fireball
 		but slower
+
 
 add invincibility mechanic
 	stomp from any angle
@@ -42,6 +50,7 @@ Done? 1/7
 		losing powerup
 		then death
 
+Done, 1/7
 turn invincible after taking damage for 1 second
 
 reset level on death

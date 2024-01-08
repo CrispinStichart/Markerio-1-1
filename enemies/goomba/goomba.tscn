@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1kdshi8tk8uv"]
+[gd_scene load_steps=10 format=3 uid="uid://b1kdshi8tk8uv"]
 
 [ext_resource type="Script" path="res://enemies/goomba/goomba.gd" id="1_y7gtp"]
 [ext_resource type="Texture2D" uid="uid://785gc3tgk82f" path="res://enemies/goomba/sprites/goomba_1.png" id="2_2vjlm"]
 [ext_resource type="Texture2D" uid="uid://dkijpg7mihvnp" path="res://enemies/goomba/sprites/goomba_2.png" id="3_torqk"]
 [ext_resource type="Script" path="res://enemies/goomba/editor_script.gd" id="4_kg1lr"]
+[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="5_gnhnh"]
+[ext_resource type="Script" path="res://systems/move_and_bounce_off_walls.gd" id="6_58lx1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_st6st"]
 size = Vector2(512, 512)
@@ -51,5 +53,11 @@ script = ExtResource("4_kg1lr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="kill_hitbox"]
 shape = SubResource("RectangleShape2D_p7p4v")
+
+[node name="Gravity" type="Node" parent="."]
+script = ExtResource("5_gnhnh")
+
+[node name="move_and_bounce" type="Node" parent="."]
+script = ExtResource("6_58lx1")
 
 [connection signal="body_entered" from="kill_hitbox" to="." method="_on_kill_hitbox_body_entered"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d1xa63m8y6tp4"]
+[gd_scene load_steps=9 format=3 uid="uid://d1xa63m8y6tp4"]
 
 [ext_resource type="Script" path="res://enemies/koopa/koopa.gd" id="1_q0484"]
 [ext_resource type="Texture2D" uid="uid://bymp5quxx12nn" path="res://enemies/koopa/shell.png" id="2_ktxxq"]
-[ext_resource type="Texture2D" uid="uid://dvixl8ik3vv1v" path="res://enemies/koopa/kioopa_walk_1.png" id="3_xq2n8"]
-[ext_resource type="Texture2D" uid="uid://bmglnilf22ud4" path="res://enemies/koopa/kioopa_walk_2.png" id="4_ol1fk"]
+[ext_resource type="Texture2D" uid="uid://dvixl8ik3vv1v" path="res://enemies/koopa/koopa_walk_1.png" id="3_xt6ed"]
+[ext_resource type="Texture2D" uid="uid://bmglnilf22ud4" path="res://enemies/koopa/koopa_walk_2.png" id="4_wwwrf"]
+[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="5_gj48t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43t2c"]
 size = Vector2(512, 512)
@@ -23,10 +24,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_xq2n8")
+"texture": ExtResource("3_xt6ed")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_ol1fk")
+"texture": ExtResource("4_wwwrf")
 }],
 "loop": true,
 "name": &"walk",
@@ -34,6 +35,8 @@ animations = [{
 }]
 
 [node name="Koopa" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 2
 script = ExtResource("1_q0484")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -49,9 +52,17 @@ shape = SubResource("RectangleShape2D_1c40k")
 [node name="shell" type="Sprite2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -184)
+position = Vector2(0, -176)
 scale = Vector2(0.694712, 0.694712)
 sprite_frames = SubResource("SpriteFrames_56aai")
 animation = &"walk"
-frame = 1
-frame_progress = 0.167882
+frame_progress = 0.753607
+
+[node name="ground_checker" type="RayCast2D" parent="."]
+target_position = Vector2(0, 512)
+collision_mask = 2
+
+[node name="gravity" type="Node" parent="."]
+script = ExtResource("5_gj48t")
+
+[connection signal="body_entered" from="kill_hitbox" to="." method="_on_kill_hitbox_body_entered"]

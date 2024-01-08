@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://x6o7belwhvjc"]
+
+[ext_resource type="Script" path="res://collectible/star/star.gd" id="1_tdr5c"]
+[ext_resource type="Texture2D" uid="uid://doy0xltewhy6v" path="res://collectible/star/star.png" id="1_tnw0n"]
+[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="2_aksnl"]
+[ext_resource type="Script" path="res://systems/move_and_bounce_off_walls.gd" id="4_oftow"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3bb78"]
+size = Vector2(512, 512)
+
+[node name="Star" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 2
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+floor_max_angle = 0.0
+script = ExtResource("1_tdr5c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3bb78")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tnw0n")
+
+[node name="collection_area" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="collection_area"]
+shape = SubResource("RectangleShape2D_3bb78")
+
+[node name="gravity" type="Node" parent="."]
+script = ExtResource("2_aksnl")
+gravity = 200.0
+
+[node name="move_and_bounce_off_wall" type="Node" parent="."]
+script = ExtResource("4_oftow")
+
+[connection signal="body_entered" from="collection_area" to="." method="_on_collection_area_body_entered"]

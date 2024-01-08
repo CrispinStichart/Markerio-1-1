@@ -3,8 +3,6 @@ extends CharacterBody2D
 
 signal died
 
-enum States {SMALL, BIG, FIRE}
-var power_level := States.SMALL
 var acceleration: float = Game.BLOCK_SIZE
 var max_walk_speed: float = Game.BLOCK_SIZE*5
 var max_run_speed: float = Game.BLOCK_SIZE*10
@@ -27,8 +25,7 @@ var feet_position: Vector2:
 		return Vector2(x, y)
 
 @onready var sprite:AnimatedSprite2D = $AnimatedSprite2D
-
-
+@onready var power_level_state_machine: PowerLevelStateMachine = $power_level_state_machine
 
 func _process(_delta):
 	if velocity.x < 0:
@@ -45,15 +42,16 @@ func _process(_delta):
 
 func _physics_process(delta):
 	if jumping and remaining_jump_height > 0:
+		$gravity.process_mode = Node.PROCESS_MODE_DISABLED
 		remaining_jump_height -= jump_speed * delta
 		velocity.y = -jump_speed
 	elif is_on_floor():
+		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
 		can_jump = true
 		jumping = false
 		remaining_jump_height = 0
 	elif not is_on_floor() and remaining_jump_height <= 0:
-		velocity.y += Game.GRAVITY
-		velocity.y = min(velocity.y, jump_speed)
+		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 	move_and_slide()
@@ -91,26 +89,32 @@ func handle_block_collision():
 			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
 				closest = block
 
-		if closest is BreakableBrick and power_level == States.SMALL:
+		if closest is BreakableBrick and power_level_state_machine.current_state == 0:
 			closest.bump()
 		else:
 			closest.activate()
 
 
 func eat_mushroom():
-	$size_state_machine.level_up()
+	power_level_state_machine.level_up()
 
 
 func eat_fire_flower():
-	$size_state_machine.level_up()
+	power_level_state_machine.level_up()
+
+func eat_star():
+	$invincibility_timer.set_invincibility(10)
 
 
 func take_damage():
 	if not invincible:
-		$size_state_machine.level_down()
-		invincible = true
-		get_tree().create_timer(1).timeout.connect(func(): invincible = false)
+		power_level_state_machine.level_down()
+		$invincibility_timer.set_invincibility()
 
 func die():
-	$size_state_machine.set_size(0)
+	power_level_state_machine.set_size(0)
 	died.emit()
+
+
+func bounce():
+	velocity.y = -jump_speed

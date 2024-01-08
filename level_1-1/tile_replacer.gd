@@ -18,6 +18,8 @@ func _ready():
 			block = question_block.instantiate()
 			if item_coords == Vector2i(6, 0):
 				block.item = QuestionBlock.Item.MUSHROOM
+			elif coords == Vector2i(7, 0):
+				block.item = QuestionBlock.Item.STAR
 		elif coords == Vector2i(4, 0):
 			block = coin.instantiate()
 		else:

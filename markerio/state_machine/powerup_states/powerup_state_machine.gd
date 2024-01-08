@@ -1,3 +1,4 @@
+class_name PowerLevelStateMachine
 extends StateMachine
 
 var states: Array[String] = ["small", "big", "fireflower"]

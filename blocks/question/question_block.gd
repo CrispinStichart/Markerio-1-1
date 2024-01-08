@@ -1,7 +1,7 @@
 class_name QuestionBlock
 extends Block
 
-enum Item {SINGLE_COIN, MULTIPLE_COINS, MUSHROOM, FIRE_FLOWER, ONE_UP}
+enum Item {SINGLE_COIN, MULTIPLE_COINS, MUSHROOM, FIRE_FLOWER, ONE_UP, STAR}
 
 @export var item := Item.SINGLE_COIN
 

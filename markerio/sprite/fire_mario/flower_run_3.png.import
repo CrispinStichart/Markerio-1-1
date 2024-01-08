@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvixl8ik3vv1v"
-path="res://.godot/imported/kioopa_walk_1.png-37ae1837e581d119fc196c08dae6305d.ctex"
+uid="uid://cysntf6h0a8u6"
+path="res://.godot/imported/flower_run_3.png-0a804a92a84e447bd2cb894c5b4faa52.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/koopa/kioopa_walk_1.png"
-dest_files=["res://.godot/imported/kioopa_walk_1.png-37ae1837e581d119fc196c08dae6305d.ctex"]
+source_file="res://markerio/sprite/fire_mario/flower_run_3.png"
+dest_files=["res://.godot/imported/flower_run_3.png-0a804a92a84e447bd2cb894c5b4faa52.ctex"]
 
 [params]
 

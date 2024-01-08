@@ -10,7 +10,6 @@ size = Vector2(512, 512)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_bdpxi")
-item = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_ca4df")

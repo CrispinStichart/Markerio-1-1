@@ -25,6 +25,7 @@ func produce_mushroom():
 	var shroom:Shroom = mushroom_scene.instantiate()
 	add_sibling(shroom)
 	shroom.position = position
+	shroom.speed = 0
 	var t = get_tree().create_tween()
 	t.tween_property(shroom, "position", shroom.position - Vector2(0, Game.BLOCK_SIZE), .5)
-	t.tween_callback(func(): shroom.direction = 1)
+	t.tween_callback(func(): shroom.fully_extruded())

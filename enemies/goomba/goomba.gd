@@ -1,11 +1,10 @@
 class_name Goomba
 extends CharacterBody2D
 
-var max_walk_speed: float = Game.BLOCK_SIZE*2
-@export var direction: int = -1
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+var speed: float = Game.BLOCK_SIZE*2
 var x_offset: float
 
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready():
 	$AnimatedSprite2D.play("walk")
@@ -24,19 +23,6 @@ func _process(_delta):
 		sprite.offset.x = x_offset
 
 
-func _physics_process(_delta):
-	velocity.x = direction * max_walk_speed
-	if not is_on_floor():
-		velocity.y += Game.GRAVITY
-
-	move_and_slide()
-
-	for i in get_slide_collision_count():
-		var collision:KinematicCollision2D = get_slide_collision(i)
-		if collision.get_angle() != 0:
-			direction *= -1
-
-
 func squish():
 	$CollisionShape2D.set_deferred("disabled", true)
 	sprite.scale.y = .15
@@ -51,6 +37,7 @@ func squish():
 func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:
 		if body.feet_position.y < position.y:
+			body.bounce()
 			squish()
 		else:
 			body.take_damage()

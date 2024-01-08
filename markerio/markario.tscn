@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=28 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markario.gd" id="1_jbn2y"]
 [ext_resource type="Script" path="res://markerio/input_controller.gd" id="2_tswt8"]
 [ext_resource type="Texture2D" uid="uid://bb4vfwwwupnhk" path="res://markerio/sprite/big_markerio/big_idle.png" id="3_k6213"]
+[ext_resource type="Texture2D" uid="uid://dw54yluu1tnan" path="res://markerio/sprite/fire_mario/idle_flower.png" id="4_4th51"]
 [ext_resource type="Texture2D" uid="uid://ddqimiw0vt8y7" path="res://markerio/sprite/idle.png" id="4_hju34"]
 [ext_resource type="Texture2D" uid="uid://dasxp5forl171" path="res://markerio/sprite/big_markerio/big_run_1.png" id="5_3ho01"]
 [ext_resource type="Texture2D" uid="uid://1cdbem8uvhud" path="res://markerio/sprite/run_3.png" id="6_2i38b"]
@@ -12,10 +13,16 @@
 [ext_resource type="Texture2D" uid="uid://ddqm7jqie8hm3" path="res://markerio/sprite/big_markerio/big_run_3.png" id="7_qsj6q"]
 [ext_resource type="Texture2D" uid="uid://btmskd66f6xxe" path="res://markerio/sprite/run_4.png" id="8_i7tvl"]
 [ext_resource type="Texture2D" uid="uid://ct7ek4psghx3t" path="res://markerio/sprite/big_markerio/big_run_4.png" id="8_xgjme"]
+[ext_resource type="Texture2D" uid="uid://nf8xe5xqqj34" path="res://markerio/sprite/fire_mario/flower_run_1.png" id="10_vr8x7"]
+[ext_resource type="Texture2D" uid="uid://o27jey3nvy2f" path="res://markerio/sprite/fire_mario/flower_run_2.png" id="11_kt811"]
+[ext_resource type="Texture2D" uid="uid://cysntf6h0a8u6" path="res://markerio/sprite/fire_mario/flower_run_3.png" id="12_dywck"]
+[ext_resource type="Texture2D" uid="uid://bx1qpgckktuuw" path="res://markerio/sprite/fire_mario/flower_run_4.png" id="13_m7tha"]
 [ext_resource type="Script" path="res://markerio/state_machine/powerup_states/powerup_state_machine.gd" id="13_vxhtx"]
 [ext_resource type="Script" path="res://markerio/state_machine/powerup_states/fireflower.gd" id="14_upk38"]
 [ext_resource type="Script" path="res://markerio/state_machine/powerup_states/small.gd" id="15_ns2lt"]
 [ext_resource type="Script" path="res://markerio/state_machine/powerup_states/big.gd" id="16_ll857"]
+[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="17_yffdo"]
+[ext_resource type="Script" path="res://markerio/invincibility_timer.gd" id="18_7tuq8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hp0g"]
 size = Vector2(416, 512)
@@ -31,6 +38,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle_big",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_4th51")
+}],
+"loop": true,
+"name": &"idle_flower",
 "speed": 5.0
 }, {
 "frames": [{
@@ -56,6 +71,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_big",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_vr8x7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_kt811")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_dywck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_m7tha")
+}],
+"loop": true,
+"name": &"run_flower",
 "speed": 5.0
 }, {
 "frames": [{
@@ -96,8 +128,7 @@ script = ExtResource("2_tswt8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.758964, 0.758964)
 sprite_frames = SubResource("SpriteFrames_v5x0l")
-animation = &"run_big"
-frame_progress = 0.191854
+animation = &"idle_flower"
 
 [node name="block_detector" type="Area2D" parent="."]
 position = Vector2(0, -640)
@@ -107,16 +138,22 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="block_detector"]
 shape = SubResource("RectangleShape2D_qaia6")
 
-[node name="size_state_machine" type="Node" parent="." node_paths=PackedStringArray("markerio", "state")]
+[node name="power_level_state_machine" type="Node" parent="." node_paths=PackedStringArray("markerio", "state")]
 script = ExtResource("13_vxhtx")
 markerio = NodePath("..")
 state = NodePath("small")
 
-[node name="fireflower" type="Node" parent="size_state_machine"]
+[node name="fireflower" type="Node" parent="power_level_state_machine"]
 script = ExtResource("14_upk38")
 
-[node name="small" type="Node" parent="size_state_machine"]
+[node name="small" type="Node" parent="power_level_state_machine"]
 script = ExtResource("15_ns2lt")
 
-[node name="big" type="Node" parent="size_state_machine"]
+[node name="big" type="Node" parent="power_level_state_machine"]
 script = ExtResource("16_ll857")
+
+[node name="gravity" type="Node" parent="."]
+script = ExtResource("17_yffdo")
+
+[node name="invincibility_timer" type="Node" parent="."]
+script = ExtResource("18_7tuq8")
