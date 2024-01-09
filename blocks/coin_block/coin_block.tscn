@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bkouost07xik5"]
 
 [ext_resource type="Script" path="res://blocks/coin_block/coin_block.gd" id="1_smbav"]
-[ext_resource type="Texture2D" uid="uid://bglpys8mfc2cd" path="res://blocks/breakable/brick.png" id="2_wmc81"]
+[ext_resource type="Texture2D" uid="uid://cp3u471yrdx6d" path="res://blocks/breakable/brick.png" id="2_wmc81"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fh4xf"]
 size = Vector2(512, 512)

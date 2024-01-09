@@ -28,7 +28,7 @@ func _ready():
 		enemy.process_mode = PROCESS_MODE_DISABLED
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	for enemy:Node2D in $"GameLayer/level_1-1/enemies".get_children():
 		if abs(enemy.position.distance_to(markerio.position)) < SCREEN_WIDTH*2:
 			enemy.process_mode = Node.PROCESS_MODE_INHERIT

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp3u471yrdx6d"
-path="res://.godot/imported/brick.png-326dc2aa14d217585299a98870208eca.ctex"
+uid="uid://biytb8f1whdqa"
+path="res://.godot/imported/star_effect_star.png-68e3d9c9acc3c0eb134e5c4267db1d17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://blocks/breakable/brick.png"
-dest_files=["res://.godot/imported/brick.png-326dc2aa14d217585299a98870208eca.ctex"]
+source_file="res://markerio/invincibility_effect/star_effect_star.png"
+dest_files=["res://.godot/imported/star_effect_star.png-68e3d9c9acc3c0eb134e5c4267db1d17.ctex"]
 
 [params]
 

@@ -13,6 +13,7 @@ var jumping := false
 var remaining_jump_height: float = 0
 
 var invincible := false
+var has_star := false
 
 var move_animation = "run_small"
 var idle_animation = "idle_small"
@@ -110,6 +111,7 @@ func eat_fire_flower():
 	power_level_state_machine.level_up()
 
 func eat_star():
+	has_star = true
 	$invincibility_timer.set_invincibility(10)
 
 

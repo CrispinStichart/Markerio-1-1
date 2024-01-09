@@ -36,11 +36,20 @@ func squish():
 
 
 
+func die():
+	$kill_hitbox.set_deferred("monitoring", false)
+	collision_mask = 0
+	# So it can't collide with Markerio, but can be detected by the killfloor.
+	# Doesn't work and shouldn't be needed, since we're disabling monitoring...
+	$AnimatedSprite2D.flip_v = true
+	velocity = Vector2(1, -1) * Game.BLOCK_SIZE * 20
 
 func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:
-		if body.feet_position.y < position.y:
-			body.bounce()
+		if body.has_star:
+			die()
+		elif body.feet_position.y < position.y:
 			squish()
+			body.bounce()
 		else:
 			body.take_damage()

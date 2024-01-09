@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=30 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markario.gd" id="1_jbn2y"]
 [ext_resource type="Script" path="res://markerio/input_controller.gd" id="2_tswt8"]
@@ -23,6 +23,8 @@
 [ext_resource type="Script" path="res://markerio/state_machine/powerup_states/big.gd" id="16_ll857"]
 [ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="17_yffdo"]
 [ext_resource type="Script" path="res://markerio/invincibility_timer.gd" id="18_7tuq8"]
+[ext_resource type="PackedScene" uid="uid://b0b3sj4mjwk0t" path="res://markerio/invincibility_effect/invincibility_effect.tscn" id="24_4sbhp"]
+[ext_resource type="Script" path="res://markerio/invincibility_effect/invincibility_effect.gd" id="24_eusmg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hp0g"]
 size = Vector2(416, 512)
@@ -155,5 +157,8 @@ script = ExtResource("16_ll857")
 [node name="gravity" type="Node" parent="."]
 script = ExtResource("17_yffdo")
 
-[node name="invincibility_timer" type="Node" parent="."]
+[node name="InvincibilityEffect" parent="." instance=ExtResource("24_4sbhp")]
+script = ExtResource("24_eusmg")
+
+[node name="invincibility_timer" type="Node2D" parent="."]
 script = ExtResource("18_7tuq8")
