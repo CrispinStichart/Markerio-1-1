@@ -47,8 +47,8 @@ add star
 
 Started 1/8
 add invincibility mechanic
-	stomp from any angle
-	run faster
+	stomp from any angle -- Done 1/9
+	run faster (is this an actual thing?)
 
 Done? 1/7
 	take damage from enimies

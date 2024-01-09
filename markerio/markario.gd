@@ -28,12 +28,6 @@ var feet_position: Vector2:
 @onready var sprite:AnimatedSprite2D = $AnimatedSprite2D
 @onready var power_level_state_machine: PowerLevelStateMachine = $power_level_state_machine
 
-func _ready():
-	var clazz = BreakableBrick
-	var i = clazz.new()
-	add_child(i)
-	i.position.y = -Game.BLOCK_SIZE * 2
-
 
 func _process(_delta):
 	if velocity.x < 0:

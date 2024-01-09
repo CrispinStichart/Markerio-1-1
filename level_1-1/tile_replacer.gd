@@ -1,9 +1,5 @@
 extends TileMap
 
-var coin := preload("res://collectible/coin/coin.tscn")
-var question_block := preload("res://blocks/question/question_block.tscn")
-var breakable := preload("res://blocks/breakable/brick.tscn")
-var coin_block := preload("res://blocks/coin_block/coin_block.tscn")
 
 var coords_to_classes := {
 	Vector2i(0, 0): BreakableBrick,

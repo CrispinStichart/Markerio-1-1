@@ -223,7 +223,7 @@ position = Vector2(-3608, -11056)
 position = Vector2(42552, -2168)
 
 [node name="markerio_spawn_point" type="Marker2D" parent="."]
-position = Vector2(-656, -1400)
+position = Vector2(-976, -1832)
 
 [node name="killfloor" type="Area2D" parent="."]
 position = Vector2(41856, 1008)

@@ -1,3 +1,4 @@
+class_name Flag
 extends Node2D
 
 signal markerio_reached_flagpole
@@ -7,9 +8,7 @@ var finished := false
 
 
 func _ready():
-	$AnimationPlayer.animation_finished.connect(func(_animation_name):
-		finished = true
-		print("lol"))
+	$AnimationPlayer.animation_finished.connect(func(_animation_name): finished = true)
 
 
 func _on_area_2d_body_entered(body):

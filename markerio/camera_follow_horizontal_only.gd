@@ -15,9 +15,9 @@ func _init(level_start_: Vector2 = Vector2.ZERO):
 
 
 func _ready():
-	var new_transform:Transform2D = get_viewport().canvas_transform
+	var new_transform:Transform2D = Transform2D(ViewportGlobal.transform)
 	# The ground is two tiles high. We adjust the camera so that 1.5 tiles are visible.
-	var scaled_height := get_viewport_rect().size.y / scale_factor
+	var scaled_height := ViewportGlobal.size.y / scale_factor
 	new_transform.origin = Vector2(0, scaled_height + Game.BLOCK_SIZE / 2)
 
 	# We "zoom out".
@@ -25,8 +25,10 @@ func _ready():
 	get_viewport().canvas_transform = new_transform
 
 
+
 func _process(_delta):
 	var new_transform:Transform2D = get_viewport().canvas_transform
 	new_transform.origin.x = max(get_parent().position.x, level_start.x) * -scale_factor + 512
 
 	get_viewport().canvas_transform = new_transform
+
