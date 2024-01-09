@@ -15,7 +15,7 @@ func _process(_delta):
 
 
 func _on_killfloor_body_entered(body):
-	if body.has_method("die"):
+	if body is Markerio:
 		body.die()
 	else:
 		body.queue_free()

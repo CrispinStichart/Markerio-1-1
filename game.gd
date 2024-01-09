@@ -7,6 +7,8 @@ const GRAVITY: float = BLOCK_SIZE*1.5
 const MAX_FALL_SPEED: float = BLOCK_SIZE*15
 const CAMERA_SCALE: float = .2
 
+@onready var SCREEN_WIDTH = get_viewport().size.x / CAMERA_SCALE
+
 
 var lives:int = 5
 var coins: int = 0
@@ -21,6 +23,16 @@ func _ready():
 	for block:Block in $"GameLayer/level_1-1/TileMap/blocks".get_children():
 		if block is CoinBlock:
 			block.coin_block_expired.connect(add_unbreakable_block)
+
+	for enemy in $"GameLayer/level_1-1/enemies".get_children():
+		enemy.process_mode = PROCESS_MODE_DISABLED
+
+
+func _physics_process(delta):
+	for enemy:Node2D in $"GameLayer/level_1-1/enemies".get_children():
+		if abs(enemy.position.distance_to(markerio.position)) < SCREEN_WIDTH*2:
+			enemy.process_mode = Node.PROCESS_MODE_INHERIT
+
 
 func collect_coin():
 	coins += 1

@@ -31,11 +31,11 @@ func produce_item():
 		return
 
 	add_sibling(item)
+	item.process_mode = Node.PROCESS_MODE_DISABLED
 	item.position = position
-	item.speed = 0
 	var t = get_tree().create_tween()
 	t.tween_property(item, "position", item.position - Vector2(0, Game.BLOCK_SIZE), .5)
-	t.tween_callback(func(): if item.has_method("fully_extruded"): item.fully_extruded())
+	t.tween_callback(func(): item.process_mode = Node.PROCESS_MODE_INHERIT)
 
 
 func add_item(item_to_add: Node2D):

@@ -14,6 +14,9 @@ things to draw:
 	Done 1/7
 		fire flower
 
+	Done 1/8
+		Fire Mario
+
 	fireball
 	1-up mushroom
 		green with white circle
@@ -30,6 +33,8 @@ add fire flower effect
 
 Adjust fire mario sprite height
 
+Make powerup block produce either mushroom or flower, depending on Markerio level
+
 Started, partially implemented 1/7
 add flag
 	markerio slides down
@@ -40,7 +45,7 @@ add star
 	bounce like fireball
 		but slower
 
-
+Started 1/8
 add invincibility mechanic
 	stomp from any angle
 	run faster
@@ -55,6 +60,7 @@ turn invincible after taking damage for 1 second
 
 reset level on death
 
+Done 1/8
 enemies don't move until right before player sees them
 
 warp pipe mechanic

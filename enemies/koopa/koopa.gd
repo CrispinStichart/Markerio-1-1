@@ -48,9 +48,22 @@ func tuck_into_shell():
 	$AnimatedSprite2D.play("shell")
 	in_shell = true
 
+
+func die():
+	$kill_hitbox.monitoring = false
+	collision_mask = 0
+	# So it can't collide with Markerio, but can be detected by the killfloor.
+	# Doesn't work and shouldn't be needed, since we're disabling monitoring...
+	set_collision_layer_value(4, false)
+	set_collision_layer_value(5, true)
+	$AnimatedSprite2D.flip_v = true
+	velocity = Vector2(1, -1) * Game.BLOCK_SIZE * 10
+
 func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:
-		if in_shell and body.feet_position.y < position.y:
+		if body.invincible:
+			die()
+		elif in_shell and body.feet_position.y < position.y:
 			direction = 0
 			body.bounce()
 		elif in_shell and direction == 0:

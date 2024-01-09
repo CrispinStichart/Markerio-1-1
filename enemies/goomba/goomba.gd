@@ -4,7 +4,10 @@ extends CharacterBody2D
 var speed: float = Game.BLOCK_SIZE*2
 var x_offset: float
 
+@export var direction: float = -1
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+
 
 func _ready():
 	$AnimatedSprite2D.play("walk")

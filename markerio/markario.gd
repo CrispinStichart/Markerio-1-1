@@ -29,7 +29,6 @@ var feet_position: Vector2:
 
 func _ready():
 	var clazz = BreakableBrick
-	print(typeof(clazz))
 	var i = clazz.new()
 	add_child(i)
 	i.position.y = -Game.BLOCK_SIZE * 2

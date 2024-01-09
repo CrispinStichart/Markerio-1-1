@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bikea1ccjcfty"]
+[gd_scene load_steps=15 format=3 uid="uid://bikea1ccjcfty"]
 
 [ext_resource type="Script" path="res://level_1-1/level_1_1.gd" id="1_4ghg8"]
 [ext_resource type="Texture2D" uid="uid://bx0i7tfdu3vgv" path="res://background_sprites/sun_transparent.png" id="1_ac5cc"]
@@ -12,7 +12,6 @@
 [ext_resource type="TileSet" uid="uid://c0ac15la4y45y" path="res://level_1-1/level_1_1.tres" id="7_0qp0f"]
 [ext_resource type="PackedScene" uid="uid://x3f1qkrtcjn2" path="res://markerio/markario.tscn" id="9_ekekx"]
 [ext_resource type="PackedScene" uid="uid://cl6qotx3gbyvf" path="res://flag/flag.tscn" id="13_nt0lh"]
-[ext_resource type="PackedScene" uid="uid://x6o7belwhvjc" path="res://collectible/star/star.tscn" id="14_oxo7t"]
 [ext_resource type="PackedScene" uid="uid://d1xa63m8y6tp4" path="res://enemies/koopa/koopa.tscn" id="14_x2rod"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u645c"]
@@ -173,6 +172,15 @@ position = Vector2(20016, -1324)
 [node name="Goomba4" parent="enemies" instance=ExtResource("3_qkdst")]
 position = Vector2(20704, -1324)
 
+[node name="Koopa" parent="enemies" instance=ExtResource("14_x2rod")]
+position = Vector2(32384, -1544)
+
+[node name="Goomba5" parent="enemies" instance=ExtResource("3_qkdst")]
+position = Vector2(36720, -5384)
+
+[node name="Goomba6" parent="enemies" instance=ExtResource("3_qkdst")]
+position = Vector2(37584, -5400)
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("7_0qp0f")
 format = 2
@@ -212,13 +220,15 @@ position = Vector2(81416, -816)
 position = Vector2(-3608, -11056)
 
 [node name="Markerio" parent="." instance=ExtResource("9_ekekx")]
-position = Vector2(10288, -2528)
+position = Vector2(88216, -1624)
 
 [node name="markerio_spawn_point" type="Marker2D" parent="."]
 position = Vector2(-656, -1400)
 
 [node name="killfloor" type="Area2D" parent="."]
 position = Vector2(41856, 1008)
+collision_layer = 0
+collision_mask = 65535
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="killfloor"]
 position = Vector2(16, 792)
@@ -226,11 +236,5 @@ shape = SubResource("RectangleShape2D_u645c")
 
 [node name="Flag" parent="." instance=ExtResource("13_nt0lh")]
 position = Vector2(90405, -2939)
-
-[node name="Koopa" parent="." instance=ExtResource("14_x2rod")]
-position = Vector2(32384, -1544)
-
-[node name="Star" parent="." instance=ExtResource("14_oxo7t")]
-position = Vector2(11288, -1400)
 
 [connection signal="body_entered" from="killfloor" to="." method="_on_killfloor_body_entered"]

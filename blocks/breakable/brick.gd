@@ -15,7 +15,6 @@ func activate():
 	$Explosion.finished.connect(queue_free)
 
 func bump():
-	print(position)
 	t = create_tween()
 	var half_duration: float = .1
 	original_position = position

@@ -10,7 +10,6 @@ func _physics_process(_delta):
 		velocity.y = -jump_speed
 
 
-
 func _on_collection_area_body_entered(body):
 	if body is Markerio:
 		body.eat_star()
