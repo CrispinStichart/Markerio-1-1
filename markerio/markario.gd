@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 signal died
 
+
 var acceleration: float = Game.BLOCK_SIZE
 var max_walk_speed: float = Game.BLOCK_SIZE*5
 var max_run_speed: float = Game.BLOCK_SIZE*10
@@ -121,3 +122,11 @@ func die():
 
 func bounce():
 	velocity.y = -jump_speed
+	
+
+func throw_fireball():
+	var fireball: Fireball = InstanceManager.create(Fireball)
+	fireball.direction = -1 if sprite.flip_h else 1
+	add_sibling(fireball)
+	fireball.position = position
+

@@ -24,3 +24,6 @@ func _physics_process(_delta):
 		p.velocity.x = direction * min(abs(p.velocity.x), max_speed)
 	else:
 		p.velocity.x = move_toward(p.velocity.x, 0 , p.acceleration)
+
+	if Input.is_action_just_pressed("run"):
+		p.throw_fireball()

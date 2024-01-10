@@ -8,6 +8,7 @@ static var instances := {
 	Coin: preload("res://collectible/coin/coin.tscn"),
 	BreakableBrick: preload("res://blocks/breakable/brick.tscn"),
 	QuestionBlock: preload("res://blocks/question/question_block.tscn"),
+	Fireball: preload("res://markerio/fireball/fireball.tscn")
 }
 
 static func create(clazz) -> Node2D:
