@@ -50,15 +50,19 @@ func _process(_delta):
 
 func _physics_process(delta):
 	if jumping and remaining_jump_height > 0:
+		$AnimatedSprite2D.frame = 1
 		$gravity.process_mode = Node.PROCESS_MODE_DISABLED
 		remaining_jump_height -= jump_speed * delta
 		velocity.y = -jump_speed
 	elif is_on_floor():
+		if jumping:
+			$AnimatedSprite2D.frame = 2
 		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
 		can_jump = true
 		jumping = false
 		remaining_jump_height = 0
 	elif not is_on_floor() and remaining_jump_height <= 0:
+		$AnimatedSprite2D.frame = 1
 		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
 
 

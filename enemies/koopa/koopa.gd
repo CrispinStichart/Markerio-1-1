@@ -48,7 +48,7 @@ func _physics_process(delta):
 	raycast_timeout -= delta
 	if not in_shell and raycast_timeout <= 0 and not $ground_checker.is_colliding():
 		direction *= -1
-		raycast_timeout = 1.0
+		raycast_timeout = 0.25
 
 func tuck_into_shell():
 	direction = 0

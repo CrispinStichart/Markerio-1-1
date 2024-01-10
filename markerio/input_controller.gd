@@ -10,7 +10,7 @@ func _physics_process(_delta):
 			p.can_jump = false
 			p.jumping = true
 
-	p.jumping = Input.is_action_pressed("jump")
+	p.jumping = not p.can_jump and Input.is_action_pressed("jump")
 
 	if Input.is_action_just_released("jump"):
 		p.remaining_jump_height = 0
