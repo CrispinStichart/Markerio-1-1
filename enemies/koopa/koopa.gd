@@ -7,7 +7,9 @@ var shell_speed = Game.BLOCK_SIZE * 12
 @export var direction: int = -1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-var raycast_timeout:float = 0
+# Can't be zero because I guess the raycast needs a frame before it actually
+# detects things.
+var raycast_timeout:float = .1
 
 var in_shell := false
 
@@ -35,6 +37,11 @@ func _physics_process(delta):
 
 	for i in get_slide_collision_count():
 		var collision:KinematicCollision2D = get_slide_collision(i)
+		if in_shell:
+			var collider = collision.get_collider()
+			if collider is Koopa or collider is Goomba:
+				collider.die()
+				continue
 		if collision.get_angle() != 0:
 			direction *= -1
 
@@ -61,7 +68,7 @@ func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:
 		if body.has_star:
 			die()
-		elif in_shell and body.feet_position.y < position.y:
+		elif in_shell and direction != 0 and body.feet_position.y < position.y:
 			direction = 0
 			body.bounce()
 		elif in_shell and direction == 0:

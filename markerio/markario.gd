@@ -19,6 +19,11 @@ var has_star := false
 var move_animation = "run_small"
 var idle_animation = "idle_small"
 
+var power_level: int:
+	get:
+		return $power_level_state_machine.current_state
+	
+
 
 var feet_position: Vector2:
 	get:

@@ -25,5 +25,5 @@ func _physics_process(_delta):
 	else:
 		p.velocity.x = move_toward(p.velocity.x, 0 , p.acceleration)
 
-	if Input.is_action_just_pressed("run"):
+	if Input.is_action_just_pressed("run") and p.power_level == 2:
 		p.throw_fireball()
