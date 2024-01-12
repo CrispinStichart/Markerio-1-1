@@ -15,9 +15,9 @@ func produce_coin():
 		item = InstanceManager.create(Coin)
 	add_sibling(item)
 	item.position = position
-	item.position.y -= Game.BLOCK_SIZE
+	item.position.y -= Constants.BLOCK_SIZE
 	var t = get_tree().create_tween()
-	t.tween_property(item, "position", item.position - Vector2(0, Game.BLOCK_SIZE * 3), .5)
+	t.tween_property(item, "position", item.position - Vector2(0, Constants.BLOCK_SIZE * 3), .5)
 	t.tween_callback(item.queue_free)
 
 
@@ -34,7 +34,7 @@ func produce_item():
 	item.process_mode = Node.PROCESS_MODE_DISABLED
 	item.position = position
 	var t = get_tree().create_tween()
-	t.tween_property(item, "position", item.position - Vector2(0, Game.BLOCK_SIZE), .5)
+	t.tween_property(item, "position", item.position - Vector2(0, Constants.BLOCK_SIZE), .5)
 	t.tween_callback(func(): item.process_mode = Node.PROCESS_MODE_INHERIT)
 
 

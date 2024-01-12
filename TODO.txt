@@ -17,16 +17,20 @@ things to draw:
 	Done 1/8
 		Fire Mario
 
-	fireball
+	Done 1/9
+		fireball
+
+
 	1-up mushroom
 		green with white circle
 
-Mostly done, sans stopped timer, 1/8
+Mostly done, sans stopped timer, 1/8 (fixed more 1/9)
 Add koopa
 	koopa shell
 	koopa shell bounce
 	koopa come out of shell when stopped
 
+Done 1/9 (should limit fireballs, but it works)
 add fire flower effect
 	shoot fireballs
 	fireballs bounce on ground
@@ -40,15 +44,15 @@ add flag
 	markerio slides down
 	no player control after touching flag
 
-Done, 1/8 (no visual effect yet)
+Done, 1/8 (no visual effect yet) (sparkles added 1/9)
 add star
 	bounce like fireball
 		but slower
 
-Started 1/8
+Done 1/9
 add invincibility mechanic
 	stomp from any angle -- Done 1/9
-	run faster (is this an actual thing?)
+	run faster (is this an actual thing?) (no it's not)
 
 Done? 1/7
 	take damage from enimies
@@ -58,6 +62,7 @@ Done? 1/7
 Done, 1/7
 turn invincible after taking damage for 1 second
 
+Done, 1/9 (although I should probably recreate canvas layer so I don't have to do bullshit with viewport)
 reset level on death
 
 Done 1/8

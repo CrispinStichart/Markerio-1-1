@@ -1,8 +1,8 @@
 class_name Star
 extends CharacterBody2D
 
-var speed: float = Game.BLOCK_SIZE * 2
-var jump_speed: float = Game.BLOCK_SIZE * 10
+var speed: float = Constants.BLOCK_SIZE * 2
+var jump_speed: float = Constants.BLOCK_SIZE * 10
 
 
 func _physics_process(_delta):

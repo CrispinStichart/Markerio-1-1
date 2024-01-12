@@ -1,8 +1,8 @@
 class_name Koopa
 extends CharacterBody2D
 
-var walk_speed = Game.BLOCK_SIZE * 2
-var shell_speed = Game.BLOCK_SIZE * 12
+var walk_speed = Constants.BLOCK_SIZE * 2
+var shell_speed = Constants.BLOCK_SIZE * 12
 
 @export var direction: int = -1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -62,7 +62,7 @@ func die():
 	# So it can't collide with Markerio, but can be detected by the killfloor.
 	# Doesn't work and shouldn't be needed, since we're disabling monitoring...
 	$AnimatedSprite2D.flip_v = true
-	velocity = Vector2(1, -1) * Game.BLOCK_SIZE * 20
+	velocity = Vector2(1, -1) * Constants.BLOCK_SIZE * 20
 
 func _on_kill_hitbox_body_entered(body):
 	if body is Markerio:

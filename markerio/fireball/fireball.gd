@@ -2,8 +2,8 @@ class_name Fireball
 extends CharacterBody2D
 
 var direction = 1
-var speed: float = Game.BLOCK_SIZE * 11
-var jump_speed: float = Game.BLOCK_SIZE * 15
+var speed: float = Constants.BLOCK_SIZE * 11
+var jump_speed: float = Constants.BLOCK_SIZE * 15
 
 var lifetime = 3
 

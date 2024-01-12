@@ -44,7 +44,7 @@ func _ready():
 
 		# Set the position of the new block, keeping in mind the origin is the
 		# center of the block.
-		block.position = Vector2(pos) * Game.BLOCK_SIZE + Vector2.ONE * Game.BLOCK_SIZE / 2
+		block.position = Vector2(pos) * Constants.BLOCK_SIZE + Vector2.ONE * Constants.BLOCK_SIZE / 2
 
 
 		# I need to work on my names. `block` at this point could be a coin.

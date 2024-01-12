@@ -1,9 +1,9 @@
 class_name MarkerioCamera
 extends Node2D
 
-@export var height: float = -Game.BLOCK_SIZE*5
+@export var height: float = -Constants.BLOCK_SIZE*5
 #var viewport: Viewport = get_view
-@export var scale_factor: float = Game.CAMERA_SCALE
+@export var scale_factor: float = Constants.CAMERA_SCALE
 
 
 @export var level_start: Vector2
@@ -18,11 +18,13 @@ func _ready():
 	var new_transform:Transform2D = Transform2D(ViewportGlobal.transform)
 	# The ground is two tiles high. We adjust the camera so that 1.5 tiles are visible.
 	var scaled_height := ViewportGlobal.size.y / scale_factor
-	new_transform.origin = Vector2(0, scaled_height + Game.BLOCK_SIZE / 2)
+	new_transform.origin = Vector2(0, scaled_height + Constants.BLOCK_SIZE / 2)
 
 	# We "zoom out".
 	new_transform = new_transform.scaled(Vector2.ONE * scale_factor)
 	get_viewport().canvas_transform = new_transform
+	
+	print(get_viewport_rect())
 
 
 

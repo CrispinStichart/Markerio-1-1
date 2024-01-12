@@ -67,4 +67,18 @@ libraries = {
 "": SubResource("AnimationLibrary_r21n8")
 }
 
+[node name="Label" type="Label" parent="."]
+offset_left = 7196.0
+offset_top = -936.0
+offset_right = 14239.0
+offset_bottom = 19.0002
+rotation = 0.135703
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 100
+theme_override_font_sizes/font_size = 700
+text = "TODO: add fireworks"
+
+[node name="endpoint" type="Marker2D" parent="."]
+position = Vector2(15774, 132)
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

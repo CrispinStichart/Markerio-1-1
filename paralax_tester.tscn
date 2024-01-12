@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://co2oexrf235fk" path="res://collectible/shroom/shroom.png" id="1_0vv28"]
 [ext_resource type="Script" path="res://paralax_tester.gd" id="1_locin"]
 [ext_resource type="TileSet" uid="uid://c0ac15la4y45y" path="res://level_1-1/level_1_1.tres" id="1_sy80g"]
-[ext_resource type="PackedScene" uid="uid://x3f1qkrtcjn2" path="res://markerio/markario.tscn" id="2_o0bue"]
+[ext_resource type="PackedScene" uid="uid://x3f1qkrtcjn2" path="res://markerio/markerio.tscn" id="2_o0bue"]
 [ext_resource type="Script" path="res://markerio/camera_follow_horizontal_only.gd" id="4_gj7se"]
 
 [node name="Node2D" type="Node2D"]
