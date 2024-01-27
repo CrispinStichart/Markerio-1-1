@@ -12,7 +12,7 @@ func activate():
 
 func produce_coin():
 	if item == null:
-		item = InstanceManager.create(Coin)
+		item = InstanceManager.create("Coin")
 	add_sibling(item)
 	item.position = position
 	item.position.y -= Constants.BLOCK_SIZE

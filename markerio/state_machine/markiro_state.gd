@@ -2,7 +2,7 @@ class_name MarkerioState
 extends Node
 
 var markerio: Markerio
-var state_machine: StateMachine
+var state_machine: MyStateMachine
 
 
 func enter():

@@ -2,14 +2,14 @@ extends TileMap
 
 
 var coords_to_classes := {
-	Vector2i(0, 0): BreakableBrick,
+	Vector2i(0, 0): "BreakableBrick",
 	Vector2i(1, 0): null,
-	Vector2i(2, 0): QuestionBlock,
+	Vector2i(2, 0): "QuestionBlock",
 	Vector2i(3, 0): null,
-	Vector2i(4, 0): Coin,
-	Vector2i(5, 0): FireFlower,
-	Vector2i(6, 0): Shroom,
-	Vector2i(7, 0): Star,
+	Vector2i(4, 0): "Coin",
+	Vector2i(5, 0): "FireFlower",
+	Vector2i(6, 0): "Shroom",
+	Vector2i(7, 0): "Star",
 	Vector2i(8, 0): null,
 }
 

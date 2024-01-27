@@ -1,68 +1,789 @@
-[gd_scene load_steps=9 format=3 uid="uid://d1xa63m8y6tp4"]
+[gd_scene load_steps=19 format=3 uid="uid://d1xa63m8y6tp4"]
 
 [ext_resource type="Script" path="res://enemies/koopa/koopa.gd" id="1_q0484"]
-[ext_resource type="Texture2D" uid="uid://bymp5quxx12nn" path="res://enemies/koopa/shell.png" id="2_ktxxq"]
-[ext_resource type="Texture2D" uid="uid://dvixl8ik3vv1v" path="res://enemies/koopa/koopa_walk_1.png" id="3_xt6ed"]
-[ext_resource type="Texture2D" uid="uid://bmglnilf22ud4" path="res://enemies/koopa/koopa_walk_2.png" id="4_wwwrf"]
-[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="5_gj48t"]
+[ext_resource type="Texture2D" uid="uid://cmswq3aqd8oo4" path="res://enemies/koopa/koopa_spritesheet.png" id="2_ltmnc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_0ak2y"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="6_3w1ag"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="7_kj13j"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_115g7"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="8_l5p7d"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="9_3ddsp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43t2c"]
 size = Vector2(512, 512)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1c40k"]
+size = Vector2(511, 141)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvr5u"]
+size = Vector2(514, 366)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j41f1"]
 size = Vector2(512, 512)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_56aai"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_ktxxq")
-}],
-"loop": true,
-"name": &"shell",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_xt6ed")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_wwwrf")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 5.0
-}]
+[sub_resource type="Animation" id="Animation_6ex2q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hurtbox/CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(511, 141)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hitbox/CollisionShape2D:shape:size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(514, 366)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("hitbox:collision_mask")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("hurtbox:collision_layer")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [32]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("hurtbox:monitoring")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("kickbox:monitoring")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("kickbox:collision_mask")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("hitbox:collision_layer")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath(".:collision_mask")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath(".:collision_layer")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_sn2uw"]
+resource_name = "in_shell_moving"
+length = 0.10001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("hurtbox:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("hitbox:collision_mask")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [176]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("kickbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hurtbox:collision_layer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [32]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("kickbox:collision_mask")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:collision_mask")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:collision_layer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_co4lx"]
+resource_name = "in_shell_still"
+length = 0.10001
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("hurtbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hitbox:collision_mask")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("kickbox:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("hurtbox:collision_layer")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("kickbox:collision_mask")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("hitbox:collision_layer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:collision_mask")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:collision_layer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="Animation" id="Animation_bnkkk"]
+resource_name = "walking"
+length = 0.6667
+loop_mode = 1
+step = 0.333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("hurtbox/CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(511, 141)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hitbox/CollisionShape2D:shape:size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(514, 366)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("hitbox:collision_mask")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("hurtbox:collision_layer")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [32]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("hurtbox:monitoring")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("kickbox:monitoring")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("kickbox:collision_mask")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath(".:collision_mask")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath(".:collision_layer")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="Animation" id="Animation_fxshb"]
+resource_name = "wiggle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.186701, -0.187239]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("kickbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hurtbox:collision_layer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("kickbox:collision_mask")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("hurtbox:monitoring")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("hitbox:collision_mask")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:collision_mask")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:collision_layer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0smup"]
+_data = {
+"RESET": SubResource("Animation_6ex2q"),
+"in_shell_moving": SubResource("Animation_sn2uw"),
+"in_shell_still": SubResource("Animation_co4lx"),
+"walking": SubResource("Animation_bnkkk"),
+"wiggle": SubResource("Animation_fxshb")
+}
 
 [node name="Koopa" type="CharacterBody2D"]
-collision_layer = 8
+collision_layer = 0
 collision_mask = 10
 script = ExtResource("1_q0484")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_43t2c")
 
-[node name="kill_hitbox" type="Area2D" parent="."]
+[node name="hurtbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="kill_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(-0.5, -185.5)
 shape = SubResource("RectangleShape2D_1c40k")
 
-[node name="full_body" type="Sprite2D" parent="."]
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
 
-[node name="shell" type="Sprite2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 72)
+shape = SubResource("RectangleShape2D_lvr5u")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -176)
-scale = Vector2(0.694712, 0.694712)
-sprite_frames = SubResource("SpriteFrames_56aai")
-animation = &"walk"
-frame_progress = 0.753607
+[node name="kickbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="kickbox"]
+shape = SubResource("RectangleShape2D_j41f1")
 
 [node name="ground_checker" type="RayCast2D" parent="."]
-target_position = Vector2(0, 512)
+position = Vector2(0, 254)
 collision_mask = 2
 
-[node name="gravity" type="Node" parent="."]
-script = ExtResource("5_gj48t")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -2)
+scale = Vector2(0.845714, 0.845714)
+texture = ExtResource("2_ltmnc")
+offset = Vector2(-3.5473, -342.906)
+hframes = 3
 
-[connection signal="body_entered" from="kill_hitbox" to="." method="_on_kill_hitbox_body_entered"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0smup")
+}
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("5_0ak2y")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("6_3w1ag")
+
+[node name="Behavior" type="Node" parent="StateChart/Root"]
+script = ExtResource("7_kj13j")
+initial_state = NodePath("walking")
+
+[node name="walking" type="Node" parent="StateChart/Root/Behavior"]
+script = ExtResource("8_l5p7d")
+
+[node name="on hit" type="Node" parent="StateChart/Root/Behavior/walking"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_not_moving")
+event = &"hit"
+
+[node name="in_shell_not_moving" type="Node" parent="StateChart/Root/Behavior"]
+script = ExtResource("7_kj13j")
+initial_state = NodePath("still")
+
+[node name="on hit" type="Node" parent="StateChart/Root/Behavior/in_shell_not_moving"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_moving")
+event = &"hit"
+
+[node name="still" type="Node" parent="StateChart/Root/Behavior/in_shell_not_moving"]
+script = ExtResource("8_l5p7d")
+
+[node name="on timeout" type="Node" parent="StateChart/Root/Behavior/in_shell_not_moving/still"]
+script = ExtResource("8_115g7")
+to = NodePath("../../wiggle")
+delay_seconds = 5.0
+
+[node name="wiggle" type="Node" parent="StateChart/Root/Behavior/in_shell_not_moving"]
+script = ExtResource("8_l5p7d")
+
+[node name="on timeout" type="Node" parent="StateChart/Root/Behavior/in_shell_not_moving/wiggle"]
+script = ExtResource("8_115g7")
+to = NodePath("../../../walking")
+delay_seconds = 2.0
+
+[node name="in_shell_moving" type="Node" parent="StateChart/Root/Behavior"]
+script = ExtResource("8_l5p7d")
+
+[node name="on hit" type="Node" parent="StateChart/Root/Behavior/in_shell_moving"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_not_moving")
+event = &"hit"
+
+[node name="Animations" type="Node" parent="StateChart/Root"]
+script = ExtResource("7_kj13j")
+initial_state = NodePath("walking")
+
+[node name="walking" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("9_3ddsp")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on hit" type="Node" parent="StateChart/Root/Animations/walking"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_still")
+event = &"hit"
+
+[node name="in_shell_still" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("9_3ddsp")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on start_wiggle" type="Node" parent="StateChart/Root/Animations/in_shell_still"]
+script = ExtResource("8_115g7")
+to = NodePath("../../wiggle")
+event = &"start_wiggle"
+
+[node name="on hit" type="Node" parent="StateChart/Root/Animations/in_shell_still"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_moving")
+event = &"hit"
+
+[node name="wiggle" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("9_3ddsp")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on walking" type="Node" parent="StateChart/Root/Animations/wiggle"]
+script = ExtResource("8_115g7")
+to = NodePath("../../walking")
+event = &"walking"
+
+[node name="on hit" type="Node" parent="StateChart/Root/Animations/wiggle"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_moving")
+event = &"hit"
+
+[node name="in_shell_moving" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("9_3ddsp")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on hit" type="Node" parent="StateChart/Root/Animations/in_shell_moving"]
+script = ExtResource("8_115g7")
+to = NodePath("../../in_shell_still")
+event = &"hit"
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="kickbox" to="." method="_on_kickbox_body_entered"]
+[connection signal="state_entered" from="StateChart/Root/Behavior/walking" to="." method="_on_walking_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Behavior/walking" to="." method="_on_walking_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Behavior/in_shell_not_moving" to="." method="_on_in_shell_not_moving_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/Behavior/in_shell_not_moving/wiggle" to="." method="_on_wiggle_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/Behavior/in_shell_moving" to="." method="_on_in_shell_moving_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Behavior/in_shell_moving" to="." method="_on_in_shell_moving_state_physics_processing"]

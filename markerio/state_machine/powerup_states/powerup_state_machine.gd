@@ -1,5 +1,5 @@
 class_name PowerLevelStateMachine
-extends StateMachine
+extends MyStateMachine
 
 var states: Array[String] = ["small", "big", "fireflower"]
 var current_state = 0

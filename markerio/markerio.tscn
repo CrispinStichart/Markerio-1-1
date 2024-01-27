@@ -1,164 +1,449 @@
-[gd_scene load_steps=30 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=22 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markerio.gd" id="1_jbn2y"]
-[ext_resource type="Script" path="res://markerio/input_controller.gd" id="2_tswt8"]
-[ext_resource type="Texture2D" uid="uid://bb4vfwwwupnhk" path="res://markerio/sprite/big_markerio/big_idle.png" id="3_k6213"]
-[ext_resource type="Texture2D" uid="uid://dw54yluu1tnan" path="res://markerio/sprite/fire_mario/idle_flower.png" id="4_4th51"]
-[ext_resource type="Texture2D" uid="uid://ddqimiw0vt8y7" path="res://markerio/sprite/idle.png" id="4_hju34"]
-[ext_resource type="Texture2D" uid="uid://dasxp5forl171" path="res://markerio/sprite/big_markerio/big_run_1.png" id="5_3ho01"]
-[ext_resource type="Texture2D" uid="uid://1cdbem8uvhud" path="res://markerio/sprite/run_3.png" id="6_2i38b"]
-[ext_resource type="Texture2D" uid="uid://dpol5qgd6sx4f" path="res://markerio/sprite/run_1.png" id="6_2l121"]
-[ext_resource type="Texture2D" uid="uid://cghnsmvobj0i7" path="res://markerio/sprite/big_markerio/big_run_2.png" id="6_6xek8"]
-[ext_resource type="Texture2D" uid="uid://cwrdy13sgllry" path="res://markerio/sprite/run_2.png" id="6_ds38q"]
-[ext_resource type="Texture2D" uid="uid://ddqm7jqie8hm3" path="res://markerio/sprite/big_markerio/big_run_3.png" id="7_qsj6q"]
-[ext_resource type="Texture2D" uid="uid://btmskd66f6xxe" path="res://markerio/sprite/run_4.png" id="8_i7tvl"]
-[ext_resource type="Texture2D" uid="uid://ct7ek4psghx3t" path="res://markerio/sprite/big_markerio/big_run_4.png" id="8_xgjme"]
-[ext_resource type="Texture2D" uid="uid://nf8xe5xqqj34" path="res://markerio/sprite/fire_mario/flower_run_1.png" id="10_vr8x7"]
-[ext_resource type="Texture2D" uid="uid://o27jey3nvy2f" path="res://markerio/sprite/fire_mario/flower_run_2.png" id="11_kt811"]
-[ext_resource type="Texture2D" uid="uid://cysntf6h0a8u6" path="res://markerio/sprite/fire_mario/flower_run_3.png" id="12_dywck"]
-[ext_resource type="Texture2D" uid="uid://bx1qpgckktuuw" path="res://markerio/sprite/fire_mario/flower_run_4.png" id="13_m7tha"]
-[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/powerup_state_machine.gd" id="13_vxhtx"]
-[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/fireflower.gd" id="14_upk38"]
-[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/small.gd" id="15_ns2lt"]
-[ext_resource type="Script" path="res://markerio/state_machine/powerup_states/big.gd" id="16_ll857"]
-[ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="17_yffdo"]
-[ext_resource type="Script" path="res://markerio/invincibility_timer.gd" id="18_7tuq8"]
+[ext_resource type="Texture2D" uid="uid://13prndas001w" path="res://markerio/markerio_spritesheet.png" id="2_b7xe3"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="12_gbouc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="13_xqiof"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="14_tu1hp"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="15_2tqr0"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="16_rwijp"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="17_1q33g"]
 [ext_resource type="PackedScene" uid="uid://b0b3sj4mjwk0t" path="res://markerio/invincibility_effect/invincibility_effect.tscn" id="24_4sbhp"]
 [ext_resource type="Script" path="res://markerio/invincibility_effect/invincibility_effect.gd" id="24_eusmg"]
 
+[sub_resource type="Animation" id="Animation_wi0cs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(482, 686)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -349)]
+}
+
+[sub_resource type="Animation" id="Animation_gaccx"]
+resource_name = "idle_big"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(574, 1350)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -681)]
+}
+
+[sub_resource type="Animation" id="Animation_4g2dr"]
+resource_name = "idle_flower"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(574, 1350)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -681)]
+}
+
+[sub_resource type="Animation" id="Animation_i5ebo"]
+resource_name = "idle_small"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(482, 686)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -349)]
+}
+
+[sub_resource type="Animation" id="Animation_o8krv"]
+resource_name = "run_big"
+length = 0.666683
+loop_mode = 1
+step = 0.166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(574, 1350)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -681)]
+}
+
+[sub_resource type="Animation" id="Animation_ffpxy"]
+resource_name = "run_flower"
+length = 0.666683
+loop_mode = 1
+step = 0.166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [11, 12, 13, 14]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(574, 1350)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -681)]
+}
+
+[sub_resource type="Animation" id="Animation_8kfs1"]
+resource_name = "run_small"
+length = 0.666683
+loop_mode = 1
+step = 0.166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("terrain_collider:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(482, 686)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("terrain_collider:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -349)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uoikk"]
+_data = {
+"RESET": SubResource("Animation_wi0cs"),
+"idle_big": SubResource("Animation_gaccx"),
+"idle_flower": SubResource("Animation_4g2dr"),
+"idle_small": SubResource("Animation_i5ebo"),
+"run_big": SubResource("Animation_o8krv"),
+"run_flower": SubResource("Animation_ffpxy"),
+"run_small": SubResource("Animation_8kfs1")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hp0g"]
-size = Vector2(416, 512)
+size = Vector2(482, 686)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8541e"]
-size = Vector2(416, 976)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f1ida"]
+size = Vector2(482, 529)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_v5x0l"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_k6213")
-}],
-"loop": true,
-"name": &"idle_big",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_4th51")
-}],
-"loop": true,
-"name": &"idle_flower",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_hju34")
-}],
-"loop": true,
-"name": &"idle_small",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("5_3ho01")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_6xek8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_qsj6q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_xgjme")
-}],
-"loop": true,
-"name": &"run_big",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("10_vr8x7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_kt811")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_dywck")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_m7tha")
-}],
-"loop": true,
-"name": &"run_flower",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_2l121")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_ds38q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_2i38b")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_i7tvl")
-}],
-"loop": true,
-"name": &"run_small",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qaia6"]
-size = Vector2(416, 200)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l02rq"]
+size = Vector2(482, 160)
 
 [node name="Markerio" type="CharacterBody2D"]
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_jbn2y")
 
-[node name="small_collider" type="CollisionShape2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -708.315)
+texture = ExtResource("2_b7xe3")
+hframes = 5
+vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_uoikk")
+}
+
+[node name="terrain_collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -349)
 shape = SubResource("RectangleShape2D_2hp0g")
 
-[node name="big_collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -56)
-shape = SubResource("RectangleShape2D_8541e")
+[node name="hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -349)
+collision_layer = 16
+collision_mask = 0
 
-[node name="input_controller" type="Node" parent="."]
-script = ExtResource("2_tswt8")
+[node name="collider" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, -78.5)
+shape = SubResource("RectangleShape2D_f1ida")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.758964, 0.758964)
-sprite_frames = SubResource("SpriteFrames_v5x0l")
-animation = &"idle_flower"
-
-[node name="block_detector" type="Area2D" parent="."]
-position = Vector2(0, -640)
+[node name="stomp_hitbox" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="block_detector"]
-shape = SubResource("RectangleShape2D_qaia6")
-
-[node name="power_level_state_machine" type="Node" parent="." node_paths=PackedStringArray("markerio", "state")]
-script = ExtResource("13_vxhtx")
-markerio = NodePath("..")
-state = NodePath("small")
-
-[node name="fireflower" type="Node" parent="power_level_state_machine"]
-script = ExtResource("14_upk38")
-
-[node name="small" type="Node" parent="power_level_state_machine"]
-script = ExtResource("15_ns2lt")
-
-[node name="big" type="Node" parent="power_level_state_machine"]
-script = ExtResource("16_ll857")
-
-[node name="gravity" type="Node" parent="."]
-script = ExtResource("17_yffdo")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="stomp_hitbox"]
+position = Vector2(0, -81)
+shape = SubResource("RectangleShape2D_l02rq")
 
 [node name="InvincibilityEffect" parent="." instance=ExtResource("24_4sbhp")]
+visible = false
 script = ExtResource("24_eusmg")
 
-[node name="invincibility_timer" type="Node2D" parent="."]
-script = ExtResource("18_7tuq8")
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("12_gbouc")
+
+[node name="root" type="Node" parent="StateChart"]
+script = ExtResource("13_xqiof")
+
+[node name="Behavior" type="Node" parent="StateChart/root"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Grounded")
+
+[node name="Grounded" type="Node" parent="StateChart/root/Behavior"]
+script = ExtResource("15_2tqr0")
+
+[node name="On airborne_without_jump" type="Node" parent="StateChart/root/Behavior/Grounded"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Airborne/Jumping States/Cannot Jump")
+event = &"airborne_without_jump"
+
+[node name="Airborne" type="Node" parent="StateChart/root/Behavior"]
+script = ExtResource("13_xqiof")
+
+[node name="Jumping States" type="Node" parent="StateChart/root/Behavior/Airborne"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Coyote Jump Enabled")
+
+[node name="Coyote Jump Enabled" type="Node" parent="StateChart/root/Behavior/Airborne/Jumping States"]
+script = ExtResource("15_2tqr0")
+
+[node name="On Jump" type="Node" parent="StateChart/root/Behavior/Airborne/Jumping States/Coyote Jump Enabled"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Cannot Jump")
+event = &"jump"
+
+[node name="On Timeout" type="Node" parent="StateChart/root/Behavior/Airborne/Jumping States/Coyote Jump Enabled"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Cannot Jump")
+delay_seconds = 0.1
+
+[node name="Cannot Jump" type="Node" parent="StateChart/root/Behavior/Airborne/Jumping States"]
+script = ExtResource("15_2tqr0")
+
+[node name="Gravity Control" type="Node" parent="StateChart/root/Behavior/Airborne"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Normal Grav")
+
+[node name="Normal Grav" type="Node" parent="StateChart/root/Behavior/Airborne/Gravity Control"]
+script = ExtResource("15_2tqr0")
+
+[node name="On started_falling" type="Node" parent="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Heavy Grav")
+event = &"started_falling"
+
+[node name="Heavy Grav" type="Node" parent="StateChart/root/Behavior/Airborne/Gravity Control"]
+script = ExtResource("15_2tqr0")
+
+[node name="On on_floor" type="Node" parent="StateChart/root/Behavior/Airborne"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Grounded")
+event = &"on_floor"
+
+[node name="Animations" type="Node" parent="StateChart/root"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("idle_small")
+
+[node name="idle_small" type="Node" parent="StateChart/root/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on moving" type="Node" parent="StateChart/root/Animations/idle_small"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../run_small")
+event = &"moving"
+
+[node name="run_small" type="Node" parent="StateChart/root/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on idle" type="Node" parent="StateChart/root/Animations/run_small"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../idle_small")
+event = &"idle"
+
+[connection signal="area_entered" from="stomp_hitbox" to="." method="_on_stomp_hitbox_area_entered"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne" to="." method="_on_airborne_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_pre_apex_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Heavy Grav" to="." method="_on_post_apex_state_entered"]

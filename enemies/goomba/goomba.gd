@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 var speed: float = Constants.BLOCK_SIZE*2
 var x_offset: float
-
+var hit_wall := false
 @export var direction: float = -1
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -12,6 +12,7 @@ var x_offset: float
 func _ready():
 	$AnimatedSprite2D.play("walk")
 	x_offset = sprite.offset.x
+
 
 func _process(_delta):
 	# We can't scale the whole goomba, because collision shapes can't be scaled.
@@ -26,7 +27,29 @@ func _process(_delta):
 		sprite.offset.x = x_offset
 
 
-func squish():
+func _physics_process(_delta):
+	velocity.x = direction * speed
+
+	move_and_slide()
+	collision_no_stuck_on_eachother()
+
+	if not is_on_floor():
+		velocity.y += Constants.GRAVITY
+		velocity.y = min(velocity.y, Constants.MAX_FALL_SPEED)
+
+
+func collision_no_stuck_on_eachother():
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+
+		var is_facing_object = signf(position.x - collider.position.x) == -direction
+
+		if is_on_wall() and is_facing_object:
+			direction *= -1
+
+
+func hit():
 	$CollisionShape2D.set_deferred("disabled", true)
 	sprite.scale.y = .15
 	sprite.position.y = 32 - (64*.15) / 2
@@ -35,21 +58,7 @@ func squish():
 	get_tree().create_timer(1).timeout.connect(queue_free)
 
 
-
-func die():
-	$kill_hitbox.set_deferred("monitoring", false)
-	collision_mask = 0
-	# So it can't collide with Markerio, but can be detected by the killfloor.
-	# Doesn't work and shouldn't be needed, since we're disabling monitoring...
-	$AnimatedSprite2D.flip_v = true
-	velocity = Vector2(1, -1) * Constants.BLOCK_SIZE * 20
-
-func _on_kill_hitbox_body_entered(body):
-	if body is Markerio:
-		if body.has_star:
-			die()
-		elif body.feet_position.y < position.y:
-			squish()
-			body.bounce()
-		else:
-			body.take_damage()
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	var body = area.get_parent()
+	if body.has_method("hit"):
+		body.hit()

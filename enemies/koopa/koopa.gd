@@ -4,19 +4,13 @@ extends CharacterBody2D
 var walk_speed = Constants.BLOCK_SIZE * 2
 var shell_speed = Constants.BLOCK_SIZE * 12
 
+var saw_ground := false
+
 @export var direction: int = -1
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-# Can't be zero because I guess the raycast needs a frame before it actually
-# detects things.
-var raycast_timeout:float = .1
-
-var in_shell := false
-
-
-func _ready():
-	$AnimatedSprite2D.play("walk")
-
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var state_chart:StateChart = $StateChart
+@onready var ground_checker: RayCast2D = $ground_checker
 
 func _process(_delta):
 	# We can't scale the whole goomba, because collision shapes can't be scaled.
@@ -29,32 +23,11 @@ func _process(_delta):
 		sprite.flip_h = false
 
 
-func _physics_process(delta):
-	velocity.x = direction * (shell_speed if in_shell else walk_speed)
+func _physics_process(_delta: float) -> void:
+	velocity.y += Constants.GRAVITY
 
-
-	move_and_slide()
-
-	for i in get_slide_collision_count():
-		var collision:KinematicCollision2D = get_slide_collision(i)
-		if in_shell:
-			var collider = collision.get_collider()
-			if collider is Koopa or collider is Goomba:
-				collider.die()
-				continue
-		if collision.get_angle() != 0:
-			direction *= -1
-
-	raycast_timeout -= delta
-	if not in_shell and raycast_timeout <= 0 and not $ground_checker.is_colliding():
-		direction *= -1
-		raycast_timeout = 0.25
-
-func tuck_into_shell():
-	direction = 0
-	$AnimatedSprite2D.play("shell")
-	in_shell = true
-
+func hit():
+	state_chart.send_event("hit")
 
 func die():
 	$kill_hitbox.set_deferred("monitoring", false)
@@ -64,19 +37,55 @@ func die():
 	$AnimatedSprite2D.flip_v = true
 	velocity = Vector2(1, -1) * Constants.BLOCK_SIZE * 20
 
-func _on_kill_hitbox_body_entered(body):
-	if body is Markerio:
-		if body.has_star:
-			die()
-		elif in_shell and direction != 0 and body.feet_position.y < position.y:
-			direction = 0
-			body.bounce()
-		elif in_shell and direction == 0:
-			direction = -1 if body.position.x > position.x else 1
-		elif in_shell:
-			body.take_damage()
-		elif body.feet_position.y < position.y:
-			body.bounce()
-			tuck_into_shell()
-		else:
-			body.take_damage()
+
+func _on_hitbox_area_entered(area: Area2D):
+	var body = area.get_parent()
+	print("hit: ", body)
+	if body.has_method("hit"):
+		body.hit()
+
+
+func _on_walking_state_physics_processing(_delta: float) -> void:
+	state_chart.send_event("walking")
+	if ground_checker.is_colliding():
+		saw_ground = true
+	velocity.x = direction * walk_speed
+
+
+	move_and_slide()
+
+	if is_on_wall() or (saw_ground and not ground_checker.is_colliding()):
+		direction *= -1
+		saw_ground = false
+
+
+
+func _on_in_shell_moving_state_physics_processing(_delta: float) -> void:
+	velocity.x = direction * shell_speed
+
+	move_and_slide()
+
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+
+
+		var is_facing_object = signf(position.x - collision.get_position().x) == -direction
+	
+		if is_on_wall() and is_facing_object:
+			direction *= -1
+			
+
+
+func _on_walking_state_entered() -> void:
+	$AnimationPlayer.play("RESET")
+
+
+
+func _on_kickbox_body_entered(body: Node2D) -> void:
+	direction = -1 if global_position.x - body.global_position.x < 0 else 1
+	state_chart.send_event("hit")
+
+
+
+func _on_wiggle_state_entered() -> void:
+	state_chart.send_event("start_wiggle")

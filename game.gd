@@ -23,10 +23,11 @@ func _ready():
 	print("The game is ready! Metagame is: ", meta_game)
 	reset_level()
 	level.secret_area_entered.connect(secret_area_entered)
-	
+
 
 
 func reset_level(warp_pipe := false):
+	print("resetting level...")
 	if level:
 		$GameLayer.remove_child(level)
 		level.queue_free()
@@ -40,9 +41,10 @@ func reset_level(warp_pipe := false):
 	level.markerio.died.connect(markerio_death)
 
 	level.flag.markerio_reached_flagpole.connect(
-			func(): 
+			func():
 				if meta_game:
 					meta_game.show_end_screen()
+				call_deferred("reset_level")
 	)
 
 	for block:Block in level.get_node("TileMap/blocks").get_children():
@@ -57,7 +59,7 @@ func reset_level(warp_pipe := false):
 	if warp_pipe:
 		print("calling exit warp pipe")
 		level.exit_warp_pipe()
-		
+
 func _physics_process(_delta):
 	if not level:
 		return
@@ -86,7 +88,7 @@ func secret_area_entered():
 	if meta_game:
 		meta_game.swap_to_secret_level()
 		await meta_game.secret_level_entered
-	
+
 	$GameLayer.remove_child(level)
 	level.queue_free()
 	level = null
@@ -94,15 +96,15 @@ func secret_area_entered():
 	secret_level = secret_level_scene.instantiate()
 	$GameLayer.add_child(secret_level)
 	secret_level.secret_area_exited.connect(secret_area_left)
-	
+
 
 func secret_area_left():
 	if meta_game:
 		meta_game.swap_back_to_main_level()
 		await meta_game.secret_level_exited
-	
+
 	call_deferred("deferred_stuff")
-	
+
 func deferred_stuff():
 	$GameLayer.remove_child(secret_level)
 	secret_level.queue_free()

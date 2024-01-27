@@ -23,7 +23,7 @@ func _on_killfloor_body_entered(body):
 		body.die()
 	else:
 		body.queue_free()
-		
+
 
 
 func _input(_event: InputEvent) -> void:
@@ -31,7 +31,7 @@ func _input(_event: InputEvent) -> void:
 				$pipes/Pipe/warp_zone.overlaps_body(markerio) and \
 				markerio.is_on_floor():
 		enter_secret_area()
-		
+
 
 var t: Tween
 func enter_secret_area():
@@ -53,19 +53,19 @@ func exit_warp_pipe():
 	markerio.position.y += 512
 	t = get_tree().create_tween()
 	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y-512*2), 1)
-	t.tween_callback(func(): 
+	t.tween_callback(func():
 			markerio.enable_input()
 			markerio.set_collision(true)
 			markerio.z_index = 0
 			print("pos: ", markerio.position)
 			print("pipe pos: ",$pipes/Pipe5/warp_exit.global_position)
 	)
-	
+
 #func teleport_mario_to_secret_area() -> void:
 	#markerio.position = $secret_area/entrance.global_position
 	#t = get_tree().create_tween()
 	#t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y + 256), 1)
-	#t.tween_callback(func(): 
+	#t.tween_callback(func():
 		#markerio.set_collision(true)
 		#markerio.enable_input()
 		#markerio.z_index = 0

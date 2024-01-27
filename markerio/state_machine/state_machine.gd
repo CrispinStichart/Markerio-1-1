@@ -1,4 +1,4 @@
-class_name StateMachine
+class_name MyStateMachine
 extends Node
 
 @export var markerio: Markerio

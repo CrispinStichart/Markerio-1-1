@@ -47,6 +47,14 @@ _data = {
 z_index = -1
 script = ExtResource("1_m046f")
 
+[node name="flag_lowest_point" type="Marker2D" parent="."]
+position = Vector2(-43.0001, 796)
+scale = Vector2(1.83619, 1.83619)
+
+[node name="flag_highest_point" type="Marker2D" parent="."]
+position = Vector2(-51, -1635)
+scale = Vector2(1.83619, 1.83619)
+
 [node name="flag" type="Sprite2D" parent="."]
 position = Vector2(-632, -2032)
 scale = Vector2(1.83619, 1.83619)

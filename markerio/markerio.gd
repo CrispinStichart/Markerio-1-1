@@ -4,71 +4,41 @@ extends CharacterBody2D
 signal died
 
 
-var acceleration: float = Constants.BLOCK_SIZE
+var acceleration: float = Constants.BLOCK_SIZE/4
 var max_walk_speed: float = Constants.BLOCK_SIZE*5
 var max_run_speed: float = Constants.BLOCK_SIZE*10
 var jump_height: float = Constants.BLOCK_SIZE*4
-var jump_speed: float = Constants.BLOCK_SIZE*15
+var jump_velocity: float = 9102
 var can_jump := true
 var jumping := false
-var remaining_jump_height: float = 0
 
-var invincible := false
+
+var invincible := false:
+	set(value):
+		invincible = value
+		set_collision_mask_value(4, not invincible)
 var has_star := false
 
 var move_animation = "run_small"
 var idle_animation = "idle_small"
 
-var power_level: int:
-	get:
-		return $power_level_state_machine.current_state
-	
+var gravity := Constants.GRAVITY
 
 
-var feet_position: Vector2:
-	get:
-		var x = position.x
-		var y = position.y + $small_collider.shape.size.y/2 # FIXME
-		return Vector2(x, y)
-
-@onready var sprite:AnimatedSprite2D = $AnimatedSprite2D
-@onready var power_level_state_machine: PowerLevelStateMachine = $power_level_state_machine
 
 
-func _process(_delta):
-	if velocity.x < 0:
-		sprite.flip_h = true
-	elif velocity.x > 0:
-		sprite.flip_h = false
-
-	# TODO: make mario freeze in run animation, index 3
-	if velocity.x == 0 and velocity.y == 0:
-		sprite.play(idle_animation)
-	elif sprite.animation != move_animation:
-		sprite.play(move_animation)
+@onready var sprite:Sprite2D = $Sprite2D
+@onready var state_chart: StateChart = $StateChart
 
 
 func _physics_process(delta):
-	if jumping and remaining_jump_height > 0:
-		$AnimatedSprite2D.frame = 1
-		$gravity.process_mode = Node.PROCESS_MODE_DISABLED
-		remaining_jump_height -= jump_speed * delta
-		velocity.y = -jump_speed
-	elif is_on_floor():
-		if jumping:
-			$AnimatedSprite2D.frame = 2
-		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
-		can_jump = true
-		jumping = false
-		remaining_jump_height = 0
-	elif not is_on_floor() and remaining_jump_height <= 0:
-		$AnimatedSprite2D.frame = 1
-		$gravity.process_mode = Node.PROCESS_MODE_INHERIT
+
 
 
 	move_and_slide()
 
-	handle_block_collision()
+	$stomp_hitbox.position = velocity*delta
+
 
 
 func handle_block_collision():
@@ -78,85 +48,182 @@ func handle_block_collision():
 	a raycast in the center, because he should still be able to hit blocks on the edge of his
 	hitbox.
 	"""
-	var blocks:Array[Block] = []
-	for i in get_slide_collision_count():
-		var collision: KinematicCollision2D = get_slide_collision(i)
-		# Look for collisions with blocks that are from below. (snappedf is basically round()).
-		if snappedf(collision.get_angle(), .01) == 3.14:
-			for node in $block_detector.get_overlapping_bodies():
-				if node is Block:
-					blocks.append(node)
-			# Make Markerio fall down, and disable his jump.
-			velocity.y = 0
-			remaining_jump_height = 0
-			break
-
-	if blocks:
-		var closest:Block = blocks[0]
-		# This could be an if/else if I could garantee that there would be a max of two blocks,
-		# like in real Mario. Which is currently true for this game. But I want to leave myself
-		# open for changing that.
-		for i in range(1, len(blocks)):
-			var block: Block = blocks[i]
-			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
-				closest = block
-
-		if closest is BreakableBrick and power_level_state_machine.current_state == 0:
-			closest.bump()
-		else:
-			closest.activate()
+	pass
+	#var blocks:Array[Block] = []
+	#for i in get_slide_collision_count():
+		#var collision: KinematicCollision2D = get_slide_collision(i)
+		## Look for collisions with blocks that are from below. (snappedf is basically round()).
+		#if snappedf(collision.get_angle(), .01) == 3.14:
+			#for node in $block_detector.get_overlapping_bodies():
+				#if node is Block:
+					#blocks.append(node)
+			## Make Markerio fall down, and disable his jump.
+			#velocity.y = 0
+			#remaining_jump_height = 0
+			#break
+#
+	#if blocks:
+		#var closest:Block = blocks[0]
+		## This could be an if/else if I could garantee that there would be a max of two blocks,
+		## like in real Mario. Which is currently true for this game. But I want to leave myself
+		## open for changing that.
+		#for i in range(1, len(blocks)):
+			#var block: Block = blocks[i]
+			#if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
+				#closest = block
+#
+		#if closest is BreakableBrick and power_level_state_machine.current_state == 0:
+			#closest.bump()
+		#else:
+			#closest.activate()
 
 
 func eat_mushroom():
-	power_level_state_machine.level_up()
+	pass
+
 
 
 func eat_fire_flower():
-	power_level_state_machine.level_up()
+	pass
+
 
 func eat_star():
-	has_star = true
-	$invincibility_timer.set_invincibility(10)
+	pass
+	#has_star = true
+	#$invincibility_timer.set_invincibility(10)
 
 
-func take_damage():
-	if not invincible:
-		power_level_state_machine.level_down()
-		$invincibility_timer.set_invincibility()
+func hit():
+	print("damage")
+	#if not invincible:
+		#power_level_state_machine.level_down()
+		#$invincibility_timer.set_invincibility()
 
 func die():
 	# So the killfloor can't call this again.
 	if sprite.flip_v:
 		return
-	power_level_state_machine.set_size(0)
+	#power_level_state_machine.set_size(0)
 	died.emit()
 	disable_input()
 	set_collision(false)
 	sprite.flip_v = true
-	bounce()
 
 
-func bounce():
-	velocity.y = -jump_speed
-	
 
 func throw_fireball():
-	var fireball: Fireball = InstanceManager.create(Fireball)
+	var fireball: Fireball = InstanceManager.create("Fireball")
 	fireball.direction = -1 if sprite.flip_h else 1
 	add_sibling(fireball)
 	fireball.position = position
 
 func disable_input():
-	$input_controller.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	
+	pass
+	#$input_controller.process_mode = Node.PROCESS_MODE_DISABLED
+
+
 func enable_input():
-	$input_controller.process_mode = Node.PROCESS_MODE_INHERIT
+	pass
+	#$input_controller.process_mode = Node.PROCESS_MODE_INHERIT
 
 func set_collision(should_collide: bool) -> void:
-	if should_collide:
-		set_collision_mask_value(2, true)
-		set_collision_layer_value(1, true)
+		set_collision_mask_value(2, should_collide)
+		set_collision_layer_value(1, should_collide)
+
+
+func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
+	print("stomped")
+	var body = area.get_parent()
+	if body.has_method("hit"):
+		body.hit()
+		var p1 := global_position
+		var p2 := global_position + velocity * get_physics_process_delta_time()
+		# The vertical offset of the Goomba collision shape is 51.
+		var y: float = area.global_position.y - area.get_children()[0].shape.size.y/2
+		print("y is: ", y)
+		var rise := p1.y - p2.y
+		var run := p1.x - p2.x
+		# In the normal case, we have to use the y = mx + b formula.
+		var x: float
+		if run != 0:
+			var m := rise/run
+			var b := p1.y - (m * p1.x)
+			x = (y-b)/m
+		# But for a straight-up-and-down jump, the run will be zero, and the
+		# formula would result in division by zero. In this special case, x
+		# is just the position of Mario.
+		else:
+			x = p1.x
+		var point_of_impact = Vector2(x, y)
+		# Now we can set mario's position to this point of impact, which is where his motion
+		# was interupted by the goomba's skull, and make him bounce.
+		global_position = point_of_impact
+		velocity.y = -jump_velocity*1.5
+		state_chart.send_event("airborne_without_jump")
+
+
+func _on_jump_enabled_state_physics_processing(_delta: float) -> void:
+	if Input.is_action_just_pressed("jump"):
+		velocity.y = -jump_velocity
+		state_chart.send_event("jump")
+
+
+func _on_grounded_state_physics_processing(_delta: float) -> void:
+	if not is_on_floor():
+		state_chart.send_event("airborne_without_jump")
+		return
+
+	var direction := Input.get_axis("left", "right")
+	var is_running := Input.is_action_pressed("run")
+	var max_speed: float = max_run_speed if is_running else max_walk_speed
+
+	if direction:
+		velocity.x += direction * acceleration
+		velocity.x = clampf(velocity.x, -max_speed, max_speed)
 	else:
-		set_collision_mask_value(2, false)
-		set_collision_layer_value(1, true)
+		velocity.x = move_toward(velocity.x, 0 , acceleration)
+
+	if velocity.x == 0:
+		state_chart.send_event("idle")
+	else:
+		state_chart.send_event("moving")
+
+
+func _on_airborne_state_physics_processing(delta: float) -> void:
+	if is_on_floor():
+		state_chart.send_event("on_floor")
+		return
+
+	velocity.y += gravity * delta
+	velocity.y = min(velocity.y, jump_velocity)
+
+	var direction := Input.get_axis("left", "right")
+	if direction:
+		var air_acceleration: float = acceleration*.5
+		var added_movement: float = direction * air_acceleration
+		# TODO: figure out how to cap this so I can't accelrate faster than walking
+		# speed, but still can accelerate from a standstill, and deaccelrate from any speed
+		var weight: float = clamp((-1/max_walk_speed**2) * velocity.x ** 2 + 1, 0, 1)
+		velocity.x += added_movement * weight
+
+
+
+func _on_pre_apex_state_physics_processing(_delta: float) -> void:
+	print("velocity: ", velocity.y)
+	if velocity.y > 0 or Input.is_action_just_released("jump"):
+		state_chart.send_event("started_falling")
+
+
+func _on_post_apex_state_entered() -> void:
+	gravity = Constants.GRAVITY * 3
+
+
+func _on_normal_grav_state_entered() -> void:
+	gravity = Constants.GRAVITY
+
+
+func _on_grounded_state_processing(_delta: float) -> void:
+	if velocity.x < 0:
+		sprite.flip_h = true
+	elif velocity.x > 0:
+		sprite.flip_h = false

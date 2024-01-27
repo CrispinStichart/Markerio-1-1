@@ -7,61 +7,94 @@ signal secret_level_exited
 
 
 
-enum State {TRANSITIONING, WAITING_FOR_START_INPUT, WAITING_FOR_INSTRUCTION_INPUT, WAITING_FOR_ENDING_INPUT, PLAYING_MAIN_GAME, PLAYING_SCRET_LEVEL}
-var state := State.WAITING_FOR_START_INPUT
+@onready var state_chart = $StateChart
 
 var normal_viewport_pos = Vector2(523, 234)
 var secret_level_viewport_pos = Vector2(323, 91)
 
 func _ready():
+	for child in $still_backgrounds.get_children():
+		child.visible = false
+	
 	$still_backgrounds/beginning.visible = true
 	$SubViewportContainer.visible = false
 	$SubViewportContainer/SubViewport/Game.meta_game = self
 
-	
-func _input(event: InputEvent):
-	if event is InputEventKey:
-		if state == State.WAITING_FOR_START_INPUT:
-			state = State.TRANSITIONING
-			$still_backgrounds/beginning.visible = false
-			$still_backgrounds/instructions.visible = true
-			$videos/intro.play()
-		elif state == State.WAITING_FOR_INSTRUCTION_INPUT:
-				state = State.TRANSITIONING
-				$videos/removing_instructions.play()
-		elif state == State.WAITING_FOR_ENDING_INPUT:
-				print("test")
-				state = State.TRANSITIONING
-				$still_backgrounds/ending.visible = false
-				$videos/removing_ending.play()
-				await $videos/removing_ending.finished
-				$videos/placing_blank_whiteboard.play()
-				await $videos/placing_blank_whiteboard.finished
 
-				$SubViewportContainer/SubViewport/Game.call_deferred("reset_level")
-				
 
-		
 func _on_intro_finished():
-	state = State.WAITING_FOR_INSTRUCTION_INPUT
+	state_chart.send_event("next")
 
 
 func _on_placing_blank_whiteboard_finished():
+	state_chart.send_event("next")
+
+
+
+func _on_removing_instructions_finished():
+	state_chart.send_event("next")
+	
+
+func swap_to_secret_level():
+	state_chart.send_event("secret_level")
+
+
+func swap_back_to_main_level():
+	state_chart.send_event("normal_level")
+
+
+func show_end_screen():
+	state_chart.send_event("ending")
+
+
+
+func _on_waiting_for_input_state_input(event):
+	if event is InputEventKey and event.pressed:
+		state_chart.send_event("next")
+		
+
+
+func _on_pregame_state_entered():
+	$still_backgrounds/beginning.visible = true
+
+
+func _on_pregame_state_exited():
+	$still_backgrounds/beginning.visible = false
+
+
+func _on_intro_video_state_entered():
+	$videos/intro.play()
+
+
+func _on_instructions_state_entered():
+	$still_backgrounds/instructions.visible = true
+
+
+func _on_instructions_state_exited():
 	$still_backgrounds/instructions.visible = false
+
+
+func _on_removing_instructions_state_entered():
+	$videos/removing_instructions.play()
+
+
+func _on_placing_whiteboard_state_entered():
+	$videos/placing_blank_whiteboard.play()
+
+
+func _on_removing_blank_whiteboard_finished():
+	pass
+	#state_chart.send_event("next")
+
+
+func _on_playing_normal_level_state_entered():
 	$still_backgrounds/blank_whiteboard.visible = true
-	state = State.PLAYING_MAIN_GAME
 	$AnimationPlayer.play("normal_level")
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	$SubViewportContainer.visible = true
 
 
-func _on_removing_instructions_finished():
-	$videos/placing_blank_whiteboard.play()
-
-func _on_removing_blank_whiteboard_finished():
-	pass # Replace with function body.
-
-func swap_to_secret_level():
+func _on_playing_secret_level_state_entered():
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_blank_whiteboard.play()
 	await $videos/removing_blank_whiteboard.finished
@@ -72,8 +105,9 @@ func swap_to_secret_level():
 	$AnimationPlayer.play("secret_level")
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	secret_level_entered.emit()
-	
-func swap_back_to_main_level():
+
+
+func _on_playing_secret_level_state_exited():
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_secret_level.play()
 	await $videos/removing_secret_level.finished
@@ -85,15 +119,22 @@ func swap_back_to_main_level():
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	secret_level_exited.emit()
 
-
-func show_end_screen():
+# TODO: removing blank whiteboard will trigger "next" event due to signal on 
+# video player finished
+func _on_placing_ending_state_entered():
 	$SubViewportContainer.visible = false
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_blank_whiteboard.play()
-	state = State.TRANSITIONING
+
 	await $videos/removing_blank_whiteboard.finished
 	$videos/placing_ending.play()
 	$still_backgrounds/blank_whiteboard.visible = false
 	$still_backgrounds/ending.visible = true
 	await $videos/placing_ending.finished
-	state = State.WAITING_FOR_ENDING_INPUT
+
+
+func _on_removing_ending_state_entered():
+	$still_backgrounds/ending.visible = false
+	$videos/removing_ending.play()
+	await $videos/removing_ending.finished
+	state_chart.send_event("next")

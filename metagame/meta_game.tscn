@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://idx6j6w31jhp"]
+[gd_scene load_steps=26 format=3 uid="uid://idx6j6w31jhp"]
 
 [ext_resource type="Script" path="res://metagame/meta_game.gd" id="1_2i5w0"]
 [ext_resource type="Texture2D" uid="uid://cjgdv6oyjb6hm" path="res://live_action_video/still_frames/blank_whiteboard_2.1.2.jpg" id="2_lmunj"]
@@ -16,9 +16,14 @@
 [ext_resource type="VideoStream" path="res://live_action_video/Removing Scret Area.ogv" id="14_7ijyd"]
 [ext_resource type="VideoStream" path="res://live_action_video/Placing_Ending.ogv" id="15_qaeof"]
 [ext_resource type="VideoStream" path="res://live_action_video/Removing Ending.ogv" id="16_wkqjy"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="17_6mle3"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="18_bl8ow"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="19_0y2cq"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="20_egdgn"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="21_3pvat"]
 
-[sub_resource type="Animation" id="Animation_ng572"]
-resource_name = "secret_level"
+[sub_resource type="Animation" id="Animation_o87ss"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -29,7 +34,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(2000, 1270)]
+"values": [Vector2(1634, 1270)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -65,7 +70,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(2000, 1270)]
+"values": [Vector2i(1080, 1080)]
 }
 
 [sub_resource type="Animation" id="Animation_jtuf4"]
@@ -119,8 +124,8 @@ tracks/3/keys = {
 "values": [Vector2i(1080, 1080)]
 }
 
-[sub_resource type="Animation" id="Animation_o87ss"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_ng572"]
+resource_name = "secret_level"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -131,7 +136,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1634, 1270)]
+"values": [Vector2(2000, 1270)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -167,7 +172,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(1080, 1080)]
+"values": [Vector2i(2000, 1270)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q6d0v"]
@@ -215,7 +220,7 @@ texture = ExtResource("7_hseat")
 process_mode = 4
 offset_left = 323.0
 offset_top = 91.0
-offset_right = 2323.0
+offset_right = 1957.0
 offset_bottom = 1361.0
 scale = Vector2(0.688082, 0.688082)
 
@@ -276,7 +281,123 @@ libraries = {
 "": SubResource("AnimationLibrary_q6d0v")
 }
 
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("17_6mle3")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("18_bl8ow")
+initial_state = NodePath("pregame")
+
+[node name="pregame" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/pregame"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../intro video")
+event = &"next"
+
+[node name="intro video" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/intro video"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../instructions")
+event = &"next"
+
+[node name="instructions" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/instructions"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../removing_instructions")
+event = &"next"
+
+[node name="removing_instructions" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/removing_instructions"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../placing whiteboard")
+event = &"next"
+
+[node name="placing whiteboard" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/placing whiteboard"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../playing normal level")
+event = &"next"
+
+[node name="playing normal level" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on ending" type="Node" parent="StateChart/Root/playing normal level"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../placing ending")
+event = &"ending"
+
+[node name="on secret_level" type="Node" parent="StateChart/Root/playing normal level"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../playing secret level")
+event = &"secret_level"
+
+[node name="playing secret level" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on normal_level" type="Node" parent="StateChart/Root/playing secret level"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../playing normal level")
+event = &"normal_level"
+
+[node name="removing secret level" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="removing whiteboard" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="placing secret level" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="placing ending" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/placing ending"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../removing ending")
+event = &"next"
+
+[node name="removing ending" type="Node" parent="StateChart/Root"]
+script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/removing ending"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../placing whiteboard")
+event = &"next"
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("21_3pvat")]
+z_index = 100
+offset_left = 1138.0
+offset_top = 35.0
+offset_right = 1894.0
+offset_bottom = 873.0
+initial_node_to_watch = NodePath("../StateChart")
+
 [connection signal="finished" from="videos/placing_blank_whiteboard" to="." method="_on_placing_blank_whiteboard_finished"]
 [connection signal="finished" from="videos/intro" to="." method="_on_intro_finished"]
 [connection signal="finished" from="videos/removing_instructions" to="." method="_on_removing_instructions_finished"]
 [connection signal="finished" from="videos/removing_blank_whiteboard" to="." method="_on_removing_blank_whiteboard_finished"]
+[connection signal="state_entered" from="StateChart/Root/pregame" to="." method="_on_pregame_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/pregame" to="." method="_on_pregame_state_exited"]
+[connection signal="state_input" from="StateChart/Root/pregame" to="." method="_on_waiting_for_input_state_input"]
+[connection signal="state_entered" from="StateChart/Root/intro video" to="." method="_on_intro_video_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/instructions" to="." method="_on_instructions_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/instructions" to="." method="_on_instructions_state_exited"]
+[connection signal="state_input" from="StateChart/Root/instructions" to="." method="_on_waiting_for_input_state_input"]
+[connection signal="state_entered" from="StateChart/Root/removing_instructions" to="." method="_on_removing_instructions_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/placing whiteboard" to="." method="_on_placing_whiteboard_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/playing normal level" to="." method="_on_playing_normal_level_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/playing secret level" to="." method="_on_playing_secret_level_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/playing secret level" to="." method="_on_playing_secret_level_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/placing ending" to="." method="_on_placing_ending_state_entered"]
+[connection signal="state_input" from="StateChart/Root/placing ending" to="." method="_on_waiting_for_input_state_input"]
+[connection signal="state_entered" from="StateChart/Root/removing ending" to="." method="_on_removing_ending_state_entered"]
