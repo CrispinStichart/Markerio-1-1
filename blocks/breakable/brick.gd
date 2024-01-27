@@ -9,10 +9,12 @@ var original_position: Vector2:
 		if original_position == Vector2.ZERO:
 			original_position = new_pos
 
-func activate():
+func activate(item_wanted: String = ""):
 	if activated:
 		return
 	if item:
+		if item is Shroom and item_wanted == "FireFlower":
+			item = secondary_item
 		spit_out_item()
 		return
 	$CollisionShape2D.disabled = true

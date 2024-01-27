@@ -5,8 +5,9 @@ var activated := false
 var tile_pos: Vector2i = -Vector2i.ONE
 
 var item: Node2D
+var secondary_item: Node2D
 
-func activate():
+func activate(_item_wanted: String = ""):
 	push_error("Not implemented for ", self)
 
 
@@ -40,3 +41,5 @@ func produce_item():
 
 func add_item(item_to_add: Node2D):
 	item = item_to_add
+	if item is Shroom:
+		secondary_item = InstanceManager.create("FireFlower")

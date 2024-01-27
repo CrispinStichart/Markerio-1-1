@@ -22,6 +22,8 @@ var has_star := false
 
 var gravity := Constants.GRAVITY
 
+var powerup_wanted := "Shroom"
+
 
 
 @onready var sprite:Sprite2D = $Sprite2D
@@ -75,7 +77,7 @@ func handle_block_collision():
 		if closest is BreakableBrick:
 			closest.bump()
 		else:
-			closest.activate()
+			closest.activate(powerup_wanted)
 
 
 func eat_mushroom():
@@ -231,12 +233,11 @@ func _on_grounded_state_processing(_delta: float) -> void:
 
 
 func _on_small_state_entered():
-	pass # Replace with function body.
+	powerup_wanted = "Shroom"
 
 
 func _on_big_state_entered():
-	pass # Replace with function body.
-
+	powerup_wanted = "FireFlower"
 
 func _on_fire_state_entered():
-	pass # Replace with function body.
+	powerup_wanted = "FireFlower"

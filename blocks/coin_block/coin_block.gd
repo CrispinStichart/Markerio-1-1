@@ -5,7 +5,7 @@ signal coin_block_expired
 
 var timer = 1
 
-func activate():
+func activate(_item_wanted: String = ""):
 	activated = true
 	produce_coin()
 
