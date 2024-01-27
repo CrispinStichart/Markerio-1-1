@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=23 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markerio.gd" id="1_jbn2y"]
 [ext_resource type="Texture2D" uid="uid://13prndas001w" path="res://markerio/markerio_spritesheet.png" id="2_b7xe3"]
@@ -316,6 +316,9 @@ size = Vector2(482, 529)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l02rq"]
 size = Vector2(482, 160)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jd7ey"]
+size = Vector2(482, 301)
+
 [node name="Markerio" type="CharacterBody2D"]
 collision_mask = 6
 script = ExtResource("1_jbn2y")
@@ -351,6 +354,14 @@ collision_mask = 32
 [node name="CollisionShape2D" type="CollisionShape2D" parent="stomp_hitbox"]
 position = Vector2(0, -81)
 shape = SubResource("RectangleShape2D_l02rq")
+
+[node name="block_detector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="block_detector"]
+position = Vector2(0, -842.5)
+shape = SubResource("RectangleShape2D_jd7ey")
 
 [node name="InvincibilityEffect" parent="." instance=ExtResource("24_4sbhp")]
 visible = false
@@ -417,26 +428,106 @@ script = ExtResource("16_rwijp")
 to = NodePath("../../Grounded")
 event = &"on_floor"
 
-[node name="Animations" type="Node" parent="StateChart/root"]
+[node name="powerup_state" type="Node" parent="StateChart/root"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("small")
+
+[node name="small" type="Node" parent="StateChart/root/powerup_state"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Animations")
+
+[node name="on power_up" type="Node" parent="StateChart/root/powerup_state/small"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../big")
+event = &"power_up"
+
+[node name="Animations" type="Node" parent="StateChart/root/powerup_state/small"]
 script = ExtResource("14_tu1hp")
 initial_state = NodePath("idle_small")
 
-[node name="idle_small" type="Node" parent="StateChart/root/Animations"]
+[node name="idle_small" type="Node" parent="StateChart/root/powerup_state/small/Animations"]
 script = ExtResource("17_1q33g")
-animation_player = NodePath("../../../../AnimationPlayer")
+animation_player = NodePath("../../../../../../AnimationPlayer")
 
-[node name="on moving" type="Node" parent="StateChart/root/Animations/idle_small"]
+[node name="on moving" type="Node" parent="StateChart/root/powerup_state/small/Animations/idle_small"]
 script = ExtResource("16_rwijp")
 to = NodePath("../../run_small")
 event = &"moving"
 
-[node name="run_small" type="Node" parent="StateChart/root/Animations"]
+[node name="run_small" type="Node" parent="StateChart/root/powerup_state/small/Animations"]
 script = ExtResource("17_1q33g")
-animation_player = NodePath("../../../../AnimationPlayer")
+animation_player = NodePath("../../../../../../AnimationPlayer")
 
-[node name="on idle" type="Node" parent="StateChart/root/Animations/run_small"]
+[node name="on idle" type="Node" parent="StateChart/root/powerup_state/small/Animations/run_small"]
 script = ExtResource("16_rwijp")
 to = NodePath("../../idle_small")
+event = &"idle"
+
+[node name="big" type="Node" parent="StateChart/root/powerup_state"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Animations")
+
+[node name="on power_down" type="Node" parent="StateChart/root/powerup_state/big"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../small")
+event = &"power_down"
+
+[node name="on power_up" type="Node" parent="StateChart/root/powerup_state/big"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../fire")
+event = &"power_up"
+
+[node name="Animations" type="Node" parent="StateChart/root/powerup_state/big"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("idle_big")
+
+[node name="idle_big" type="Node" parent="StateChart/root/powerup_state/big/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../../../AnimationPlayer")
+
+[node name="on moving" type="Node" parent="StateChart/root/powerup_state/big/Animations/idle_big"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../run_big")
+event = &"moving"
+
+[node name="run_big" type="Node" parent="StateChart/root/powerup_state/big/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../../../AnimationPlayer")
+
+[node name="on idle" type="Node" parent="StateChart/root/powerup_state/big/Animations/run_big"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../idle_big")
+event = &"idle"
+
+[node name="fire" type="Node" parent="StateChart/root/powerup_state"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("Animations")
+
+[node name="on power_down" type="Node" parent="StateChart/root/powerup_state/fire"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../big")
+event = &"power_down"
+
+[node name="Animations" type="Node" parent="StateChart/root/powerup_state/fire"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("idle_fire")
+
+[node name="idle_fire" type="Node" parent="StateChart/root/powerup_state/fire/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../../../AnimationPlayer")
+
+[node name="on moving" type="Node" parent="StateChart/root/powerup_state/fire/Animations/idle_fire"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../run_fire")
+event = &"moving"
+
+[node name="run_fire" type="Node" parent="StateChart/root/powerup_state/fire/Animations"]
+script = ExtResource("17_1q33g")
+animation_player = NodePath("../../../../../../AnimationPlayer")
+
+[node name="on idle" type="Node" parent="StateChart/root/powerup_state/fire/Animations/run_fire"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../idle_fire")
 event = &"idle"
 
 [connection signal="area_entered" from="stomp_hitbox" to="." method="_on_stomp_hitbox_area_entered"]

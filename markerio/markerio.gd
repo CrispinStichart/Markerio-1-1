@@ -19,11 +19,8 @@ var invincible := false:
 		set_collision_mask_value(4, not invincible)
 var has_star := false
 
-var move_animation = "run_small"
-var idle_animation = "idle_small"
 
 var gravity := Constants.GRAVITY
-
 
 
 
@@ -39,6 +36,8 @@ func _physics_process(delta):
 
 	$stomp_hitbox.position = velocity*delta
 
+	handle_block_collision()
+
 
 
 func handle_block_collision():
@@ -48,43 +47,44 @@ func handle_block_collision():
 	a raycast in the center, because he should still be able to hit blocks on the edge of his
 	hitbox.
 	"""
-	pass
-	#var blocks:Array[Block] = []
-	#for i in get_slide_collision_count():
-		#var collision: KinematicCollision2D = get_slide_collision(i)
-		## Look for collisions with blocks that are from below. (snappedf is basically round()).
-		#if snappedf(collision.get_angle(), .01) == 3.14:
-			#for node in $block_detector.get_overlapping_bodies():
-				#if node is Block:
-					#blocks.append(node)
-			## Make Markerio fall down, and disable his jump.
-			#velocity.y = 0
-			#remaining_jump_height = 0
-			#break
-#
-	#if blocks:
-		#var closest:Block = blocks[0]
-		## This could be an if/else if I could garantee that there would be a max of two blocks,
-		## like in real Mario. Which is currently true for this game. But I want to leave myself
-		## open for changing that.
-		#for i in range(1, len(blocks)):
-			#var block: Block = blocks[i]
-			#if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
-				#closest = block
-#
+	var blocks:Array[Block] = []
+	for i in get_slide_collision_count():
+		var collision: KinematicCollision2D = get_slide_collision(i)
+		# Look for collisions with blocks that are from below. (snappedf is basically round()).
+		if snappedf(collision.get_angle(), .01) == 3.14:
+			for node in $block_detector.get_overlapping_bodies():
+				print(node)
+				if node is Block:
+					blocks.append(node)
+			# Make Markerio fall down
+			velocity.y = 0
+			break
+
+	if blocks:
+		var closest:Block = blocks[0]
+		# This could be an if/else if I could garantee that there would be a max of two blocks,
+		# like in real Mario. Which is currently true for this game. But I want to leave myself
+		# open for changing that.
+		for i in range(1, len(blocks)):
+			var block: Block = blocks[i]
+			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
+				closest = block
+
 		#if closest is BreakableBrick and power_level_state_machine.current_state == 0:
-			#closest.bump()
-		#else:
-			#closest.activate()
+
+		if closest is BreakableBrick:
+			closest.bump()
+		else:
+			closest.activate()
 
 
 func eat_mushroom():
-	pass
+	state_chart.send_event("power_up")
 
 
 
 func eat_fire_flower():
-	pass
+	state_chart.send_event("power_up")
 
 
 func eat_star():
@@ -95,6 +95,7 @@ func eat_star():
 
 func hit():
 	print("damage")
+	state_chart.send_event("power_down")
 	#if not invincible:
 		#power_level_state_machine.level_down()
 		#$invincibility_timer.set_invincibility()
@@ -227,3 +228,15 @@ func _on_grounded_state_processing(_delta: float) -> void:
 		sprite.flip_h = true
 	elif velocity.x > 0:
 		sprite.flip_h = false
+
+
+func _on_small_state_entered():
+	pass # Replace with function body.
+
+
+func _on_big_state_entered():
+	pass # Replace with function body.
+
+
+func _on_fire_state_entered():
+	pass # Replace with function body.

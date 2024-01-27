@@ -41,21 +41,31 @@ func _physics_process(_delta):
 func collision_no_stuck_on_eachother():
 	for i in get_slide_collision_count():
 		var collision := get_slide_collision(i)
-		var collider := collision.get_collider()
-
-		var is_facing_object = signf(position.x - collider.position.x) == -direction
+		var is_facing_object = signf(position.x - collision.get_position().x) == -direction
 
 		if is_on_wall() and is_facing_object:
 			direction *= -1
 
 
 func hit():
+	"Hit called"
 	$CollisionShape2D.set_deferred("disabled", true)
+	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+	$hitbox/CollisionShape2D.set_deferred("disabled", true)
 	sprite.scale.y = .15
-	sprite.position.y = 32 - (64*.15) / 2
-	#max_walk_speed = 0
-	#process_mode = Node.PROCESS_MODE_DISABLED
+	# TODO: move them down so they squish flat against ground.
+	direction = 0
 	get_tree().create_timer(1).timeout.connect(queue_free)
+
+func tumble_die():
+	print("tumble die called")
+	"""This is called when hit by shell, fireball, or star."""
+	$CollisionShape2D.set_deferred("disabled", true)
+	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+	$hitbox/CollisionShape2D.set_deferred("disabled", true)
+	get_tree().create_timer(1).timeout.connect(queue_free)
+	velocity.y = -Constants.BLOCK_SIZE*80
+	sprite.flip_v = true
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:

@@ -40,8 +40,9 @@ func die():
 
 func _on_hitbox_area_entered(area: Area2D):
 	var body = area.get_parent()
-	print("hit: ", body)
-	if body.has_method("hit"):
+	if body.has_method("tumble_die"):
+		body.tumble_die()
+	elif body.has_method("hit"):
 		body.hit()
 
 
@@ -54,9 +55,15 @@ func _on_walking_state_physics_processing(_delta: float) -> void:
 
 	move_and_slide()
 
-	if is_on_wall() or (saw_ground and not ground_checker.is_colliding()):
-		direction *= -1
-		saw_ground = false
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		var is_facing_object = signf(position.x - collision.get_position().x) == -direction
+
+		if (is_on_wall() and is_facing_object) or (saw_ground and not ground_checker.is_colliding()):
+			direction *= -1
+			saw_ground = false
+
+
 
 
 
@@ -70,10 +77,10 @@ func _on_in_shell_moving_state_physics_processing(_delta: float) -> void:
 
 
 		var is_facing_object = signf(position.x - collision.get_position().x) == -direction
-	
+
 		if is_on_wall() and is_facing_object:
 			direction *= -1
-			
+
 
 
 func _on_walking_state_entered() -> void:

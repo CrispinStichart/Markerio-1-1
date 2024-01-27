@@ -15,7 +15,7 @@ var secret_level_viewport_pos = Vector2(323, 91)
 func _ready():
 	for child in $still_backgrounds.get_children():
 		child.visible = false
-	
+
 	$still_backgrounds/beginning.visible = true
 	$SubViewportContainer.visible = false
 	$SubViewportContainer/SubViewport/Game.meta_game = self
@@ -33,7 +33,7 @@ func _on_placing_blank_whiteboard_finished():
 
 func _on_removing_instructions_finished():
 	state_chart.send_event("next")
-	
+
 
 func swap_to_secret_level():
 	state_chart.send_event("secret_level")
@@ -51,7 +51,7 @@ func show_end_screen():
 func _on_waiting_for_input_state_input(event):
 	if event is InputEventKey and event.pressed:
 		state_chart.send_event("next")
-		
+
 
 
 func _on_pregame_state_entered():
@@ -119,7 +119,7 @@ func _on_playing_secret_level_state_exited():
 	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	secret_level_exited.emit()
 
-# TODO: removing blank whiteboard will trigger "next" event due to signal on 
+# TODO: removing blank whiteboard will trigger "next" event due to signal on
 # video player finished
 func _on_placing_ending_state_entered():
 	$SubViewportContainer.visible = false

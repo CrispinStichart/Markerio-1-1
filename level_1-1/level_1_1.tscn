@@ -177,7 +177,7 @@ position = Vector2(20016, -1324)
 position = Vector2(21230, -1315)
 
 [node name="Koopa" parent="enemies" instance=ExtResource("14_x2rod")]
-position = Vector2(55825, -1340)
+position = Vector2(42353, -1372)
 
 [node name="Goomba5" parent="enemies" instance=ExtResource("3_qkdst")]
 position = Vector2(36720, -5384)
@@ -204,10 +204,10 @@ position = Vector2(47205, -1414)
 position = Vector2(48070, -1414)
 
 [node name="Goomba15" parent="enemies" instance=ExtResource("3_qkdst")]
-position = Vector2(40819, -1361)
+position = Vector2(43619, -1329)
 
 [node name="Goomba16" parent="enemies" instance=ExtResource("3_qkdst")]
-position = Vector2(40040, -1340)
+position = Vector2(45576, -1420)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("7_0qp0f")
@@ -258,7 +258,7 @@ position = Vector2(81416, -816)
 position = Vector2(-3608, -11056)
 
 [node name="Markerio" parent="." instance=ExtResource("12_g1v4r")]
-position = Vector2(53515, -1686)
+position = Vector2(39579, -2150)
 
 [node name="markerio_spawn_point" type="Marker2D" parent="."]
 position = Vector2(-976, -1832)
