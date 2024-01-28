@@ -8,17 +8,19 @@ signal secret_level_exited
 
 
 @onready var state_chart = $StateChart
-
+@onready var sub_viewport_container := $mask/SubViewportContainer
+@onready var game := $mask/SubViewportContainer/SubViewport/Game
 var normal_viewport_pos = Vector2(523, 234)
 var secret_level_viewport_pos = Vector2(323, 91)
+
 
 func _ready():
 	for child in $still_backgrounds.get_children():
 		child.visible = false
 
 	$still_backgrounds/beginning.visible = true
-	$SubViewportContainer.visible = false
-	$SubViewportContainer/SubViewport/Game.meta_game = self
+	sub_viewport_container.visible = false
+	game.meta_game = self
 
 
 
@@ -90,12 +92,12 @@ func _on_removing_blank_whiteboard_finished():
 func _on_playing_normal_level_state_entered():
 	$still_backgrounds/blank_whiteboard.visible = true
 	$AnimationPlayer.play("normal_level")
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	$SubViewportContainer.visible = true
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+	sub_viewport_container.visible = true
 
 
 func _on_playing_secret_level_state_entered():
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_blank_whiteboard.play()
 	await $videos/removing_blank_whiteboard.finished
 	$videos/placing_secret_level.play()
@@ -103,12 +105,12 @@ func _on_playing_secret_level_state_entered():
 	$still_backgrounds/blank_whiteboard.visible = false
 	await $videos/placing_secret_level.finished
 	$AnimationPlayer.play("secret_level")
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	secret_level_entered.emit()
 
 
 func _on_playing_secret_level_state_exited():
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_secret_level.play()
 	await $videos/removing_secret_level.finished
 	$videos/placing_blank_whiteboard.play()
@@ -116,14 +118,14 @@ func _on_playing_secret_level_state_exited():
 	$still_backgrounds/blank_whiteboard.visible = true
 	await $videos/placing_blank_whiteboard.finished
 	$AnimationPlayer.play("normal_level")
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	secret_level_exited.emit()
 
 # TODO: removing blank whiteboard will trigger "next" event due to signal on
 # video player finished
 func _on_placing_ending_state_entered():
-	$SubViewportContainer.visible = false
-	$SubViewportContainer.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+	sub_viewport_container.visible = false
+	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	$videos/removing_blank_whiteboard.play()
 
 	await $videos/removing_blank_whiteboard.finished

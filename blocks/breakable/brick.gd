@@ -13,7 +13,7 @@ func activate(item_wanted: String = ""):
 	if activated:
 		return
 	if item:
-		if item is Shroom and item_wanted == "FireFlower":
+		if item.is_class("Shroom") and item_wanted == "FireFlower":
 			item = secondary_item
 		spit_out_item()
 		return

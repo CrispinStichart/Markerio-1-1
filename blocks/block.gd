@@ -26,7 +26,7 @@ func produce_item():
 	if item == null:
 		produce_coin()
 		return
-	elif item is Coin:
+	elif item.is_class("Coin"):
 		# todo: make this do multiple coin logic
 		produce_coin()
 		return
@@ -41,5 +41,5 @@ func produce_item():
 
 func add_item(item_to_add: Node2D):
 	item = item_to_add
-	if item is Shroom:
+	if "item_name" in item and item.item_name == "Shroom":
 		secondary_item = InstanceManager.create("FireFlower")

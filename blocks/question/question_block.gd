@@ -4,6 +4,7 @@ extends Block
 
 func activate(item_wanted: String = ""):
 	if not activated:
+
 		if item and item is Shroom and item_wanted == "FireFlower":
 			item = secondary_item
 		produce_item()

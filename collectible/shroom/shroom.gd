@@ -5,6 +5,7 @@ extends CharacterBody2D
 # a block.
 
 var move_speed: float = Constants.BLOCK_SIZE * 3
+var item_name = "Shroom"
 
 @export var speed: float = move_speed:
 	set(new_speed):
@@ -17,6 +18,6 @@ func fully_extruded():
 
 
 func _on_pickup_area_body_entered(body):
-	if body is Markerio:
+	if body.has_method("eat_mushroom"):
 		body.eat_mushroom()
 		queue_free()

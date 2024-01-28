@@ -12,6 +12,7 @@ var jump_velocity: float = 9102
 var can_jump := true
 var jumping := false
 
+var can_break_bricks := false
 
 var invincible := false:
 	set(value):
@@ -72,9 +73,7 @@ func handle_block_collision():
 			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
 				closest = block
 
-		#if closest is BreakableBrick and power_level_state_machine.current_state == 0:
-
-		if closest is BreakableBrick:
+		if closest is BreakableBrick and not can_break_bricks:
 			closest.bump()
 		else:
 			closest.activate(powerup_wanted)
@@ -143,7 +142,6 @@ func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
 		var p2 := global_position + velocity * get_physics_process_delta_time()
 		# The vertical offset of the Goomba collision shape is 51.
 		var y: float = area.global_position.y - area.get_children()[0].shape.size.y/2
-		print("y is: ", y)
 		var rise := p1.y - p2.y
 		var run := p1.x - p2.x
 		# In the normal case, we have to use the y = mx + b formula.
@@ -212,7 +210,6 @@ func _on_airborne_state_physics_processing(delta: float) -> void:
 
 
 func _on_pre_apex_state_physics_processing(_delta: float) -> void:
-	print("velocity: ", velocity.y)
 	if velocity.y > 0 or Input.is_action_just_released("jump"):
 		state_chart.send_event("started_falling")
 
@@ -234,10 +231,13 @@ func _on_grounded_state_processing(_delta: float) -> void:
 
 func _on_small_state_entered():
 	powerup_wanted = "Shroom"
+	can_break_bricks = false
 
 
 func _on_big_state_entered():
 	powerup_wanted = "FireFlower"
+	can_break_bricks = true
 
 func _on_fire_state_entered():
 	powerup_wanted = "FireFlower"
+	can_break_bricks = true
