@@ -18,7 +18,7 @@ var invincible := false:
 	set(value):
 		invincible = value
 		set_collision_mask_value(4, not invincible)
-var has_star := false
+var has_star := true
 
 
 var gravity := Constants.GRAVITY
