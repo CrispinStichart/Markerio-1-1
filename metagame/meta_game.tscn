@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bvbnuwp8e5k0o" path="res://live_action_video/still_frames/secret_area_2.1.5.jpg" id="5_wwfoy"]
 [ext_resource type="Texture2D" uid="uid://bih38075flf2e" path="res://live_action_video/still_frames/ending_2.1.6.jpg" id="6_6xpfr"]
 [ext_resource type="Texture2D" uid="uid://ljtfrwst3gcx" path="res://live_action_video/still_frames/beginning_2.1.1.jpg" id="7_hseat"]
+[ext_resource type="Texture2D" uid="uid://bw7e7smxrla72" path="res://sprite_resources/blank_whiteboard_mask.png" id="8_6yw1f"]
 [ext_resource type="VideoStream" path="res://live_action_video/Removing Instructions.ogv" id="11_gtxvt"]
 [ext_resource type="VideoStream" path="res://live_action_video/Removing_Empty_Whiteboard.ogv" id="12_lxyut"]
 [ext_resource type="VideoStream" path="res://live_action_video/Placing Secret Area.ogv" id="13_x0046"]
@@ -20,14 +21,13 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="18_bl8ow"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="19_0y2cq"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="20_egdgn"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="21_3pvat"]
 
 [sub_resource type="Animation" id="Animation_o87ss"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SubViewportContainer:size")
+tracks/0/path = NodePath("mask/SubViewportContainer:size")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -39,7 +39,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SubViewportContainer:position")
+tracks/1/path = NodePath("mask/SubViewportContainer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -51,7 +51,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SubViewportContainer:scale")
+tracks/2/path = NodePath("mask/SubViewportContainer:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -63,7 +63,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SubViewportContainer/SubViewport:size")
+tracks/3/path = NodePath("mask/SubViewportContainer/SubViewport:size")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -78,7 +78,7 @@ resource_name = "normal_level"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SubViewportContainer:size")
+tracks/0/path = NodePath("mask/SubViewportContainer:size")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -90,31 +90,31 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SubViewportContainer:position")
+tracks/1/path = NodePath("mask/SubViewportContainer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(524, 231)]
+"values": [Vector2(-449, -323)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SubViewportContainer:scale")
+tracks/2/path = NodePath("mask/SubViewportContainer:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.688082, 0.688082)]
+"values": [Vector2(0.717898, 0.717898)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SubViewportContainer/SubViewport:size")
+tracks/3/path = NodePath("mask/SubViewportContainer/SubViewport:size")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -129,7 +129,7 @@ resource_name = "secret_level"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SubViewportContainer:size")
+tracks/0/path = NodePath("mask/SubViewportContainer:size")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -141,7 +141,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SubViewportContainer:position")
+tracks/1/path = NodePath("mask/SubViewportContainer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -153,7 +153,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SubViewportContainer:scale")
+tracks/2/path = NodePath("mask/SubViewportContainer:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -165,7 +165,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SubViewportContainer/SubViewport:size")
+tracks/3/path = NodePath("mask/SubViewportContainer/SubViewport:size")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -192,7 +192,6 @@ position = Vector2(960, 540)
 texture = ExtResource("2_mjp0e")
 
 [node name="blank_whiteboard" type="Sprite2D" parent="still_backgrounds"]
-visible = false
 position = Vector2(960, 540)
 texture = ExtResource("2_lmunj")
 
@@ -216,7 +215,12 @@ visible = false
 position = Vector2(960, 540)
 texture = ExtResource("7_hseat")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="mask" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(960, 540)
+texture = ExtResource("8_6yw1f")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="mask"]
 process_mode = 4
 offset_left = 323.0
 offset_top = 91.0
@@ -224,13 +228,13 @@ offset_right = 1957.0
 offset_bottom = 1361.0
 scale = Vector2(0.688082, 0.688082)
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="mask/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1080, 1080)
 render_target_update_mode = 4
 
-[node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_u06vd")]
+[node name="Game" parent="mask/SubViewportContainer/SubViewport" instance=ExtResource("3_u06vd")]
 position = Vector2(232, 232)
 scale = Vector2(0.655, 0.655)
 
@@ -373,14 +377,6 @@ script = ExtResource("19_0y2cq")
 script = ExtResource("20_egdgn")
 to = NodePath("../../placing whiteboard")
 event = &"next"
-
-[node name="StateChartDebugger" parent="." instance=ExtResource("21_3pvat")]
-z_index = 100
-offset_left = 1138.0
-offset_top = 35.0
-offset_right = 1894.0
-offset_bottom = 873.0
-initial_node_to_watch = NodePath("../StateChart")
 
 [connection signal="finished" from="videos/placing_blank_whiteboard" to="." method="_on_placing_blank_whiteboard_finished"]
 [connection signal="finished" from="videos/intro" to="." method="_on_intro_finished"]

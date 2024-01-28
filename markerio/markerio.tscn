@@ -922,7 +922,7 @@ event = &"on_floor"
 
 [node name="powerup_state" type="Node" parent="StateChart/root"]
 script = ExtResource("14_tu1hp")
-initial_state = NodePath("small")
+initial_state = NodePath("fire")
 
 [node name="small" type="Node" parent="StateChart/root/powerup_state"]
 script = ExtResource("14_tu1hp")
@@ -1033,3 +1033,4 @@ event = &"idle"
 [connection signal="state_entered" from="StateChart/root/powerup_state/small" to="." method="_on_small_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/big" to="." method="_on_big_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_entered"]
+[connection signal="state_input" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_input"]

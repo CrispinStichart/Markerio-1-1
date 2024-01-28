@@ -117,7 +117,8 @@ func throw_fireball():
 	var fireball: Fireball = InstanceManager.create("Fireball")
 	fireball.direction = -1 if sprite.flip_h else 1
 	add_sibling(fireball)
-	fireball.position = position
+	fireball.global_position = global_position
+	fireball.global_position.y -= 800
 
 func disable_input():
 	pass
@@ -241,3 +242,8 @@ func _on_big_state_entered():
 func _on_fire_state_entered():
 	powerup_wanted = "FireFlower"
 	can_break_bricks = true
+
+
+func _on_fire_state_input(_event):
+	if Input.is_action_just_pressed("run"):
+		throw_fireball()

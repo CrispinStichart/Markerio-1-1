@@ -85,28 +85,40 @@ func add_unbreakable_block(pos: Vector2i):
 	tilemap.set_cell(0, pos, 0, Vector2i(1, 0))
 
 func secret_area_entered():
+	print("Secret area entered")
 	if meta_game:
 		meta_game.swap_to_secret_level()
 		await meta_game.secret_level_entered
 
-	$GameLayer.remove_child(level)
-	level.queue_free()
-	level = null
+
 
 	secret_level = secret_level_scene.instantiate()
+	print("Setting secret level to: ", secret_level)
 	$GameLayer.add_child(secret_level)
+	var markerio = secret_level.get_node("Markerio")
+	var secret_level_position = markerio.global_position
+	secret_level.remove_child(markerio)
+	markerio = level.get_node("Markerio")
+	markerio.reparent(secret_level)
+	markerio.global_position = secret_level_position
+	markerio.set_collision(true)
+	markerio.enable_input()
 	secret_level.secret_area_exited.connect(secret_area_left)
+	level.process_mode = Node.PROCESS_MODE_DISABLED
+	level.visible = false
 
 
 func secret_area_left():
+	print("Secret area left!")
 	if meta_game:
 		meta_game.swap_back_to_main_level()
 		await meta_game.secret_level_exited
 
-	call_deferred("deferred_stuff")
-
-func deferred_stuff():
-	$GameLayer.remove_child(secret_level)
+	secret_level.get_node("Markerio").reparent(level)
+	$GameLayer.call_deferred("remove_child", secret_level)
 	secret_level.queue_free()
 	secret_level = null
-	reset_level(true)
+	level.process_mode = Node.PROCESS_MODE_ALWAYS
+	level.visible = true
+	level.exit_warp_pipe()
+

@@ -41,11 +41,19 @@ func enter_secret_area():
 	markerio.z_index = -2
 	t = get_tree().create_tween()
 	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y+400), 1)
-	t.tween_callback(func(): secret_area_entered.emit())
+	t.tween_callback(func():
+		print("callbkac that should be kicking off secret level")
+		markerio.remove_child(camera)
+		camera.queue_free()
+		secret_area_entered.emit()
+	)
 
 
 func exit_warp_pipe():
 	print("exiting warp pipe")
+	camera = MarkerioCamera.new($markerio_spawn_point.position)
+	camera.name = "MarkerioCamera"
+	markerio.add_child(camera)
 	markerio.disable_input()
 	markerio.set_collision(false)
 	markerio.z_index = -2

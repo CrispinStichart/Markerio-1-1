@@ -27,14 +27,14 @@ func _process(_delta):
 		sprite.offset.x = x_offset
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	velocity.x = direction * speed
 
 	move_and_slide()
 	collision_no_stuck_on_eachother()
 
 	if not is_on_floor():
-		velocity.y += Constants.GRAVITY
+		velocity.y += Constants.GRAVITY * delta
 		velocity.y = min(velocity.y, Constants.MAX_FALL_SPEED)
 
 
@@ -64,8 +64,9 @@ func tumble_die():
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
 	$hitbox/CollisionShape2D.set_deferred("disabled", true)
 	get_tree().create_timer(1).timeout.connect(queue_free)
-	velocity.y = -Constants.BLOCK_SIZE*80
+	velocity.y = -Constants.BLOCK_SIZE*8
 	sprite.flip_v = true
+	z_index = 1000
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
