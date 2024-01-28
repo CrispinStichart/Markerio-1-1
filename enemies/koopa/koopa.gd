@@ -23,8 +23,8 @@ func _process(_delta):
 		sprite.flip_h = false
 
 
-func _physics_process(_delta: float) -> void:
-	velocity.y += Constants.GRAVITY
+func _physics_process(delta: float) -> void:
+	velocity.y += Constants.GRAVITY * delta
 
 func hit():
 	state_chart.send_event("hit")
@@ -36,6 +36,18 @@ func die():
 	# Doesn't work and shouldn't be needed, since we're disabling monitoring...
 	$AnimatedSprite2D.flip_v = true
 	velocity = Vector2(1, -1) * Constants.BLOCK_SIZE * 20
+
+
+func tumble_die():
+	print("tumble die called")
+	"""This is called when hit by shell, fireball, or star."""
+	$CollisionShape2D.set_deferred("disabled", true)
+	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+	$hitbox/CollisionShape2D.set_deferred("disabled", true)
+	get_tree().create_timer(1).timeout.connect(queue_free)
+	velocity.y = -Constants.BLOCK_SIZE*8
+	sprite.flip_v = true
+	z_index = 1000
 
 
 func _on_hitbox_area_entered(area: Area2D):
