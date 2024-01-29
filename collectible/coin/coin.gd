@@ -2,6 +2,7 @@ class_name Coin
 extends Node2D
 
 var tile_pos: Vector2i = -Vector2i.ONE
+var item_name = "coin"
 
 func pick_up():
 	SignalBus.send_signal("coin_collected")

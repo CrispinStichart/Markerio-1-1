@@ -12,7 +12,7 @@ const secret_level_scene := preload("res://secret_level/secret_level.tscn")
 var level:Level = null
 var secret_level:SecretLevel = null
 
-var lives:int = 5
+var lives: int = 5
 var coins: int = 0
 var score: int = 0
 
@@ -25,7 +25,7 @@ func _ready():
 	level.secret_area_entered.connect(secret_area_entered)
 
 	SignalBus.listen("coin_collected", collect_coin)
-
+	SignalBus.listen("coin_block_expired", add_unbreakable_block)
 
 
 func reset_level(warp_pipe := false):
@@ -33,9 +33,6 @@ func reset_level(warp_pipe := false):
 	if level:
 		$GameLayer.remove_child(level)
 		level.queue_free()
-
-
-
 
 	level = level_scene.instantiate()
 	print("adding level")
@@ -50,11 +47,9 @@ func reset_level(warp_pipe := false):
 	)
 
 	for block:Block in level.get_node("TileMap/blocks").get_children():
-		if block is CoinBlock:
-			block.coin_block_expired.connect(add_unbreakable_block)
+
 		if block is BreakableBrick:
 			block.expired.connect(add_unbreakable_block)
-
 
 	for enemy in level.get_node("enemies").get_children():
 		enemy.process_mode = PROCESS_MODE_DISABLED
