@@ -18,7 +18,8 @@ var invincible := false:
 	set(value):
 		invincible = value
 		set_collision_mask_value(4, not invincible)
-var has_star := true
+
+var has_star := false
 
 
 var gravity := Constants.GRAVITY
@@ -81,11 +82,12 @@ func handle_block_collision():
 
 func eat_mushroom():
 	state_chart.send_event("power_up")
-
+	Sound.play_effect("crunch")
 
 
 func eat_fire_flower():
 	state_chart.send_event("power_up")
+	Sound.play_effect("fireball")
 
 
 func eat_star():
@@ -119,6 +121,7 @@ func throw_fireball():
 	add_sibling(fireball)
 	fireball.global_position = global_position
 	fireball.global_position.y -= 800
+	Sound.play_effect("fireball")
 
 func disable_input():
 	pass
@@ -141,22 +144,24 @@ func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
 		body.hit()
 		var p1 := global_position
 		var p2 := global_position + velocity * get_physics_process_delta_time()
-		# The vertical offset of the Goomba collision shape is 51.
 		var y: float = area.global_position.y - area.get_children()[0].shape.size.y/2
 		var rise := p1.y - p2.y
 		var run := p1.x - p2.x
 		# In the normal case, we have to use the y = mx + b formula.
 		var x: float
-		if run != 0:
+		if run != 0 and rise != 0:
 			var m := rise/run
 			var b := p1.y - (m * p1.x)
 			x = (y-b)/m
-		# But for a straight-up-and-down jump, the run will be zero, and the
-		# formula would result in division by zero. In this special case, x
+		# But for a straight-up-and-down jump, or a lateral collision (easily triggered
+		# by mario stepping off of a 1-high block into a goomba) the rise or run would be
+		# zero, and the formula would result in division by zero. In this special case, x
 		# is just the position of Mario.
 		else:
 			x = p1.x
 		var point_of_impact = Vector2(x, y)
+		print("X and y: ", x, ", ", y)
+
 		# Now we can set mario's position to this point of impact, which is where his motion
 		# was interupted by the goomba's skull, and make him bounce.
 		global_position = point_of_impact

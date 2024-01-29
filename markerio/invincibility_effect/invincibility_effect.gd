@@ -8,12 +8,18 @@ var flash_duration: float = .1
 var t: Tween
 
 
-func _ready():
-	t = create_tween()
-	t.tween_property(markerio_sprite, "self_modulate", COLOR_END, flash_duration)
-	t.tween_property(markerio_sprite, "self_modulate", COLOR_START, flash_duration)
-	t.set_loops()
 
 func _process(_delta):
 	emitting = markerio.has_star
 	visible = markerio.has_star
+
+	if emitting and not t:
+		t = create_tween()
+		t.tween_property(markerio_sprite, "self_modulate", COLOR_END, flash_duration)
+		t.tween_property(markerio_sprite, "self_modulate", COLOR_START, flash_duration)
+		t.set_loops()
+	elif not emitting:
+		if t:
+			t.stop()
+		t = null
+		markerio_sprite.self_modulate = Color.WHITE

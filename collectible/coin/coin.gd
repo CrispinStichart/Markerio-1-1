@@ -1,12 +1,10 @@
 class_name Coin
 extends Node2D
 
-signal coin_collected
-
 var tile_pos: Vector2i = -Vector2i.ONE
 
 func pick_up():
-	coin_collected.emit()
+	SignalBus.send_signal("coin_collected")
 	queue_free()
 
 

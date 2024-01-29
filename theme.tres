@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://drlwg23qnvxim"]
+
+[ext_resource type="FontFile" uid="uid://h4kb6bn8fu6h" path="res://font.ttf" id="1_15dqf"]
+
+[resource]
+Label/font_sizes/font_size = 40
+Label/fonts/font = ExtResource("1_15dqf")

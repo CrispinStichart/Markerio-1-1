@@ -5,6 +5,8 @@ var t: Tween
 
 func _ready():
 	$Control/Wasted.visible = false
+	SignalBus.listen("update_coins", update_coins)
+	SignalBus.listen("update_score", update_score)
 
 
 func show_death_screen(callback: Callable):
@@ -12,3 +14,10 @@ func show_death_screen(callback: Callable):
 	t = create_tween()
 	t.tween_property($Control/Wasted, "visible", false, 2)
 	t.tween_callback(callback)
+
+
+func update_score(score: int):
+	$Control/score.text = str(score).lpad(6, "0")
+
+func update_coins(coins: int):
+	$Control/coins.text = str(coins).lpad(3, "0")

@@ -21,6 +21,8 @@ func produce_coin():
 	t.tween_property(item, "position", item.position - Vector2(0, Constants.BLOCK_SIZE * 3), .5)
 	t.tween_callback(item.queue_free)
 
+	SignalBus.send_signal("coin_collected")
+
 
 func produce_item():
 	if item == null:

@@ -850,13 +850,13 @@ position = Vector2(0, -842.5)
 shape = SubResource("RectangleShape2D_jd7ey")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(2, 2, 0, 1)
 position = Vector2(0, -708.315)
 texture = ExtResource("2_b7xe3")
 hframes = 5
 vframes = 3
 
 [node name="InvincibilityEffect" parent="." instance=ExtResource("24_4sbhp")]
+visible = false
 position = Vector2(-8, -676)
 script = ExtResource("24_eusmg")
 

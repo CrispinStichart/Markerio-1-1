@@ -20,9 +20,11 @@ var meta_game: MetaGame
 
 
 func _ready():
-	print("The game is ready! Metagame is: ", meta_game)
+	Sound.play_music("chill_music")
 	reset_level()
 	level.secret_area_entered.connect(secret_area_entered)
+
+	SignalBus.listen("coin_collected", collect_coin)
 
 
 
@@ -53,6 +55,7 @@ func reset_level(warp_pipe := false):
 		if block is BreakableBrick:
 			block.expired.connect(add_unbreakable_block)
 
+
 	for enemy in level.get_node("enemies").get_children():
 		enemy.process_mode = PROCESS_MODE_DISABLED
 
@@ -70,10 +73,13 @@ func _physics_process(_delta):
 
 func collect_coin():
 	coins += 1
-	score += 10
-	if coins >= 100:
-		coins -= 100
-		lives += 1
+	SignalBus.send_signal("update_coins", [coins])
+	Sound.play_effect("coin_1")
+
+
+func add_to_score(score_to_add: int):
+	score += score_to_add
+	SignalBus.send_signal("update_score", [score])
 
 
 func markerio_death():
