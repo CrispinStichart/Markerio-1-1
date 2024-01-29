@@ -22,10 +22,20 @@ var meta_game: MetaGame
 func _ready():
 	Sound.play_music("chill_music")
 	reset_level()
-	level.secret_area_entered.connect(secret_area_entered)
+	SignalBus.listen("secret_level_entrance_triggered", secret_level_entrance_triggered)
+	SignalBus.listen("secret_level_exit_triggered", secret_level_exit_triggered)
+
+	SignalBus.listen("secret_level_entered", secret_level_entered)
+	SignalBus.listen("secret_level_exited", secret_level_exited)
 
 	SignalBus.listen("coin_collected", collect_coin)
 	SignalBus.listen("coin_block_expired", add_unbreakable_block)
+
+	SignalBus.listen("markerio_reached_flagpole", func():
+				if meta_game:
+					meta_game.show_end_screen()
+				call_deferred("reset_level")
+	)
 
 
 func reset_level(warp_pipe := false):
@@ -39,12 +49,6 @@ func reset_level(warp_pipe := false):
 	$GameLayer.add_child(level)
 	level.markerio.died.connect(markerio_death)
 
-	level.flag.markerio_reached_flagpole.connect(
-			func():
-				if meta_game:
-					meta_game.show_end_screen()
-				call_deferred("reset_level")
-	)
 
 	for block:Block in level.get_node("TileMap/blocks").get_children():
 
@@ -85,14 +89,14 @@ func add_unbreakable_block(pos: Vector2i):
 	var tilemap: TileMap = level.get_node("TileMap")
 	tilemap.set_cell(0, pos, 0, Vector2i(1, 0))
 
-func secret_area_entered():
-	print("Secret area entered")
+func secret_level_entrance_triggered():
+	print("Secret level entered")
 	if meta_game:
 		meta_game.swap_to_secret_level()
-		await meta_game.secret_level_entered
+	else:
+		SignalBus.send_signal("secret_level_entered")
 
-
-
+func secret_level_entered():
 	secret_level = secret_level_scene.instantiate()
 	print("Setting secret level to: ", secret_level)
 	$GameLayer.add_child(secret_level)
@@ -104,17 +108,18 @@ func secret_area_entered():
 	markerio.global_position = secret_level_position
 	markerio.set_collision(true)
 	markerio.enable_input()
-	secret_level.secret_area_exited.connect(secret_area_left)
 	level.process_mode = Node.PROCESS_MODE_DISABLED
 	level.visible = false
 
 
-func secret_area_left():
-	print("Secret area left!")
+func secret_level_exit_triggered():
 	if meta_game:
 		meta_game.swap_back_to_main_level()
-		await meta_game.secret_level_exited
+	else:
+		SignalBus.send_signal("secret_level_exited")
 
+
+func secret_level_exited():
 	secret_level.get_node("Markerio").reparent(level)
 	$GameLayer.call_deferred("remove_child", secret_level)
 	secret_level.queue_free()

@@ -7,7 +7,8 @@ func _ready():
 	$Control/Wasted.visible = false
 	SignalBus.listen("update_coins", update_coins)
 	SignalBus.listen("update_score", update_score)
-
+	SignalBus.listen("normal_level_entered", func(): $AnimationPlayer.play("normal_level"))
+	SignalBus.listen("secret_level_entered", func(): $AnimationPlayer.play("secret_level"))
 
 func show_death_screen(callback: Callable):
 	$Control/Wasted.visible = true

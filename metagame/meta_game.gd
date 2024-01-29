@@ -2,9 +2,6 @@ class_name MetaGame
 extends Node2D
 
 
-signal secret_level_entered
-signal secret_level_exited
-
 
 
 @onready var state_chart = $StateChart
@@ -101,12 +98,12 @@ func _on_playing_secret_level_state_entered():
 	$videos/removing_blank_whiteboard.play()
 	await $videos/removing_blank_whiteboard.finished
 	$videos/placing_secret_level.play()
-	$still_backgrounds/secret_area.visible = true
+	$still_backgrounds/secret_level.visible = true
 	$still_backgrounds/blank_whiteboard.visible = false
 	await $videos/placing_secret_level.finished
 	$AnimationPlayer.play("secret_level")
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	secret_level_entered.emit()
+	SignalBus.send_signal("secret_level_entered")
 
 
 func _on_playing_secret_level_state_exited():
@@ -114,12 +111,13 @@ func _on_playing_secret_level_state_exited():
 	$videos/removing_secret_level.play()
 	await $videos/removing_secret_level.finished
 	$videos/placing_blank_whiteboard.play()
-	$still_backgrounds/secret_area.visible = false
+	$still_backgrounds/secret_level.visible = false
 	$still_backgrounds/blank_whiteboard.visible = true
 	await $videos/placing_blank_whiteboard.finished
 	$AnimationPlayer.play("normal_level")
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	secret_level_exited.emit()
+	SignalBus.send_signal("secret_level_exited")
+	SignalBus.send_signal("normal_level_entered")
 
 # TODO: removing blank whiteboard will trigger "next" event due to signal on
 # video player finished

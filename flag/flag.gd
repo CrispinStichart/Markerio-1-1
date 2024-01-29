@@ -1,14 +1,12 @@
 class_name Flag
 extends Node2D
 
-signal markerio_reached_flagpole
 
 var markerio: Markerio
 var finished := false
 
 
 func _ready():
-	pass
 	$AnimationPlayer.animation_finished.connect(func(_animation_name): finished = true)
 
 
@@ -39,4 +37,4 @@ func _process(_delta):
 
 	if finished and markerio.position.x > $endpoint.global_position.x:
 		markerio.velocity.x = 0
-		markerio_reached_flagpole.emit()
+		SignalBus.send_signal("markerio_reached_flagpole")

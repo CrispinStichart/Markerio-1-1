@@ -148,7 +148,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(323, 91)]
+"values": [Vector2(-644, -452)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -185,6 +185,11 @@ _data = {
 [node name="MetaGame" type="Node2D"]
 script = ExtResource("1_2i5w0")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q6d0v")
+}
+
 [node name="still_backgrounds" type="Node2D" parent="."]
 
 [node name="blank_wall" type="Sprite2D" parent="still_backgrounds"]
@@ -200,8 +205,7 @@ visible = false
 position = Vector2(960, 540)
 texture = ExtResource("4_w3fsw")
 
-[node name="secret_area" type="Sprite2D" parent="still_backgrounds"]
-visible = false
+[node name="secret_level" type="Sprite2D" parent="still_backgrounds"]
 position = Vector2(960, 540)
 texture = ExtResource("5_wwfoy")
 
@@ -279,11 +283,6 @@ stream = ExtResource("15_qaeof")
 offset_right = 40.0
 offset_bottom = 40.0
 stream = ExtResource("16_wkqjy")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_q6d0v")
-}
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("17_6mle3")

@@ -1,7 +1,6 @@
 class_name SecretLevel
 extends Node2D
 
-signal secret_area_exited
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,6 +27,6 @@ func _on_leave_area_body_entered(_body):
 	if left:
 		return
 	left = true
-	print("Leaving secret area entered")
-	secret_area_exited.emit()
+	print("Leaving secret level entered")
+	SignalBus.send_signal("secret_level_exit_triggered")
 
