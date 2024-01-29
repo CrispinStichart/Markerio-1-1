@@ -165,8 +165,11 @@ func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
 		# Now we can set mario's position to this point of impact, which is where his motion
 		# was interupted by the goomba's skull, and make him bounce.
 		global_position = point_of_impact
-		velocity.y = -jump_velocity*1.5
+		print("before: ", velocity.y)
+		velocity.y = -jump_velocity
+		print("After: ", velocity.y)
 		state_chart.send_event("airborne_without_jump")
+		state_chart.send_event("started_rising")
 
 
 func _on_jump_enabled_state_physics_processing(_delta: float) -> void:
@@ -215,12 +218,12 @@ func _on_airborne_state_physics_processing(delta: float) -> void:
 
 
 
-func _on_pre_apex_state_physics_processing(_delta: float) -> void:
+func _on_normal_grav_state_physics_processing(_delta: float) -> void:
 	if velocity.y > 0 or Input.is_action_just_released("jump"):
 		state_chart.send_event("started_falling")
 
 
-func _on_post_apex_state_entered() -> void:
+func _on_heavy_grav_state_entered() -> void:
 	gravity = Constants.GRAVITY * 3
 
 
@@ -252,3 +255,4 @@ func _on_fire_state_entered():
 func _on_fire_state_input(_event):
 	if Input.is_action_just_pressed("run"):
 		throw_fireball()
+

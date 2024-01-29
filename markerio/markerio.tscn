@@ -916,6 +916,11 @@ event = &"started_falling"
 [node name="Heavy Grav" type="Node" parent="StateChart/root/Behavior/Airborne/Gravity Control"]
 script = ExtResource("15_2tqr0")
 
+[node name="on started_rising" type="Node" parent="StateChart/root/Behavior/Airborne/Gravity Control/Heavy Grav"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../Normal Grav")
+event = &"started_rising"
+
 [node name="On on_floor" type="Node" parent="StateChart/root/Behavior/Airborne"]
 script = ExtResource("16_rwijp")
 to = NodePath("../../Grounded")
@@ -1029,8 +1034,8 @@ event = &"idle"
 [connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne" to="." method="_on_airborne_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_pre_apex_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Heavy Grav" to="." method="_on_post_apex_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Heavy Grav" to="." method="_on_heavy_grav_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/small" to="." method="_on_small_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/big" to="." method="_on_big_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_entered"]
