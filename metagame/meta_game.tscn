@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bvbnuwp8e5k0o" path="res://live_action_video/still_frames/secret_area_2.1.5.jpg" id="5_wwfoy"]
 [ext_resource type="Texture2D" uid="uid://bih38075flf2e" path="res://live_action_video/still_frames/ending_2.1.6.jpg" id="6_6xpfr"]
 [ext_resource type="Texture2D" uid="uid://ljtfrwst3gcx" path="res://live_action_video/still_frames/beginning_2.1.1.jpg" id="7_hseat"]
-[ext_resource type="Texture2D" uid="uid://bw7e7smxrla72" path="res://sprite_resources/blank_whiteboard_mask.png" id="8_6yw1f"]
+[ext_resource type="Texture2D" uid="uid://cmefposwvpxd2" path="res://live_action_video/still_frames/blank_whiteboard_mask.png" id="8_wg1vf"]
 [ext_resource type="VideoStream" path="res://live_action_video/Removing Instructions.ogv" id="11_gtxvt"]
 [ext_resource type="VideoStream" path="res://live_action_video/Removing_Empty_Whiteboard.ogv" id="12_lxyut"]
 [ext_resource type="VideoStream" path="res://live_action_video/Placing Secret Area.ogv" id="13_x0046"]
@@ -72,6 +72,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [Vector2i(1080, 1080)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("mask:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("8_wg1vf")]
+}
 
 [sub_resource type="Animation" id="Animation_jtuf4"]
 resource_name = "normal_level"
@@ -122,6 +134,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [Vector2i(1080, 1080)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("mask:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("8_wg1vf")]
 }
 
 [sub_resource type="Animation" id="Animation_ng572"]
@@ -174,6 +198,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [Vector2i(2000, 1270)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("mask:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q6d0v"]
 _data = {
@@ -206,6 +242,7 @@ position = Vector2(960, 540)
 texture = ExtResource("4_w3fsw")
 
 [node name="secret_level" type="Sprite2D" parent="still_backgrounds"]
+visible = false
 position = Vector2(960, 540)
 texture = ExtResource("5_wwfoy")
 
@@ -222,7 +259,7 @@ texture = ExtResource("7_hseat")
 [node name="mask" type="Sprite2D" parent="."]
 clip_children = 1
 position = Vector2(960, 540)
-texture = ExtResource("8_6yw1f")
+texture = ExtResource("8_wg1vf")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="mask"]
 process_mode = 4
