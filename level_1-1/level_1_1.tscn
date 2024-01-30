@@ -258,7 +258,7 @@ position = Vector2(81416, -816)
 position = Vector2(-3608, -11056)
 
 [node name="Markerio" parent="." instance=ExtResource("12_g1v4r")]
-position = Vector2(23799, -3406)
+position = Vector2(85447, -5138)
 
 [node name="markerio_spawn_point" type="Marker2D" parent="."]
 position = Vector2(-976, -1832)

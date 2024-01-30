@@ -1029,8 +1029,8 @@ to = NodePath("../../idle_fire")
 event = &"idle"
 
 [connection signal="area_entered" from="stomp_hitbox" to="." method="_on_stomp_hitbox_area_entered"]
-[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne" to="." method="_on_airborne_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_entered"]
