@@ -22,7 +22,7 @@ func _on_area_2d_body_entered(body):
 		markerio = body
 		markerio.disable_input()
 		$AnimationPlayer.play("flag_drop")
-		$AnimationPlayer.seek(percent_complete)
+		$AnimationPlayer.seek(clampf(1.0-percent_complete, 0, 1))
 
 
 func _process(_delta):
