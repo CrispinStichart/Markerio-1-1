@@ -4,19 +4,19 @@
 [ext_resource type="Texture2D" uid="uid://cjgdv6oyjb6hm" path="res://live_action_video/still_frames/blank_whiteboard_2.1.2.jpg" id="2_lmunj"]
 [ext_resource type="Texture2D" uid="uid://dvcyv4u02074o" path="res://live_action_video/still_frames/emtpy_wall_2.1.4.jpg" id="2_mjp0e"]
 [ext_resource type="PackedScene" uid="uid://yp684bod5c2d" path="res://game.tscn" id="3_u06vd"]
-[ext_resource type="VideoStream" path="res://live_action_video/Placing-Blank-Whiteboard.ogv" id="4_f35lo"]
+[ext_resource type="VideoStream" path="res://live_action_video/placing_blank_whiteboard.ogv" id="4_f35lo"]
 [ext_resource type="Texture2D" uid="uid://c1rdq0vd28gro" path="res://live_action_video/still_frames/instructions_2.1.1.jpg" id="4_w3fsw"]
-[ext_resource type="VideoStream" path="res://live_action_video/Into.ogv" id="5_rmvee"]
+[ext_resource type="VideoStream" path="res://live_action_video/intro.ogv" id="5_rmvee"]
 [ext_resource type="Texture2D" uid="uid://bvbnuwp8e5k0o" path="res://live_action_video/still_frames/secret_area_2.1.5.jpg" id="5_wwfoy"]
 [ext_resource type="Texture2D" uid="uid://bih38075flf2e" path="res://live_action_video/still_frames/ending_2.1.6.jpg" id="6_6xpfr"]
 [ext_resource type="Texture2D" uid="uid://ljtfrwst3gcx" path="res://live_action_video/still_frames/beginning_2.1.1.jpg" id="7_hseat"]
 [ext_resource type="Texture2D" uid="uid://cmefposwvpxd2" path="res://live_action_video/still_frames/blank_whiteboard_mask.png" id="8_wg1vf"]
-[ext_resource type="VideoStream" path="res://live_action_video/Removing Instructions.ogv" id="11_gtxvt"]
-[ext_resource type="VideoStream" path="res://live_action_video/Removing_Empty_Whiteboard.ogv" id="12_lxyut"]
-[ext_resource type="VideoStream" path="res://live_action_video/Placing Secret Area.ogv" id="13_x0046"]
-[ext_resource type="VideoStream" path="res://live_action_video/Removing Scret Area.ogv" id="14_7ijyd"]
-[ext_resource type="VideoStream" path="res://live_action_video/Placing_Ending.ogv" id="15_qaeof"]
-[ext_resource type="VideoStream" path="res://live_action_video/Removing Ending.ogv" id="16_wkqjy"]
+[ext_resource type="VideoStream" path="res://live_action_video/removing_instructions.ogv" id="11_gtxvt"]
+[ext_resource type="VideoStream" path="res://live_action_video/removing_empty_whiteboard.ogv" id="13_m6thl"]
+[ext_resource type="VideoStream" path="res://live_action_video/placing_secret_area.ogv" id="13_x0046"]
+[ext_resource type="VideoStream" path="res://live_action_video/removing_scret_area.ogv" id="14_7ijyd"]
+[ext_resource type="VideoStream" path="res://live_action_video/placing_ending.ogv" id="16_cnwvo"]
+[ext_resource type="VideoStream" path="res://live_action_video/removing_ending.ogv" id="16_wkqjy"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="17_6mle3"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="18_bl8ow"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="19_0y2cq"]
@@ -272,6 +272,7 @@ scale = Vector2(0.688082, 0.688082)
 [node name="SubViewport" type="SubViewport" parent="mask/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
+audio_listener_enable_2d = true
 size = Vector2i(1080, 1080)
 render_target_update_mode = 4
 
@@ -299,7 +300,7 @@ stream = ExtResource("11_gtxvt")
 [node name="removing_blank_whiteboard" type="VideoStreamPlayer" parent="videos"]
 offset_right = 40.0
 offset_bottom = 40.0
-stream = ExtResource("12_lxyut")
+stream = ExtResource("13_m6thl")
 
 [node name="placing_secret_level" type="VideoStreamPlayer" parent="videos"]
 offset_right = 40.0
@@ -314,7 +315,7 @@ stream = ExtResource("14_7ijyd")
 [node name="placing_ending" type="VideoStreamPlayer" parent="videos"]
 offset_right = 40.0
 offset_bottom = 40.0
-stream = ExtResource("15_qaeof")
+stream = ExtResource("16_cnwvo")
 
 [node name="removing_ending" type="VideoStreamPlayer" parent="videos"]
 offset_right = 40.0
