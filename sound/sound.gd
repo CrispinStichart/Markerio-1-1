@@ -71,8 +71,17 @@ func stop_music():
 	music_player.stop()
 
 
+func pause_music():
+	music_player.stream_paused = true
+
+
+func unpause_music():
+	music_player.stream_paused = false
+
+
 func play_ambient():
 	ambient_player.play()
+
 
 func load_sounds():
 	var files = get_files(SOUND_EFFECTS_PATH)

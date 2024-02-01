@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=22 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markerio.gd" id="1_jbn2y"]
 [ext_resource type="Texture2D" uid="uid://13prndas001w" path="res://markerio/markerio_spritesheet.png" id="2_b7xe3"]
@@ -9,7 +9,6 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="16_rwijp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="17_1q33g"]
 [ext_resource type="PackedScene" uid="uid://b0b3sj4mjwk0t" path="res://markerio/invincibility_effect/invincibility_effect.tscn" id="24_4sbhp"]
-[ext_resource type="Script" path="res://markerio/invincibility_effect/invincibility_effect.gd" id="24_eusmg"]
 
 [sub_resource type="Animation" id="Animation_wi0cs"]
 length = 0.001
@@ -849,6 +848,15 @@ collision_mask = 2
 position = Vector2(0, -842.5)
 shape = SubResource("RectangleShape2D_jd7ey")
 
+[node name="star_hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+monitoring = false
+
+[node name="terrain_collider" type="CollisionShape2D" parent="star_hitbox"]
+position = Vector2(0, -349)
+shape = SubResource("RectangleShape2D_2hp0g")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -708.315)
 texture = ExtResource("2_b7xe3")
@@ -858,7 +866,6 @@ vframes = 3
 [node name="InvincibilityEffect" parent="." instance=ExtResource("24_4sbhp")]
 visible = false
 position = Vector2(-8, -676)
-script = ExtResource("24_eusmg")
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("12_gbouc")
@@ -1045,7 +1052,31 @@ script = ExtResource("16_rwijp")
 to = NodePath("../../idle_fire")
 event = &"idle"
 
+[node name="Star" type="Node" parent="StateChart/root"]
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("no_star")
+
+[node name="no_star" type="Node" parent="StateChart/root/Star"]
+script = ExtResource("15_2tqr0")
+
+[node name="on star" type="Node" parent="StateChart/root/Star/no_star"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../star_active")
+event = &"star"
+
+[node name="star_active" type="Node" parent="StateChart/root/Star"]
+script = ExtResource("15_2tqr0")
+
+[node name="on timeout" type="Node" parent="StateChart/root/Star/star_active"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../no_star")
+delay_seconds = 15.0
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
+
 [connection signal="area_entered" from="stomp_hitbox" to="." method="_on_stomp_hitbox_area_entered"]
+[connection signal="area_entered" from="star_hitbox" to="." method="_on_star_hitbox_area_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
@@ -1058,3 +1089,6 @@ event = &"idle"
 [connection signal="state_entered" from="StateChart/root/powerup_state/big" to="." method="_on_big_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_entered"]
 [connection signal="state_input" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_input"]
+[connection signal="state_entered" from="StateChart/root/Star/no_star" to="." method="_on_no_star_state_entered"]
+[connection signal="state_entered" from="StateChart/root/Star/star_active" to="." method="_on_star_active_state_entered"]
+[connection signal="state_exited" from="StateChart/root/Star/star_active" to="." method="_on_star_active_state_exited"]

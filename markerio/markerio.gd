@@ -14,12 +14,7 @@ var jumping := false
 
 var can_break_bricks := false
 
-var invincible := false:
-	set(value):
-		invincible = value
-		set_collision_mask_value(4, not invincible)
-
-var has_star := false
+var star_tween: Tween
 
 
 var gravity := Constants.GRAVITY
@@ -91,9 +86,7 @@ func eat_fire_flower():
 
 
 func eat_star():
-	pass
-	#has_star = true
-	#$invincibility_timer.set_invincibility(10)
+	state_chart.send_event("star")
 
 
 func hit():
@@ -263,6 +256,48 @@ func _on_fire_state_input(_event):
 		throw_fireball()
 
 
-
 func _on_skidding_state_entered():
 	Sound.play_effect("whiteboard_squeek")
+
+
+func _on_no_star_state_entered():
+	Sound.unpause_music()
+	$star_hitbox.monitoring = false
+
+
+func _on_star_active_state_entered():
+	Sound.pause_music()
+
+	set_invincible.call_deferred(true)
+
+	var COLOR_START = Color(2, 2, 0, 1)
+	var COLOR_END = Color(2, 1, 0, 1)
+	var flash_duration: float = .1
+
+	star_tween = create_tween()
+	star_tween.tween_property(sprite, "self_modulate", COLOR_END, flash_duration)
+	star_tween.tween_property(sprite, "self_modulate", COLOR_START, flash_duration)
+	star_tween.set_loops()
+
+
+func _on_star_active_state_exited():
+	$AudioStreamPlayer2D.queue_free()
+
+	set_invincible.call_deferred(false)
+
+	sprite.self_modulate = Color.WHITE
+	star_tween.stop()
+
+
+func _on_star_hitbox_area_entered(area):
+	var body = area.get_parent()
+	if body.has_method("tumble_die"):
+		body.tumble_die()
+
+func set_invincible(is_invincible: bool):
+	$star_hitbox.monitoring = is_invincible
+	$stomp_hitbox.monitoring = not is_invincible
+	$hurtbox.monitorable = not is_invincible
+
+	$InvincibilityEffect.emitting = is_invincible
+	$InvincibilityEffect.visible = is_invincible

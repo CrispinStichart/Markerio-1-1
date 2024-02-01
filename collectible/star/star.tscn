@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://x6o7belwhvjc"]
+[gd_scene load_steps=7 format=3 uid="uid://x6o7belwhvjc"]
 
 [ext_resource type="Script" path="res://collectible/star/star.gd" id="1_tdr5c"]
 [ext_resource type="Texture2D" uid="uid://doy0xltewhy6v" path="res://collectible/star/star.png" id="1_tnw0n"]
 [ext_resource type="Script" path="res://systems/affected_by_gravity.gd" id="2_aksnl"]
 [ext_resource type="Script" path="res://systems/move_and_bounce_off_walls.gd" id="4_oftow"]
+[ext_resource type="AudioStream" uid="uid://j86xamoqhwn2" path="res://sound/music/yakity_sax.wav" id="5_dh1ov"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3bb78"]
 size = Vector2(512, 512)
@@ -32,5 +33,12 @@ gravity = 200.0
 
 [node name="move_and_bounce_off_wall" type="Node" parent="."]
 script = ExtResource("4_oftow")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_dh1ov")
+volume_db = -3.351
+autoplay = true
+max_distance = 10000.0
+attenuation = 2.46229
 
 [connection signal="body_entered" from="collection_area" to="." method="_on_collection_area_body_entered"]
