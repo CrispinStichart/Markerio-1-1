@@ -29,12 +29,12 @@ func _process(_delta):
 	if not markerio:
 		return
 	if $AnimationPlayer.is_playing():
-		markerio.position = $flag.global_position
-		markerio.position.x += 500
+		markerio.global_position = $flag.global_position
+		markerio.global_position.x += 500
 		markerio.sprite.flip_h = true
 	else:
 		markerio.velocity.x = markerio.max_walk_speed
 
-	if finished and markerio.position.x > $endpoint.global_position.x:
+	if finished and markerio.global_position.x > $endpoint.global_position.x:
 		markerio.velocity.x = 0
 		SignalBus.send_signal("markerio_reached_flagpole")

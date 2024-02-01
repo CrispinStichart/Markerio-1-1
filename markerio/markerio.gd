@@ -51,31 +51,31 @@ func handle_block_collision():
 	a raycast in the center, because he should still be able to hit blocks on the edge of his
 	hitbox.
 	"""
-	var blocks:Array[Block] = []
+	var blocks:Array = []
 	for i in get_slide_collision_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		# Look for collisions with blocks that are from below. (snappedf is basically round()).
 		if snappedf(collision.get_angle(), .01) == 3.14:
 			for node in $block_detector.get_overlapping_bodies():
 				print(node)
-				if node is Block:
+				if node.has_method("activate"):
 					blocks.append(node)
 			# Make Markerio fall down
 			velocity.y = 0
 			break
 
 	if blocks:
-		var closest:Block = blocks[0]
+		var closest = blocks[0]
 		# This could be an if/else if I could garantee that there would be a max of two blocks,
 		# like in real Mario. Which is currently true for this game. But I want to leave myself
 		# open for changing that.
 		for i in range(1, len(blocks)):
-			var block: Block = blocks[i]
+			var block = blocks[i]
 			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
 				closest = block
 
-		if closest is BreakableBrick and not can_break_bricks:
-			closest.bump()
+		if closest.has_method("break_bricks") and not can_break_bricks:
+			closest.bounce()
 		else:
 			closest.activate(powerup_wanted)
 
@@ -176,6 +176,7 @@ func _on_jump_enabled_state_physics_processing(_delta: float) -> void:
 	if Input.is_action_just_pressed("jump"):
 		velocity.y = -jump_velocity
 		state_chart.send_event("jump")
+		Sound.play_effect("cap_popping_off")
 
 
 func _on_grounded_state_physics_processing(_delta: float) -> void:
@@ -190,6 +191,10 @@ func _on_grounded_state_physics_processing(_delta: float) -> void:
 	if direction:
 		velocity.x += direction * acceleration
 		velocity.x = clampf(velocity.x, -max_speed, max_speed)
+		if signf(direction) != signf(velocity.x) and abs(velocity.x) > max_walk_speed:
+			state_chart.send_event("skidding")
+		else:
+			state_chart.send_event("not_skidding")
 	else:
 		velocity.x = move_toward(velocity.x, 0 , acceleration)
 
@@ -197,6 +202,7 @@ func _on_grounded_state_physics_processing(_delta: float) -> void:
 		state_chart.send_event("idle")
 	else:
 		state_chart.send_event("moving")
+
 
 
 func _on_airborne_state_physics_processing(delta: float) -> void:
@@ -256,3 +262,7 @@ func _on_fire_state_input(_event):
 	if Input.is_action_just_pressed("run"):
 		throw_fireball()
 
+
+
+func _on_skidding_state_entered():
+	Sound.play_effect("whiteboard_squeek")

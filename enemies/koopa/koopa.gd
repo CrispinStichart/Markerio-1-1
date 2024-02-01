@@ -28,6 +28,7 @@ func _physics_process(delta: float) -> void:
 
 func hit():
 	state_chart.send_event("hit")
+	Sound.play_effect("koopa_shell_bonk")
 
 func die():
 	$kill_hitbox.set_deferred("monitoring", false)

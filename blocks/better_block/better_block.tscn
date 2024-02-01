@@ -1,0 +1,367 @@
+[gd_scene load_steps=23 format=3 uid="uid://ck7nlpboypdoy"]
+
+[ext_resource type="Script" path="res://blocks/better_block/better_block.gd" id="1_j3se4"]
+[ext_resource type="Texture2D" uid="uid://cgfj0h4qa12qs" path="res://blocks/tileset.png" id="2_2lu3t"]
+[ext_resource type="Texture2D" uid="uid://bewevibgweetb" path="res://collectible/coin/coin.png" id="3_a5ooc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_oxrk5"]
+[ext_resource type="Animation" uid="uid://byd1e3hoegtna" path="res://blocks/better_block/emit_coin.res" id="4_bddw8"]
+[ext_resource type="PackedScene" uid="uid://cyy5ph3aav557" path="res://blocks/breakable/explosion.tscn" id="4_ksivp"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="4_wq6hb"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_btj2j"]
+[ext_resource type="Animation" uid="uid://ditadyrifsqpf" path="res://blocks/better_block/bounce.res" id="5_frja2"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_uttvj"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_jt5hn"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="8_qaqb3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ofnam"]
+size = Vector2(512, 512)
+
+[sub_resource type="Animation" id="Animation_2sstc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Coin:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Coin:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Coin:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape2D/Sprite2D:modulate:r")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/7/type = "bezier"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CollisionShape2D/Sprite2D:modulate:g")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/8/type = "bezier"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("CollisionShape2D/Sprite2D:modulate:b")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("CollisionShape2D/Sprite2D:modulate:a")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_td68i"]
+resource_name = "brick"
+length = 0.10001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_u0p42"]
+resource_name = "question"
+length = 0.10001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_2ouvf"]
+resource_name = "solid"
+length = 0.10001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_2ii1y"]
+resource_name = "note"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i2haf"]
+_data = {
+"RESET": SubResource("Animation_2sstc"),
+"brick": SubResource("Animation_td68i"),
+"note": SubResource("Animation_2ii1y"),
+"question": SubResource("Animation_u0p42"),
+"solid": SubResource("Animation_2ouvf")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mmpha"]
+_data = {
+"emit_coin": ExtResource("4_bddw8")
+}
+
+[sub_resource type="Animation" id="Animation_ovb1e"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D/Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_we4f5"]
+_data = {
+"RESET": SubResource("Animation_ovb1e"),
+"bounce": ExtResource("5_frja2")
+}
+
+[node name="BetterBlock" type="StaticBody2D"]
+collision_layer = 2
+script = ExtResource("1_j3se4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ofnam")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+texture = ExtResource("2_2lu3t")
+hframes = 9
+
+[node name="Coin" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+texture = ExtResource("3_a5ooc")
+
+[node name="Explosion" parent="." instance=ExtResource("4_ksivp")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_i2haf")
+}
+
+[node name="coin_animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mmpha")
+}
+
+[node name="bounce_animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_we4f5")
+}
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_oxrk5")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("4_wq6hb")
+
+[node name="CompoundState" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_btj2j")
+initial_state = NodePath("ready")
+
+[node name="ready" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("6_uttvj")
+
+[node name="on activate" type="Node" parent="StateChart/Root/CompoundState/ready"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../action")
+event = &"activate"
+
+[node name="on bounce" type="Node" parent="StateChart/Root/CompoundState/ready"]
+script = ExtResource("7_jt5hn")
+to = NodePath("..")
+event = &"bounce"
+
+[node name="action" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("6_uttvj")
+
+[node name="on coins_pending" type="Node" parent="StateChart/Root/CompoundState/action"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../coins_pending")
+event = &"coins_pending"
+
+[node name="on expired" type="Node" parent="StateChart/Root/CompoundState/action"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../expired")
+event = &"expired"
+
+[node name="on ready" type="Node" parent="StateChart/Root/CompoundState/action"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../ready")
+event = &"ready"
+
+[node name="coins_pending" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("6_uttvj")
+
+[node name="on expired" type="Node" parent="StateChart/Root/CompoundState/coins_pending"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../expired")
+event = &"expired"
+
+[node name="on activate" type="Node" parent="StateChart/Root/CompoundState/coins_pending"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../action")
+event = &"activate"
+
+[node name="expired" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("6_uttvj")
+
+[node name="Animations" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_btj2j")
+initial_state = NodePath("brick")
+
+[node name="brick" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("8_qaqb3")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on expired" type="Node" parent="StateChart/Root/Animations/brick"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../solid")
+event = &"expired"
+
+[node name="solid" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("8_qaqb3")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="question" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("8_qaqb3")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on expired" type="Node" parent="StateChart/Root/Animations/question"]
+script = ExtResource("7_jt5hn")
+to = NodePath("..")
+event = &"expired"
+
+[node name="note" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("8_qaqb3")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[connection signal="taken" from="StateChart/Root/CompoundState/ready/on bounce" to="." method="_on_on_bounce_taken"]
+[connection signal="state_entered" from="StateChart/Root/CompoundState/action" to="." method="_on_action_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/CompoundState/coins_pending" to="." method="_on_activated_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Animations/question" to="." method="_on_question_state_entered"]
+[connection signal="taken" from="StateChart/Root/Animations/question/on expired" to="." method="_on_on_expired_taken"]

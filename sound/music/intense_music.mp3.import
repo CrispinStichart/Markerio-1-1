@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/intense_music.mp3-2ff0b3e44240f2795f8cbda58bb
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

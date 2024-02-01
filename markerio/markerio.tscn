@@ -871,12 +871,29 @@ script = ExtResource("14_tu1hp")
 initial_state = NodePath("Grounded")
 
 [node name="Grounded" type="Node" parent="StateChart/root/Behavior"]
-script = ExtResource("15_2tqr0")
+script = ExtResource("14_tu1hp")
+initial_state = NodePath("normal")
 
 [node name="On airborne_without_jump" type="Node" parent="StateChart/root/Behavior/Grounded"]
 script = ExtResource("16_rwijp")
 to = NodePath("../../Airborne/Jumping States/Cannot Jump")
 event = &"airborne_without_jump"
+
+[node name="normal" type="Node" parent="StateChart/root/Behavior/Grounded"]
+script = ExtResource("15_2tqr0")
+
+[node name="on skidding" type="Node" parent="StateChart/root/Behavior/Grounded/normal"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../skidding")
+event = &"skidding"
+
+[node name="skidding" type="Node" parent="StateChart/root/Behavior/Grounded"]
+script = ExtResource("15_2tqr0")
+
+[node name="on not_skidding" type="Node" parent="StateChart/root/Behavior/Grounded/skidding"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../normal")
+event = &"not_skidding"
 
 [node name="Airborne" type="Node" parent="StateChart/root/Behavior"]
 script = ExtResource("13_xqiof")
@@ -928,7 +945,7 @@ event = &"on_floor"
 
 [node name="powerup_state" type="Node" parent="StateChart/root"]
 script = ExtResource("14_tu1hp")
-initial_state = NodePath("fire")
+initial_state = NodePath("small")
 
 [node name="small" type="Node" parent="StateChart/root/powerup_state"]
 script = ExtResource("14_tu1hp")
@@ -1032,6 +1049,7 @@ event = &"idle"
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
+[connection signal="state_entered" from="StateChart/root/Behavior/Grounded/skidding" to="." method="_on_skidding_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne" to="." method="_on_airborne_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_physics_processing"]

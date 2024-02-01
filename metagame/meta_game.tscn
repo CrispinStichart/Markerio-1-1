@@ -414,6 +414,7 @@ script = ExtResource("20_egdgn")
 to = NodePath("../../placing whiteboard")
 event = &"next"
 
+[connection signal="visibility_changed" from="mask/SubViewportContainer" to="." method="_on_sub_viewport_container_visibility_changed"]
 [connection signal="finished" from="videos/placing_blank_whiteboard" to="." method="_on_placing_blank_whiteboard_finished"]
 [connection signal="finished" from="videos/intro" to="." method="_on_intro_finished"]
 [connection signal="finished" from="videos/removing_instructions" to="." method="_on_removing_instructions_finished"]

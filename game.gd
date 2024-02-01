@@ -20,7 +20,11 @@ var meta_game: MetaGame
 
 
 func _ready():
-	Sound.play_music("chill_music")
+	# If the game is being playd by itself (which will only happen when testing)
+	# then we start the music here. Otherwise, the music is controlled by the metagame.
+	if not get_parent().get_parent():
+		Sound.play_music("chill_music")
+
 	reset_level()
 	SignalBus.listen("secret_level_entrance_triggered", secret_level_entrance_triggered)
 	SignalBus.listen("secret_level_exit_triggered", secret_level_exit_triggered)
@@ -37,6 +41,8 @@ func _ready():
 				call_deferred("reset_level")
 	)
 
+	print("Has metagame: " + str(meta_game != null))
+
 
 func reset_level(warp_pipe := false):
 	print("resetting level...")
@@ -50,10 +56,6 @@ func reset_level(warp_pipe := false):
 	level.markerio.died.connect(markerio_death)
 
 
-	for block:Block in level.get_node("TileMap/blocks").get_children():
-
-		if block is BreakableBrick:
-			block.expired.connect(add_unbreakable_block)
 
 	for enemy in level.get_node("enemies").get_children():
 		enemy.process_mode = PROCESS_MODE_DISABLED
@@ -61,6 +63,7 @@ func reset_level(warp_pipe := false):
 	if warp_pipe:
 		print("calling exit warp pipe")
 		level.exit_warp_pipe()
+
 
 func _physics_process(_delta):
 	if not level:
@@ -89,12 +92,14 @@ func add_unbreakable_block(pos: Vector2i):
 	var tilemap: TileMap = level.get_node("TileMap")
 	tilemap.set_cell(0, pos, 0, Vector2i(1, 0))
 
+
 func secret_level_entrance_triggered():
 	print("Secret level entered")
 	if meta_game:
 		meta_game.swap_to_secret_level()
 	else:
 		SignalBus.send_signal("secret_level_entered")
+
 
 func secret_level_entered():
 	secret_level = secret_level_scene.instantiate()
@@ -127,4 +132,9 @@ func secret_level_exited():
 	level.process_mode = Node.PROCESS_MODE_ALWAYS
 	level.visible = true
 	level.exit_warp_pipe()
+
+
+
+
+
 

@@ -48,7 +48,7 @@ func collision_no_stuck_on_eachother():
 
 
 func hit():
-	"Hit called"
+	Sound.play_effect("goomba_squish")
 	$CollisionShape2D.set_deferred("disabled", true)
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
 	$hitbox/CollisionShape2D.set_deferred("disabled", true)
@@ -58,8 +58,8 @@ func hit():
 	get_tree().create_timer(1).timeout.connect(queue_free)
 
 func tumble_die():
-	print("tumble die called")
 	"""This is called when hit by shell, fireball, or star."""
+	Sound.play_effect("goomba_thwack")
 	$CollisionShape2D.set_deferred("disabled", true)
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
 	$hitbox/CollisionShape2D.set_deferred("disabled", true)

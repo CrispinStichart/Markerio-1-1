@@ -4,7 +4,7 @@ extends CharacterBody2D
 # Disable the collision if it's not moving. This is so it can slide up out of
 # a block.
 
-var move_speed: float = Constants.BLOCK_SIZE * 3
+var move_speed: float = Constants.BLOCK_SIZE * 2
 var item_name = "Shroom"
 
 @export var speed: float = move_speed:

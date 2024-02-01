@@ -30,6 +30,7 @@ func _input(_event: InputEvent) -> void:
 
 var t: Tween
 func enter_secret_level():
+	Sound.play_effect("shlurp")
 	markerio.disable_input()
 	markerio.set_collision(false)
 	markerio.position.x = $pipes/Pipe/warp_zone.global_position.x
@@ -37,7 +38,6 @@ func enter_secret_level():
 	t = get_tree().create_tween()
 	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y+400), 1)
 	t.tween_callback(func():
-		print("callbkac that should be kicking off secret level")
 		markerio.remove_child(camera)
 		camera.queue_free()
 		SignalBus.send_signal("secret_level_entrance_triggered")
@@ -45,7 +45,7 @@ func enter_secret_level():
 
 
 func exit_warp_pipe():
-	print("exiting warp pipe")
+	Sound.play_effect("shlurp")
 	camera = MarkerioCamera.new($markerio_spawn_point.position)
 	camera.name = "MarkerioCamera"
 	markerio.add_child(camera)
@@ -60,6 +60,4 @@ func exit_warp_pipe():
 			markerio.enable_input()
 			markerio.set_collision(true)
 			markerio.z_index = 0
-			print("pos: ", markerio.position)
-			print("pipe pos: ",$pipes/Pipe5/warp_exit.global_position)
 	)

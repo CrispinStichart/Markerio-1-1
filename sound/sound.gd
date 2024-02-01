@@ -16,13 +16,18 @@ var index := 0
 
 # We have a separate player for music.
 var music_player = AudioStreamPlayer.new()
-
+# And for the background ambient noise.
+var ambient_player = AudioStreamPlayer.new()
 
 
 func _ready():
 	# Music is played in its own player on its own bus.
 	add_child(music_player)
 	music_player.bus = &"Music"
+	# Same with the abmient sound.
+	add_child(ambient_player)
+	ambient_player.bus = &"Ambient"
+	ambient_player.stream = load("res://sound/music/room_tone_ambient_16K.wav")
 
 	# Everything else is played on a player from the `players` list, chosen
 	# in a round-robin fashion.
@@ -53,8 +58,21 @@ func play_music(song_name: String):
 	music_player.play()
 
 
+func cycle_music():
+	# TODO: make less lame.
+	music_player.stop()
+	if music_player.stream == sounds.get("music/chill_music"):
+		play_music("intense_music")
+	else:
+		play_music("chill_music")
 
 
+func stop_music():
+	music_player.stop()
+
+
+func play_ambient():
+	ambient_player.play()
 
 func load_sounds():
 	var files = get_files(SOUND_EFFECTS_PATH)

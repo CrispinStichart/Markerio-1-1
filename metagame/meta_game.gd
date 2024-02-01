@@ -19,6 +19,7 @@ func _ready():
 	sub_viewport_container.visible = false
 	game.meta_game = self
 
+	Sound.play_ambient()
 
 
 func _on_intro_finished():
@@ -138,3 +139,11 @@ func _on_removing_ending_state_entered():
 	$videos/removing_ending.play()
 	await $videos/removing_ending.finished
 	state_chart.send_event("next")
+
+
+
+func _on_sub_viewport_container_visibility_changed():
+	if sub_viewport_container and sub_viewport_container.visible:
+		Sound.play_music("chill_music")
+	else:
+		Sound.stop_music()
