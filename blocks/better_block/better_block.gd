@@ -66,10 +66,8 @@ func _on_action_state_entered():
 func explode():
 	var explosion = $Explosion
 	explosion.reparent(get_parent())
-	# May not need this
-	explosion.global_position = global_position
 	explosion.emitting = true
-	# TODO: make sure the explosion is freed. Or use an object pool.
+	explosion.finished.connect(queue_free)
 	queue_free()
 
 func produce_coin():
