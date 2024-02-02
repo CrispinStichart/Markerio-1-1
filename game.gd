@@ -85,6 +85,7 @@ func add_to_score(score_to_add: int):
 
 
 func markerio_death():
+	Sound.play_effect("sad_trombone")
 	UI.show_death_screen(reset_level)
 
 

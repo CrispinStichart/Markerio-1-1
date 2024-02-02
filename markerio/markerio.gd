@@ -100,7 +100,7 @@ func die():
 	# So the killfloor can't call this again.
 	if sprite.flip_v:
 		return
-	#power_level_state_machine.set_size(0)
+
 	died.emit()
 	disable_input()
 	set_collision(false)
@@ -301,3 +301,7 @@ func set_invincible(is_invincible: bool):
 
 	$InvincibilityEffect.emitting = is_invincible
 	$InvincibilityEffect.visible = is_invincible
+
+
+func _on_dead_state_entered():
+	die()

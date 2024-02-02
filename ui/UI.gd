@@ -13,8 +13,12 @@ func _ready():
 func show_death_screen(callback: Callable):
 	$Control/Wasted.visible = true
 	t = create_tween()
-	t.tween_property($Control/Wasted, "visible", false, 2)
-	t.tween_callback(callback)
+ 	# 3.5 is the length of the sad tombone music. Also, we use an interval here
+	# because if we set the duration of the property tween on a boolean value,
+	# the boolean is set halfway to the end of the duration.
+	t.tween_interval(3.5)
+	t.tween_property($Control/Wasted, "visible", false, 0)
+	t.tween_callback(callback).set_delay(0)
 
 
 func update_score(score: int):

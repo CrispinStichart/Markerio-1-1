@@ -954,9 +954,22 @@ event = &"on_floor"
 script = ExtResource("14_tu1hp")
 initial_state = NodePath("small")
 
+[node name="on dead" type="Node" parent="StateChart/root/powerup_state"]
+script = ExtResource("16_rwijp")
+to = NodePath("../dead")
+event = &"dead"
+
+[node name="dead" type="Node" parent="StateChart/root/powerup_state"]
+script = ExtResource("15_2tqr0")
+
 [node name="small" type="Node" parent="StateChart/root/powerup_state"]
 script = ExtResource("14_tu1hp")
 initial_state = NodePath("Animations")
+
+[node name="on power_down" type="Node" parent="StateChart/root/powerup_state/small"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../dead")
+event = &"power_down"
 
 [node name="on power_up" type="Node" parent="StateChart/root/powerup_state/small"]
 script = ExtResource("16_rwijp")
@@ -1077,14 +1090,15 @@ current = true
 
 [connection signal="area_entered" from="stomp_hitbox" to="." method="_on_stomp_hitbox_area_entered"]
 [connection signal="area_entered" from="star_hitbox" to="." method="_on_star_hitbox_area_entered"]
-[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_jump_enabled_state_physics_processing"]
 [connection signal="state_processing" from="StateChart/root/Behavior/Grounded" to="." method="_on_grounded_state_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Grounded/skidding" to="." method="_on_skidding_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne" to="." method="_on_airborne_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/root/Behavior/Airborne/Gravity Control/Normal Grav" to="." method="_on_normal_grav_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/root/Behavior/Airborne/Gravity Control/Heavy Grav" to="." method="_on_heavy_grav_state_entered"]
+[connection signal="state_entered" from="StateChart/root/powerup_state/dead" to="." method="_on_dead_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/small" to="." method="_on_small_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/big" to="." method="_on_big_state_entered"]
 [connection signal="state_entered" from="StateChart/root/powerup_state/fire" to="." method="_on_fire_state_entered"]

@@ -44,7 +44,7 @@ func _ready():
 func play(sound_name: String):
 	players[index].stream = sounds.get(sound_name)
 	if players[index].stream == null:
-		print("Error: can't find sound `", sound_name, "`")
+		push_error("Error: can't find sound `", sound_name, "`")
 	players[index].play()
 	index = (index + 1) % num_players
 

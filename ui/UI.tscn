@@ -52,6 +52,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1080.0
 offset_bottom = 1080.0
+theme = ExtResource("2_q6fcl")
 
 [node name="Label2" type="Label" parent="Control"]
 layout_mode = 1
@@ -70,13 +71,13 @@ text = "bottom right"
 
 [node name="Wasted" type="Label" parent="Control"]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 320.0
-offset_right = 939.0
+offset_left = 104.0
+offset_top = 393.0
+offset_right = 1304.0
 offset_bottom = 593.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 20
-theme_override_font_sizes/font_size = 200
+theme_override_font_sizes/font_size = 150
 text = "WASTED"
 
 [node name="coins" type="Label" parent="Control"]

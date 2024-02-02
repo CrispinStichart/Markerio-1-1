@@ -12,6 +12,7 @@ func _ready():
 
 func _on_area_2d_body_entered(body):
 	if body is Markerio:
+		Sound.play_effect("airhorns")
 		var mario_y: float = body.global_position.y
 		var flag_top: float = $flag_highest_point.global_position.y
 		var flag_bottom: float = $flag_lowest_point.global_position.y
