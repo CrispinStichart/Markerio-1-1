@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://idx6j6w31jhp"]
+[gd_scene load_steps=27 format=3 uid="uid://idx6j6w31jhp"]
 
 [ext_resource type="Script" path="res://metagame/meta_game.gd" id="1_2i5w0"]
 [ext_resource type="Texture2D" uid="uid://cjgdv6oyjb6hm" path="res://live_action_video/still_frames/blank_whiteboard_2.1.2.jpg" id="2_lmunj"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="18_bl8ow"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="19_0y2cq"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="20_egdgn"]
+[ext_resource type="Theme" uid="uid://drlwg23qnvxim" path="res://theme.tres" id="22_ib6n2"]
 
 [sub_resource type="Animation" id="Animation_o87ss"]
 length = 0.001
@@ -414,6 +415,16 @@ script = ExtResource("19_0y2cq")
 script = ExtResource("20_egdgn")
 to = NodePath("../../placing whiteboard")
 event = &"next"
+
+[node name="MusicTitle" type="Label" parent="."]
+offset_left = 36.0
+offset_top = 1023.0
+offset_right = 756.0
+offset_bottom = 1063.0
+theme = ExtResource("22_ib6n2")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+text = "Apartment Ambience"
 
 [connection signal="visibility_changed" from="mask/SubViewportContainer" to="." method="_on_sub_viewport_container_visibility_changed"]
 [connection signal="finished" from="videos/placing_blank_whiteboard" to="." method="_on_placing_blank_whiteboard_finished"]

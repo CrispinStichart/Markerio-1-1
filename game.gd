@@ -20,10 +20,7 @@ var meta_game: MetaGame
 
 
 func _ready():
-	# If the game is being playd by itself (which will only happen when testing)
-	# then we start the music here. Otherwise, the music is controlled by the metagame.
-	if not get_parent().get_parent():
-		Sound.play_music("chill_music")
+	Sound.play_first_track()
 
 	reset_level()
 	SignalBus.listen("secret_level_entrance_triggered", secret_level_entrance_triggered)
@@ -41,17 +38,13 @@ func _ready():
 				call_deferred("reset_level")
 	)
 
-	print("Has metagame: " + str(meta_game != null))
-
 
 func reset_level(warp_pipe := false):
-	print("resetting level...")
 	if level:
 		$GameLayer.remove_child(level)
 		level.queue_free()
 
 	level = level_scene.instantiate()
-	print("adding level")
 	$GameLayer.add_child(level)
 	level.markerio.died.connect(markerio_death)
 
@@ -61,7 +54,6 @@ func reset_level(warp_pipe := false):
 		enemy.process_mode = PROCESS_MODE_DISABLED
 
 	if warp_pipe:
-		print("calling exit warp pipe")
 		level.exit_warp_pipe()
 
 
@@ -95,7 +87,6 @@ func add_unbreakable_block(pos: Vector2i):
 
 
 func secret_level_entrance_triggered():
-	print("Secret level entered")
 	if meta_game:
 		meta_game.swap_to_secret_level()
 	else:
@@ -104,7 +95,6 @@ func secret_level_entrance_triggered():
 
 func secret_level_entered():
 	secret_level = secret_level_scene.instantiate()
-	print("Setting secret level to: ", secret_level)
 	$GameLayer.add_child(secret_level)
 	var markerio = secret_level.get_node("Markerio")
 	var secret_level_position = markerio.global_position

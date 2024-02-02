@@ -48,7 +48,6 @@ func handle_block_collision():
 		# Look for collisions with blocks that are from below. (snappedf is basically round()).
 		if snappedf(collision.get_angle(), .01) == 3.14:
 			for node in $block_detector.get_overlapping_bodies():
-				print(node)
 				if node.has_method("activate"):
 					blocks.append(node)
 			# Make Markerio fall down
@@ -86,7 +85,6 @@ func eat_star():
 
 
 func hit():
-	print("damage")
 	state_chart.send_event("power_down")
 
 
@@ -129,7 +127,6 @@ func set_collision(should_collide: bool) -> void:
 
 
 func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
-	print("stomped")
 	var body = area.get_parent()
 	if body.has_method("hit"):
 		body.hit()
@@ -151,14 +148,11 @@ func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
 		else:
 			x = p1.x
 		var point_of_impact = Vector2(x, y)
-		print("X and y: ", x, ", ", y)
 
 		# Now we can set mario's position to this point of impact, which is where his motion
 		# was interupted by the goomba's skull, and make him bounce.
 		global_position = point_of_impact
-		print("before: ", velocity.y)
 		velocity.y = -jump_velocity
-		print("After: ", velocity.y)
 		state_chart.send_event("airborne_without_jump")
 		state_chart.send_event("started_rising")
 

@@ -10,8 +10,11 @@ extends Node2D
 var normal_viewport_pos = Vector2(523, 234)
 var secret_level_viewport_pos = Vector2(323, 91)
 
+var music_tweener: Tween
 
 func _ready():
+	$MusicTitle.visible = false
+
 	for child in $still_backgrounds.get_children():
 		child.visible = false
 
@@ -19,7 +22,20 @@ func _ready():
 	sub_viewport_container.visible = false
 	game.meta_game = self
 
-	Sound.play_ambient()
+	SignalBus.listen("music_changed", display_music_name)
+
+func display_music_name(song_title: String):
+	if music_tweener:
+		music_tweener.kill()
+
+	$MusicTitle.visible = true
+	$MusicTitle.text = song_title
+	$MusicTitle.modulate = Color.WHITE
+	music_tweener = create_tween()
+	music_tweener.tween_interval(1)
+	music_tweener.tween_property($MusicTitle, "modulate", Color.TRANSPARENT, 1)
+	music_tweener.tween_property($MusicTitle, "visible", false, 0)
+
 
 
 func _on_intro_finished():
@@ -141,9 +157,9 @@ func _on_removing_ending_state_entered():
 	state_chart.send_event("next")
 
 
-
-func _on_sub_viewport_container_visibility_changed():
-	if sub_viewport_container and sub_viewport_container.visible:
-		Sound.play_music("chill_music")
-	else:
-		Sound.stop_music()
+#
+#func _on_sub_viewport_container_visibility_changed():
+	#if sub_viewport_container and sub_viewport_container.visible:
+		#Sound.play_music("chill_music")
+	#else:
+		#Sound.pause_music()

@@ -16,18 +16,19 @@ var index := 0
 
 # We have a separate player for music.
 var music_player = AudioStreamPlayer.new()
-# And for the background ambient noise.
-var ambient_player = AudioStreamPlayer.new()
+
+var music_track_index = 0
+var music_tracks = [
+	["Apartment Ambience", "room_tone_ambient_16K"],
+	["Relaxing Music", "chill_music"],
+	["Fight Music", "intense_music"],
+]
 
 
 func _ready():
 	# Music is played in its own player on its own bus.
 	add_child(music_player)
 	music_player.bus = &"Music"
-	# Same with the abmient sound.
-	add_child(ambient_player)
-	ambient_player.bus = &"Ambient"
-	ambient_player.stream = load("res://sound/music/room_tone_ambient_16K.wav")
 
 	# Everything else is played on a player from the `players` list, chosen
 	# in a round-robin fashion.
@@ -59,16 +60,22 @@ func play_music(song_name: String):
 
 
 func cycle_music():
-	# TODO: make less lame.
+	music_track_index = (music_track_index + 1) % len(music_tracks)
+	var track = music_tracks[music_track_index]
+	var human_name = track[0]
+	var file_name = track[1]
 	music_player.stop()
-	if music_player.stream == sounds.get("music/chill_music"):
-		play_music("intense_music")
-	else:
-		play_music("chill_music")
+	play_music(file_name)
+	SignalBus.send_signal("music_changed", [human_name])
 
 
 func stop_music():
 	music_player.stop()
+
+
+func play_first_track():
+	music_player.stream = sounds.get("music/" + music_tracks[0][1])
+	music_player.play()
 
 
 func pause_music():
@@ -78,9 +85,6 @@ func pause_music():
 func unpause_music():
 	music_player.stream_paused = false
 
-
-func play_ambient():
-	ambient_player.play()
 
 
 func load_sounds():

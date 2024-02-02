@@ -40,7 +40,6 @@ func die():
 
 
 func tumble_die():
-	print("tumble die called")
 	"""This is called when hit by shell, fireball, or star."""
 	$CollisionShape2D.set_deferred("disabled", true)
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)

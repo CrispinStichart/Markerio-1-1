@@ -37,7 +37,6 @@ func set_appearance(appearance: Appearance):
 
 func bounce():
 	# TODO: play bounce sound
-	print("Bounce called")
 	state_chart.send_event("bounce")
 
 
@@ -64,6 +63,7 @@ func _on_action_state_entered():
 
 #region_start -- All the possible actions.
 func explode():
+	# TODO: play explode sound
 	var explosion = $Explosion
 	explosion.reparent(get_parent())
 	explosion.emitting = true

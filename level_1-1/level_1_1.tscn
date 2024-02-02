@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bikea1ccjcfty"]
+[gd_scene load_steps=17 format=3 uid="uid://bikea1ccjcfty"]
 
 [ext_resource type="Script" path="res://level_1-1/level_1_1.gd" id="1_4ghg8"]
 [ext_resource type="Texture2D" uid="uid://bx0i7tfdu3vgv" path="res://background_sprites/sun_transparent.png" id="1_ac5cc"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://cl6qotx3gbyvf" path="res://flag/flag.tscn" id="13_nt0lh"]
 [ext_resource type="PackedScene" uid="uid://bak6e08gng8he" path="res://collectible/shroom/shroom.tscn" id="14_cmg3e"]
 [ext_resource type="PackedScene" uid="uid://d1xa63m8y6tp4" path="res://enemies/koopa/koopa.tscn" id="14_x2rod"]
-[ext_resource type="PackedScene" uid="uid://ck7nlpboypdoy" path="res://blocks/better_block/better_block.tscn" id="15_0efix"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xyb4c"]
 size = Vector2(498, 884)
@@ -256,7 +255,7 @@ position = Vector2(81416, -816)
 position = Vector2(-3608, -11056)
 
 [node name="Markerio" parent="." instance=ExtResource("12_g1v4r")]
-position = Vector2(89374, -1293)
+position = Vector2(-321, -1445)
 
 [node name="markerio_spawn_point" type="Marker2D" parent="."]
 position = Vector2(-976, -1832)
@@ -278,8 +277,5 @@ position = Vector2(18404, -3513)
 
 [node name="Koopa" parent="." instance=ExtResource("14_x2rod")]
 position = Vector2(15295, -1364)
-
-[node name="BetterBlock" parent="." instance=ExtResource("15_0efix")]
-position = Vector2(12117, -2763)
 
 [connection signal="body_entered" from="killfloor" to="." method="_on_killfloor_body_entered"]
