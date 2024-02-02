@@ -9,7 +9,7 @@ var coords_to_classes := {
 	Vector2i(2, 0): "question",
 	Vector2i(3, 0): null,
 	Vector2i(4, 0): "Coin",
-	Vector2i(5, 0): "FireFlower",
+	Vector2i(5, 0): "invisible",
 	Vector2i(6, 0): "Shroom",
 	Vector2i(7, 0): "Star",
 	Vector2i(8, 0): "note",
@@ -27,7 +27,7 @@ func _ready():
 		erase_cell(0, pos)
 
 		# Coins or any pre-spawned powerups.
-		if block_class_name not in ["brick", "question", "note"]:
+		if block_class_name not in ["brick", "question", "note", "invisible"]:
 			var item = InstanceManager.create(block_class_name)
 			add_child(item)
 			item.global_position = Vector2(pos) * Constants.BLOCK_SIZE + Vector2.ONE * Constants.BLOCK_SIZE / 2
@@ -45,6 +45,8 @@ func _ready():
 			type = BetterBlock.Appearance.question
 		elif block_class_name == "note":
 			type = BetterBlock.Appearance.note
+		elif block_class_name == "invisible":
+			type = BetterBlock.Appearance.invisible
 		else:
 			push_error("Aaaaaahhhhhh")
 			assert(false)
@@ -59,13 +61,16 @@ func _ready():
 
 		# Now we see if there's an item attached to the block.
 		var item_class_name = coords_to_classes.get(get_cell_atlas_coords(1, pos))
-		if item_class_name == null and block_class_name == "question":
+		if item_class_name == null and block_class_name in  ["question", "invisible"]:
 			block.chosen_action = BetterBlock.Action.PRODUCE_COIN
 			block.coins = 1
 		elif item_class_name == null and block_class_name == "brick":
 			block.chosen_action = BetterBlock.Action.EXPLODE
 		elif item_class_name == null and block_class_name == "note":
 			block.chosen_action = BetterBlock.Action.CHANGE_MUSIC
+		elif item_class_name == "Coin":
+			block.chosen_action = BetterBlock.Action.PRODUCE_COIN
+			block.coins = 10
 		elif item_class_name != null:
 			block.chosen_action = BetterBlock.Action.PRODUCE_ITEM
 			block.item = item_class_name

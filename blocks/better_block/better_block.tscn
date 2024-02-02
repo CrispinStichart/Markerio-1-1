@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ck7nlpboypdoy"]
+[gd_scene load_steps=24 format=3 uid="uid://ck7nlpboypdoy"]
 
 [ext_resource type="Script" path="res://blocks/better_block/better_block.gd" id="1_j3se4"]
 [ext_resource type="Texture2D" uid="uid://cgfj0h4qa12qs" path="res://blocks/tileset.png" id="2_2lu3t"]
@@ -130,6 +130,42 @@ tracks/9/keys = {
 "points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("CollisionShape2D/Sprite2D:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("CollisionShape2D:rotation")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("CollisionShape2D:one_way_collision")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_td68i"]
 resource_name = "brick"
@@ -147,9 +183,51 @@ tracks/0/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_kn0dh"]
+resource_name = "invisible"
+length = 0.0333367
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D/Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.14159]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:one_way_collision")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="Animation" id="Animation_2ii1y"]
 resource_name = "note"
-step = 1.0
+length = 0.0333367
+step = 0.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -194,11 +272,48 @@ tracks/0/keys = {
 "update": 1,
 "values": [1]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D/Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:one_way_collision")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i2haf"]
 _data = {
 "RESET": SubResource("Animation_2sstc"),
 "brick": SubResource("Animation_td68i"),
+"invisible": SubResource("Animation_kn0dh"),
 "note": SubResource("Animation_2ii1y"),
 "question": SubResource("Animation_u0p42"),
 "solid": SubResource("Animation_2ouvf")
@@ -359,6 +474,15 @@ event = &"expired"
 [node name="note" type="Node" parent="StateChart/Root/Animations"]
 script = ExtResource("8_qaqb3")
 animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="invisible" type="Node" parent="StateChart/Root/Animations"]
+script = ExtResource("8_qaqb3")
+animation_player = NodePath("../../../../AnimationPlayer")
+
+[node name="on expired" type="Node" parent="StateChart/Root/Animations/invisible"]
+script = ExtResource("7_jt5hn")
+to = NodePath("../../solid")
+event = &"expired"
 
 [connection signal="taken" from="StateChart/Root/CompoundState/ready/on bounce" to="." method="_on_on_bounce_taken"]
 [connection signal="state_entered" from="StateChart/Root/CompoundState/action" to="." method="_on_action_state_entered"]

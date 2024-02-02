@@ -36,7 +36,7 @@ func enter_secret_level():
 	markerio.position.x = $pipes/Pipe/warp_zone.global_position.x
 	markerio.z_index = -2
 	t = get_tree().create_tween()
-	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y+400), 1)
+	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y+512), 1)
 	t.tween_callback(func():
 		markerio.remove_child(camera)
 		camera.queue_free()
@@ -55,7 +55,7 @@ func exit_warp_pipe():
 	markerio.position = $pipes/Pipe5/warp_exit.global_position
 	markerio.position.y += 512
 	t = get_tree().create_tween()
-	t.tween_property(markerio, "position", Vector2(markerio.position.x, markerio.position.y-512*2), 1)
+	t.tween_property(markerio, "position", Vector2(markerio.position.x,$pipes/Pipe5/warp_exit.global_position.y), 1)
 	t.tween_callback(func():
 			markerio.enable_input()
 			markerio.set_collision(true)

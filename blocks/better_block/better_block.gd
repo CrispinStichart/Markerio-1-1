@@ -12,7 +12,7 @@ var timer: float = 4
 
 var item: String = ""
 
-enum Appearance {brick, question, note}
+enum Appearance {brick, question, note, invisible}
 enum Action {NOTHING, EXPLODE, PRODUCE_COIN, PRODUCE_ITEM, CHANGE_MUSIC}
 var chosen_action := Action.NOTHING
 
@@ -21,28 +21,20 @@ var requested_item: String = ""
 
 func set_appearance(appearance: Appearance):
 	var animations_state := $StateChart/Root/Animations
-	var brick := $StateChart/Root/Animations/brick
-	var question := $StateChart/Root/Animations/question
-	var note := $StateChart/Root/Animations/note
 	match appearance:
-		Appearance.brick:
-			animations_state._initial_state = brick
 		Appearance.question:
-			animations_state._initial_state = question
+			animations_state._initial_state = $StateChart/Root/Animations/question
 		Appearance.brick:
-			animations_state._initial_state = brick
+			animations_state._initial_state = $StateChart/Root/Animations/brick
 		Appearance.note:
-			animations_state._initial_state = note
-
-
-func bounce():
-	# TODO: play bounce sound
-	state_chart.send_event("bounce")
+			animations_state._initial_state = $StateChart/Root/Animations/note
+		Appearance.invisible:
+			animations_state._initial_state = $StateChart/Root/Animations/invisible
 
 
 func activate(powerup_wanted: String):
 	requested_item = powerup_wanted
-	if not animation_player.is_playing():
+	if not bounce_animation.is_playing():
 		state_chart.send_event("activate")
 
 
@@ -63,15 +55,20 @@ func _on_action_state_entered():
 
 #region_start -- All the possible actions.
 func explode():
-	# TODO: play explode sound
+	if requested_item == "Shroom":
+		Sound.play_effect("paper_tap")
+		state_chart.send_event("ready")
+		return
+	Sound.play_effect("paper_crunch")
 	var explosion = $Explosion
 	explosion.reparent(get_parent())
 	explosion.emitting = true
-	explosion.finished.connect(queue_free)
+	explosion.finished.connect(explosion.queue_free)
 	queue_free()
 
 func produce_coin():
 	Sound.play_effect("coin_1")
+	SignalBus.send_signal("coin_collected")
 	coin_animation.stop()
 	coin_animation.play("emit_coin")
 	coins -= 1
@@ -92,6 +89,7 @@ func produce_item():
 	state_chart.send_event("expired")
 
 func change_music():
+	Sound.play_effect("paper_tap")
 	Sound.cycle_music()
 	state_chart.send_event("ready")
 #region_end

@@ -2,7 +2,7 @@ class_name MetaGame
 extends Node2D
 
 
-
+const explosion_scene = preload("res://blocks/breakable/explosion.tscn")
 
 @onready var state_chart = $StateChart
 @onready var sub_viewport_container := $mask/SubViewportContainer
@@ -11,14 +11,21 @@ var normal_viewport_pos = Vector2(523, 234)
 var secret_level_viewport_pos = Vector2(323, 91)
 
 var music_tweener: Tween
+var just_exited_secret_level := false
 
 func _ready():
+	# Attempting to preload the particle effect. Not sure if it's actually working.
+	var explosion = explosion_scene.instantiate()
+	explosion.visible = false
+	explosion.emitting = true
+	explosion.finished.connect(explosion.queue_free)
+
 	$MusicTitle.visible = false
 
 	for child in $still_backgrounds.get_children():
 		child.visible = false
 
-	$still_backgrounds/beginning.visible = true
+
 	sub_viewport_container.visible = false
 	game.meta_game = self
 
@@ -41,9 +48,6 @@ func display_music_name(song_title: String):
 func _on_intro_finished():
 	state_chart.send_event("next")
 
-
-func _on_placing_blank_whiteboard_finished():
-	state_chart.send_event("next")
 
 
 
@@ -96,22 +100,25 @@ func _on_removing_instructions_state_entered():
 
 func _on_placing_whiteboard_state_entered():
 	$videos/placing_blank_whiteboard.play()
-
-
-func _on_removing_blank_whiteboard_finished():
-	pass
-	#state_chart.send_event("next")
+	$videos/placing_blank_whiteboard.finished.connect(func(): state_chart.send_event("next"))
 
 
 func _on_playing_normal_level_state_entered():
+	print("testing")
+	if just_exited_secret_level:
+		SignalBus.send_signal("secret_level_exited")
+		SignalBus.send_signal("normal_level_entered")
+		just_exited_secret_level = false
+
 	$still_backgrounds/blank_whiteboard.visible = true
 	$AnimationPlayer.play("normal_level")
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	sub_viewport_container.visible = true
+	get_tree().create_timer(.03).timeout.connect(func(): sub_viewport_container.visible = true)
 
 
 func _on_playing_secret_level_state_entered():
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+	sub_viewport_container.visible = false
 	$videos/removing_blank_whiteboard.play()
 	await $videos/removing_blank_whiteboard.finished
 	$videos/placing_secret_level.play()
@@ -121,23 +128,17 @@ func _on_playing_secret_level_state_entered():
 	$AnimationPlayer.play("secret_level")
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	SignalBus.send_signal("secret_level_entered")
+	sub_viewport_container.visible = true
 
 
 func _on_playing_secret_level_state_exited():
+	sub_viewport_container.visible = false
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-	$videos/removing_secret_level.play()
-	await $videos/removing_secret_level.finished
-	$videos/placing_blank_whiteboard.play()
 	$still_backgrounds/secret_level.visible = false
-	$still_backgrounds/blank_whiteboard.visible = true
-	await $videos/placing_blank_whiteboard.finished
-	$AnimationPlayer.play("normal_level")
-	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	SignalBus.send_signal("secret_level_exited")
-	SignalBus.send_signal("normal_level_entered")
 
-# TODO: removing blank whiteboard will trigger "next" event due to signal on
-# video player finished
+	just_exited_secret_level = true
+
+
 func _on_placing_ending_state_entered():
 	sub_viewport_container.visible = false
 	sub_viewport_container.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
@@ -157,9 +158,7 @@ func _on_removing_ending_state_entered():
 	state_chart.send_event("next")
 
 
-#
-#func _on_sub_viewport_container_visibility_changed():
-	#if sub_viewport_container and sub_viewport_container.visible:
-		#Sound.play_music("chill_music")
-	#else:
-		#Sound.pause_music()
+
+func _on_removing_secret_level_state_entered():
+	$videos/removing_secret_level.play()
+	$videos/removing_secret_level.finished.connect(func(): state_chart.send_event("next"))

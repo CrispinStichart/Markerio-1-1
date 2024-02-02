@@ -85,9 +85,23 @@ tracks/4/keys = {
 "update": 1,
 "values": [ExtResource("8_wg1vf")]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("mask/SubViewportContainer:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_jtuf4"]
 resource_name = "normal_level"
+length = 0.0333366
+step = 0.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -148,9 +162,22 @@ tracks/4/keys = {
 "update": 1,
 "values": [ExtResource("8_wg1vf")]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = false
+tracks/5/path = NodePath("mask/SubViewportContainer:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_ng572"]
 resource_name = "secret_level"
+length = 0.10001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -211,6 +238,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [null]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = false
+tracks/5/path = NodePath("mask/SubViewportContainer:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q6d0v"]
 _data = {
@@ -264,6 +303,7 @@ texture = ExtResource("8_wg1vf")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="mask"]
 process_mode = 4
+visible = false
 offset_left = 323.0
 offset_top = 91.0
 offset_right = 1957.0
@@ -275,7 +315,7 @@ transparent_bg = true
 handle_input_locally = false
 audio_listener_enable_2d = true
 size = Vector2i(1080, 1080)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="Game" parent="mask/SubViewportContainer/SubViewport" instance=ExtResource("3_u06vd")]
 position = Vector2(232, 232)
@@ -388,11 +428,16 @@ script = ExtResource("19_0y2cq")
 
 [node name="on normal_level" type="Node" parent="StateChart/Root/playing secret level"]
 script = ExtResource("20_egdgn")
-to = NodePath("../../playing normal level")
+to = NodePath("../../removing secret level")
 event = &"normal_level"
 
 [node name="removing secret level" type="Node" parent="StateChart/Root"]
 script = ExtResource("19_0y2cq")
+
+[node name="on next" type="Node" parent="StateChart/Root/removing secret level"]
+script = ExtResource("20_egdgn")
+to = NodePath("../../placing whiteboard")
+event = &"next"
 
 [node name="removing whiteboard" type="Node" parent="StateChart/Root"]
 script = ExtResource("19_0y2cq")
@@ -426,8 +471,6 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 text = "Apartment Ambience"
 
-[connection signal="visibility_changed" from="mask/SubViewportContainer" to="." method="_on_sub_viewport_container_visibility_changed"]
-[connection signal="finished" from="videos/placing_blank_whiteboard" to="." method="_on_placing_blank_whiteboard_finished"]
 [connection signal="finished" from="videos/intro" to="." method="_on_intro_finished"]
 [connection signal="finished" from="videos/removing_instructions" to="." method="_on_removing_instructions_finished"]
 [connection signal="finished" from="videos/removing_blank_whiteboard" to="." method="_on_removing_blank_whiteboard_finished"]
@@ -441,8 +484,10 @@ text = "Apartment Ambience"
 [connection signal="state_entered" from="StateChart/Root/removing_instructions" to="." method="_on_removing_instructions_state_entered"]
 [connection signal="state_entered" from="StateChart/Root/placing whiteboard" to="." method="_on_placing_whiteboard_state_entered"]
 [connection signal="state_entered" from="StateChart/Root/playing normal level" to="." method="_on_playing_normal_level_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/playing normal level" to="." method="_on_playing_normal_level_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/Root/playing secret level" to="." method="_on_playing_secret_level_state_entered"]
 [connection signal="state_exited" from="StateChart/Root/playing secret level" to="." method="_on_playing_secret_level_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/removing secret level" to="." method="_on_removing_secret_level_state_entered"]
 [connection signal="state_entered" from="StateChart/Root/placing ending" to="." method="_on_placing_ending_state_entered"]
 [connection signal="state_input" from="StateChart/Root/placing ending" to="." method="_on_waiting_for_input_state_input"]
 [connection signal="state_entered" from="StateChart/Root/removing ending" to="." method="_on_removing_ending_state_entered"]

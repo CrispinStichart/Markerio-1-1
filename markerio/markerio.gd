@@ -24,7 +24,7 @@ var powerup_wanted := "Shroom"
 
 @onready var sprite:Sprite2D = $Sprite2D
 @onready var state_chart: StateChart = $StateChart
-@onready var input: InputController = $input_controller
+@onready var input: InputController = $input_controller_player
 
 
 func _physics_process(delta):
@@ -64,10 +64,8 @@ func handle_block_collision():
 			if abs(position.x - block.position.x) < abs(position.x - closest.position.x):
 				closest = block
 
-		if closest.has_method("break_bricks") and not can_break_bricks:
-			closest.bounce()
-		else:
-			closest.activate(powerup_wanted)
+
+		closest.activate(powerup_wanted)
 
 
 func eat_mushroom():
@@ -122,8 +120,8 @@ func set_collision(should_collide: bool) -> void:
 		set_collision_mask_value(2, should_collide)
 		set_collision_layer_value(1, should_collide)
 		for area: Area2D in [$hurtbox, $stomp_hitbox, $block_detector]:
-			area.monitoring = should_collide
-			area.monitorable = should_collide
+			area.set_deferred("monitoring", should_collide)
+			area.set_deferred("monitorable", should_collide)
 
 
 func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
@@ -223,9 +221,10 @@ func _on_normal_grav_state_entered() -> void:
 
 
 func _on_grounded_state_processing(_delta: float) -> void:
-	if velocity.x < 0:
+	var direction = input.get_direction()
+	if direction < 0:
 		sprite.flip_h = true
-	elif velocity.x > 0:
+	elif direction > 0:
 		sprite.flip_h = false
 
 

@@ -34,6 +34,7 @@ func _process(_delta):
 		markerio.global_position.x += 500
 		markerio.sprite.flip_h = true
 	else:
+		markerio.sprite.flip_h = false
 		markerio.velocity.x = markerio.max_walk_speed
 
 	if finished and markerio.global_position.x > $endpoint.global_position.x:
