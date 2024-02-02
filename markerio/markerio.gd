@@ -4,7 +4,7 @@ extends CharacterBody2D
 signal died
 
 
-var acceleration: float = Constants.BLOCK_SIZE/4
+var acceleration: float = Constants.BLOCK_SIZE/2
 var max_walk_speed: float = Constants.BLOCK_SIZE*5
 var max_run_speed: float = Constants.BLOCK_SIZE*10
 var jump_height: float = Constants.BLOCK_SIZE*4
@@ -22,21 +22,17 @@ var gravity := Constants.GRAVITY
 var powerup_wanted := "Shroom"
 
 
-
 @onready var sprite:Sprite2D = $Sprite2D
 @onready var state_chart: StateChart = $StateChart
+@onready var input: InputController = $input_controller
 
 
 func _physics_process(delta):
-
-
-
 	move_and_slide()
 
 	$stomp_hitbox.position = velocity*delta
 
 	handle_block_collision()
-
 
 
 func handle_block_collision():
@@ -92,9 +88,7 @@ func eat_star():
 func hit():
 	print("damage")
 	state_chart.send_event("power_down")
-	#if not invincible:
-		#power_level_state_machine.level_down()
-		#$invincibility_timer.set_invincibility()
+
 
 func die():
 	# So the killfloor can't call this again.
@@ -105,6 +99,8 @@ func die():
 	disable_input()
 	set_collision(false)
 	sprite.flip_v = true
+	velocity.x = 0
+	velocity.y = -jump_velocity/2
 
 
 
@@ -116,18 +112,20 @@ func throw_fireball():
 	fireball.global_position.y -= 800
 	Sound.play_effect("fireball")
 
+
 func disable_input():
-	pass
-	#$input_controller.process_mode = Node.PROCESS_MODE_DISABLED
+	input = $input_controller_dummy
 
 
 func enable_input():
-	pass
-	#$input_controller.process_mode = Node.PROCESS_MODE_INHERIT
+	input = $input_controller_player
 
 func set_collision(should_collide: bool) -> void:
 		set_collision_mask_value(2, should_collide)
 		set_collision_layer_value(1, should_collide)
+		for area: Area2D in [$hurtbox, $stomp_hitbox, $block_detector]:
+			area.monitoring = should_collide
+			area.monitorable = should_collide
 
 
 func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
@@ -166,7 +164,7 @@ func _on_stomp_hitbox_area_entered(area: Area2D) -> void:
 
 
 func _on_jump_enabled_state_physics_processing(_delta: float) -> void:
-	if Input.is_action_just_pressed("jump"):
+	if input.wants_jump():
 		velocity.y = -jump_velocity
 		state_chart.send_event("jump")
 		Sound.play_effect("cap_popping_off")
@@ -177,8 +175,8 @@ func _on_grounded_state_physics_processing(_delta: float) -> void:
 		state_chart.send_event("airborne_without_jump")
 		return
 
-	var direction := Input.get_axis("left", "right")
-	var is_running := Input.is_action_pressed("run")
+	var direction := input.get_direction()
+	var is_running := input.wants_run()
 	var max_speed: float = max_run_speed if is_running else max_walk_speed
 
 	if direction:
@@ -206,7 +204,7 @@ func _on_airborne_state_physics_processing(delta: float) -> void:
 	velocity.y += gravity * delta
 	velocity.y = min(velocity.y, jump_velocity)
 
-	var direction := Input.get_axis("left", "right")
+	var direction := input.get_direction()
 	if direction:
 		var air_acceleration: float = acceleration*.5
 		var added_movement: float = direction * air_acceleration
@@ -252,7 +250,7 @@ func _on_fire_state_entered():
 
 
 func _on_fire_state_input(_event):
-	if Input.is_action_just_pressed("run"):
+	if input.wants_fireball():
 		throw_fireball()
 
 

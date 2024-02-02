@@ -1,7 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://x3f1qkrtcjn2"]
+[gd_scene load_steps=24 format=3 uid="uid://x3f1qkrtcjn2"]
 
 [ext_resource type="Script" path="res://markerio/markerio.gd" id="1_jbn2y"]
 [ext_resource type="Texture2D" uid="uid://13prndas001w" path="res://markerio/markerio_spritesheet.png" id="2_b7xe3"]
+[ext_resource type="Script" path="res://markerio/input_controller_dummy.gd" id="2_n5v8u"]
+[ext_resource type="Script" path="res://markerio/input_controller_player.gd" id="2_oa8k3"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="12_gbouc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="13_xqiof"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="14_tu1hp"]
@@ -814,6 +816,12 @@ size = Vector2(482, 301)
 collision_mask = 6
 script = ExtResource("1_jbn2y")
 
+[node name="input_controller" type="Node" parent="."]
+script = ExtResource("2_oa8k3")
+
+[node name="input_controller_dummy" type="Node" parent="."]
+script = ExtResource("2_n5v8u")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_uoikk")
@@ -1084,6 +1092,11 @@ script = ExtResource("15_2tqr0")
 script = ExtResource("16_rwijp")
 to = NodePath("../../no_star")
 delay_seconds = 15.0
+
+[node name="on dead" type="Node" parent="StateChart/root/Star/star_active"]
+script = ExtResource("16_rwijp")
+to = NodePath("../../no_star")
+event = &"dead"
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 current = true
